@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Case studies — Mindaugas Nakrošis</title>
+<meta name="description" content="mdjira, derivatives trading platform (VP of Technology), and the Cult Wines asset-trading platform. Three engagements across agentic AI, FinTech, and Azure-native architecture.">
+<link rel="canonical" href="https://nakrosis.com/case-studies.html">
+<meta property="og:title" content="Case studies — Mindaugas Nakrošis">
+<meta property="og:description" content="mdjira, derivatives trading platform, Cult Wines asset-trading platform.">
+<meta property="og:url" content="https://nakrosis.com/case-studies.html">
+<meta property="og:type" content="article">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a class="site-name" href="/">Mindaugas Nakrošis</a>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/case-studies.html" aria-current="page">Case studies</a>
+      <a href="/writing.html">Writing</a>
+      <a href="/contact.html">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+
+  <section class="hero">
+    <p class="eyebrow">Three engagements</p>
+    <h1>Case studies</h1>
+    <p class="lede">One open-source skill shipped in 2026, one VP-level architecture engagement in FinTech derivatives, and three and a half years rebuilding a front-office asset trading platform on <span class="sc">Azure</span>.</p>
+  </section>
+
+  <!-- ========== 01 mdjira ========== -->
+
+  <section class="ornamented case-section" id="mdjira">
+    <p class="case-eyebrow">Case 01 · 2026 · open source</p>
+    <h2 class="title">mdjira</h2>
+    <p class="lede">An open-source <span class="sc">Claude Code</span> skill that turns rough markdown product briefs into properly-sized <span class="sc">Jira</span> backlogs — <span class="sc">INVEST</span>-compliant stories, modified-Fibonacci sizing, <span class="sc">BDD</span> acceptance criteria, full epic / story / subtask hierarchy.</p>
+
+    <dl class="project-meta">
+      <dt>Status</dt>
+      <dd>Shipped 2026-04-28</dd>
+      <dt>Distribution</dt>
+      <dd><a href="https://pypi.org/project/mdjira/" target="_blank" rel="noopener">PyPI · mdjira</a></dd>
+      <dt>Source</dt>
+      <dd><a href="https://github.com/mindaugasnakrosis/mdjira" target="_blank" rel="noopener">github.com/mindaugasnakrosis/mdjira</a></dd>
+      <dt>Write-up</dt>
+      <dd><a href="https://medium.com/p/3fbca07a9c3f" target="_blank" rel="noopener">Medium · 2026-04-29</a></dd>
+      <dt>Stack</dt>
+      <dd>Python · Jira REST API · Claude Code skill</dd>
+    </dl>
+
+    <h3 class="label" style="margin-top:2rem">Headline result</h3>
+    <blockquote class="pullquote">
+      48 Jira tickets generated in five minutes from a single deliberately rough markdown product brief. 17 stories totalling 91 points; sizing distribution 1×2pt, 3×3pt, 8×5pt, 5×8pt — zero 13s.
+      <span class="attribution">Run on a representative product brief, 2026-04</span>
+    </blockquote>
+
+    <figure class="chart-wrap">
+      <svg viewBox="0 0 360 200" role="img" aria-label="Story sizing distribution: 1 two-pointer, 3 three-pointers, 8 five-pointers, 5 eight-pointers, zero thirteens.">
+        <line x1="20" y1="160" x2="340" y2="160" stroke="#1a1a17" stroke-width="1.25"/>
+        <rect x="40"  y="148" width="40" height="12"  fill="#1f3a5f"/>
+        <rect x="100" y="124" width="40" height="36"  fill="#1f3a5f"/>
+        <rect x="160" y="64"  width="40" height="96"  fill="#1f3a5f"/>
+        <rect x="220" y="100" width="40" height="60"  fill="#1f3a5f"/>
+        <rect x="280" y="158" width="40" height="2"   fill="#b8b1a0"/>
+        <text x="60"  y="142" text-anchor="middle" font-family="ui-monospace, Menlo, monospace" font-size="12" font-weight="600" fill="#1a1a17">1</text>
+        <text x="120" y="118" text-anchor="middle" font-family="ui-monospace, Menlo, monospace" font-size="12" font-weight="600" fill="#1a1a17">3</text>
+        <text x="180" y="58"  text-anchor="middle" font-family="ui-monospace, Menlo, monospace" font-size="12" font-weight="600" fill="#1a1a17">8</text>
+        <text x="240" y="94"  text-anchor="middle" font-family="ui-monospace, Menlo, monospace" font-size="12" font-weight="600" fill="#1a1a17">5</text>
+        <text x="300" y="152" text-anchor="middle" font-family="ui-monospace, Menlo, monospace" font-size="11" font-weight="600" fill="#8c8980">0</text>
+        <text x="60"  y="180" text-anchor="middle" font-family="ui-monospace, Menlo, monospace" font-size="10" letter-spacing="0.5" fill="#5e5b54">2pt</text>
+        <text x="120" y="180" text-anchor="middle" font-family="ui-monospace, Menlo, monospace" font-size="10" letter-spacing="0.5" fill="#5e5b54">3pt</text>
+        <text x="180" y="180" text-anchor="middle" font-family="ui-monospace, Menlo, monospace" font-size="10" letter-spacing="0.5" fill="#5e5b54">5pt</text>
+        <text x="240" y="180" text-anchor="middle" font-family="ui-monospace, Menlo, monospace" font-size="10" letter-spacing="0.5" fill="#5e5b54">8pt</text>
+        <text x="300" y="180" text-anchor="middle" font-family="ui-monospace, Menlo, monospace" font-size="10" letter-spacing="0.5" fill="#8c8980">13pt</text>
+      </svg>
+      <figcaption class="chart-caption">Story sizing across 17 stories. The 13-point column is empty by design — modified-Fibonacci practice treats anything past an 8 as a smell, and the skill decomposes those automatically before they reach the backlog.</figcaption>
+    </figure>
+
+    <dl class="metrics">
+      <dt>Tickets created</dt>
+      <dd>48 in Jira (epics, stories, subtasks).</dd>
+      <dt>Stories</dt>
+      <dd>17, totalling 91 story points.</dd>
+      <dt>Sizing distribution</dt>
+      <dd>1 × 2pt · 3 × 3pt · 8 × 5pt · 5 × 8pt · zero 13s.</dd>
+      <dt>Priority spread</dt>
+      <dd>1 Highest · 5 High · 9 Medium · 2 Low. Defensible, not flat.</dd>
+      <dt>Time to backlog</dt>
+      <dd>~5 minutes from markdown to live Jira tickets.</dd>
+    </dl>
+
+    <h3 class="label" style="margin-top:2.5rem">Methodology</h3>
+    <p class="body-open">The skill is not a wrapper around a generic <span class="sc">LLM</span> call. It encodes specific, citable practitioner standards and refuses to produce output that violates them.</p>
+
+    <ol class="method">
+      <li><div>
+        <h3>Story shape — INVEST</h3>
+        <p>Independent, Negotiable, Valuable, Estimable, Small, Testable. As set out by Bill Wake in <a href="https://xp123.com/articles/invest-in-good-stories-and-smart-tasks/" target="_blank" rel="noopener">XP123 (2003)</a> and refined by Mike Cohn in <em>User Stories Applied</em>. Each generated story is checked against all six.</p>
+      </div></li>
+      <li><div>
+        <h3>Sizing — modified Fibonacci</h3>
+        <p>1, 2, 3, 5, 8, 13, 20, 40, 100, per Cohn. The skill enforces the practitioner rule that a 13 is a smell and decomposes anything that lands there. The result above shows the rule in effect: zero 13s across 17 stories.</p>
+      </div></li>
+      <li><div>
+        <h3>Acceptance criteria — Given / When / Then</h3>
+        <p>As introduced by Dan North in <a href="https://dannorth.net/introducing-bdd/" target="_blank" rel="noopener">Introducing BDD (2006)</a>. Each story carries explicit criteria, not vague success conditions.</p>
+      </div></li>
+      <li><div>
+        <h3>Hierarchy — epic / story / subtask</h3>
+        <p>Atlassian's <a href="https://www.atlassian.com/agile/project-management/epics-stories-themes" target="_blank" rel="noopener">epic / story / subtask hierarchy</a>, with one anti-pattern explicitly suppressed: the "Miscellaneous Bug Fixes" epic that becomes a permanent dumping ground.</p>
+      </div></li>
+      <li><div>
+        <h3>Decomposition — Pichler's split axes</h3>
+        <p>Roman Pichler's compound-story decomposition: split by workflow step, by data variation, by interface, by <span class="sc">CRUD</span>, by non-functional concern (see <a href="https://www.romanpichler.com/blog/10-tips-writing-good-user-stories/" target="_blank" rel="noopener">Pichler's notes</a>). The skill picks a split axis and explains the choice.</p>
+      </div></li>
+    </ol>
+  </section>
+
+  <!-- ========== 02 VP of Technology ========== -->
+
+  <section class="ornamented case-section" id="vp-of-technology">
+    <p class="case-eyebrow">Case 02 · Oct 2024 – Feb 2025 · VP of Technology</p>
+    <h2 class="title">Derivatives trading platform</h2>
+    <p class="lede">VP of Technology for a buy-side <span class="sc">FinTech</span> derivatives platform. Owned the architecture for real-time trade execution, the Java backend on <span class="sc">Azure</span>, and the integration of agentic <span class="sc">AI</span> into trading workflows.</p>
+
+    <dl class="project-meta">
+      <dt>Sector</dt>
+      <dd>FinTech · derivatives · buy-side</dd>
+      <dt>Role</dt>
+      <dd>VP of Technology</dd>
+      <dt>Tenure</dt>
+      <dd>Oct 2024 – Feb 2025</dd>
+      <dt>Stack</dt>
+      <dd>Java · Azure · FIX protocol · Kubernetes · IaC · agentic AI</dd>
+      <dt>Client</dt>
+      <dd>Confidential</dd>
+    </dl>
+
+    <h3 class="label" style="margin-top:2rem">What I owned</h3>
+    <ul class="outcomes">
+      <li>Architected and implemented <span class="sc">FIX</span> protocol messaging infrastructure for real-time trade execution and order management.</li>
+      <li>Designed and deployed Java-based backend systems on Azure cloud infrastructure for trading-grade scalability and reliability.</li>
+      <li>Pioneered integration of agentic <span class="sc">AI</span> into trading workflows and operational tooling — early production deployment, not pilot.</li>
+      <li>Established cloud-native architecture patterns on Azure: microservices, containerisation, infrastructure-as-code.</li>
+      <li>Implemented security and compliance frameworks aligned with financial-services regulatory requirements.</li>
+      <li>Built and managed a cross-functional engineering team; ran the technical liaison between <span class="sc">CEO</span>/<span class="sc">CPO</span> and engineering, translating business requirements into technical roadmaps.</li>
+      <li>Drove platform-evolution decisions in a live trading environment — balancing innovation against system stability.</li>
+    </ul>
+    <p class="confidential">Client name confidential — references on request</p>
+  </section>
+
+  <!-- ========== 03 Cult Wines ========== -->
+
+  <section class="ornamented case-section" id="cult-wines">
+    <p class="case-eyebrow">Case 03 · May 2021 – Oct 2024 · 3 years 6 months</p>
+    <h2 class="title">Cult Wines · asset trading platform</h2>
+    <p class="lede">Front-office architect on the green-field asset-trading platform for an alternative-investments firm. Drove the full-stack of the front office across <span class="sc">React</span>, Next.js, React Native, and an <span class="sc">Azure</span>-native event-driven backend.</p>
+
+    <dl class="project-meta">
+      <dt>Sector</dt>
+      <dd>Alternative investments · asset trading</dd>
+      <dt>Role</dt>
+      <dd>Front-office Architect (full-stack)</dd>
+      <dt>Tenure</dt>
+      <dd>May 2021 – Oct 2024</dd>
+      <dt>Stack</dt>
+      <dd>React · Next.js · React Native · Auth0 · Databricks · Azure Functions · CosmosDB · Service Bus · AKS · Terraform · GraphQL/Apollo</dd>
+      <dt>Client</dt>
+      <dd>Cult Wines · London</dd>
+    </dl>
+
+    <h3 class="label" style="margin-top:2rem">What I owned</h3>
+    <ul class="outcomes">
+      <li>Built a green-field asset trading platform with React and React Native, sharing logic across web and mobile to reduce delivery time and bug surface.</li>
+      <li>Built a Next.js web app to meet <span class="sc">SEO</span> requirements where they mattered.</li>
+      <li>Implemented Auth0 <span class="sc">MFA</span> across multiple platforms and applications.</li>
+      <li>Reorganised the data-pipelines strategy and helped introduce Databricks on Azure.</li>
+      <li>Introduced an <span class="sc">OpenAPI</span> strategy with Azure <span class="sc">API</span> Management.</li>
+      <li>Led the front-office <span class="sc">API</span> layer with Azure Functions and a horizontally-scalable CosmosDB tuned for high read throughput.</li>
+      <li>Set up an event-driven <span class="sc">API</span> strategy on Service Bus.</li>
+      <li>Initiated Cypress end-to-end smoke testing for the new systems.</li>
+      <li>Led migration of an old, technically-deprecated core business system onto the new platform.</li>
+      <li>Helped the DevOps team migrate from PowerShell to Terraform-based <span class="sc">IaC</span>.</li>
+      <li>Migrated app services into Azure Kubernetes Services (<span class="sc">AKS</span>).</li>
+      <li>Built numerous microservices for operational and third-party integration needs.</li>
+      <li>Introduced test-driven development with deployment gates blocking unsecure or untested code.</li>
+      <li>Implemented a <span class="sc">GraphQL</span> layer on both <span class="sc">UI</span> and backend with Apollo.</li>
+    </ul>
+  </section>
+
+  <section class="ornamented">
+    <h2 class="label">Earlier engagements</h2>
+    <p>Senior front-end at <span class="sc">HomeToGo</span> in Berlin (Apr 2019 – 2021), Node.js / GraphQL contracts via Trustflux Ltd (Dec 2017 – 2021), .NET backend in logistics (2016 – 17), full-stack on a cryptocurrency brokerage (2015 – 16), and freelance work on 10+ web applications (2014 – 15). Full chronology on the <a href="/">home page</a>.</p>
+    <p class="note">More detail on any of the above on request.</p>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>London</span><span class="sep">·</span>
+    <a href="mailto:mindaugasm@intelme.ai">mindaugasm@intelme.ai</a><span class="sep">·</span>
+    <a href="https://github.com/mindaugasnakrosis" target="_blank" rel="noopener">GitHub</a><span class="sep">·</span>
+    <a href="https://www.linkedin.com/in/mindaugas-nakro%C5%A1is-142a4a108/" target="_blank" rel="noopener">LinkedIn</a><span class="sep">·</span>
+    <a href="https://mindaugasnakr.medium.com/" target="_blank" rel="noopener">Medium</a>
+  </div>
+</footer>
+
+</body>
+</html>

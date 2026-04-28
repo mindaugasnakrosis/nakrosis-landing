@@ -1,0 +1,748 @@
+:root {
+  --text: #1a1a17;
+  --ink: #111110;
+  --muted: #5e5b54;
+  --dim: #8c8980;
+  --bg: #fbfaf6;
+  --paper: #f3efe4;
+  --accent: #1f3a5f;
+  --accent-hover: #2d5288;
+  --border: #d8d2c4;
+  --border-strong: #b8b1a0;
+  --rule: #1a1a17;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: ui-serif, "Iowan Old Style", "Charter", "Source Serif Pro", Georgia, "Times New Roman", serif;
+  font-size: 18px;
+  line-height: 1.62;
+  color: var(--text);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "kern" 1, "liga" 1, "onum" 1;
+  text-rendering: optimizeLegibility;
+}
+
+.container {
+  max-width: 36rem;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+main.container { padding-top: 3rem; padding-bottom: 1rem; }
+
+a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  text-decoration-color: rgba(31, 58, 95, 0.4);
+}
+a:hover {
+  color: var(--accent-hover);
+  text-decoration-color: var(--accent-hover);
+}
+
+p { margin: 0 0 1.25rem; }
+strong { font-weight: 600; }
+em { font-style: italic; }
+
+.sans, nav, .label, .case-num, .meta, .status-tag, .site-footer, .ornament {
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.mono, .label, .case-num, .meta, .status-tag, .facts-list dt, .project-meta dt {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+}
+
+/* ---------- Inline small caps utility ---------- */
+
+.sc {
+  font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+  text-transform: uppercase;
+  font-size: 0.78em;
+  letter-spacing: 0.09em;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+/* ---------- Header ---------- */
+
+.site-header {
+  border-bottom: 1px solid var(--border);
+  padding: 1.15rem 0;
+  background: var(--bg);
+}
+.site-header .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.6rem 1.5rem;
+}
+
+.site-name {
+  font-family: ui-serif, "Iowan Old Style", "Charter", Georgia, serif;
+  font-weight: 600;
+  color: var(--ink);
+  text-decoration: none;
+  font-size: 1.05rem;
+  letter-spacing: -0.005em;
+}
+.site-name:hover { color: var(--accent); }
+
+nav { display: flex; gap: 1.4rem; flex-wrap: wrap; }
+nav a {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.86rem;
+  letter-spacing: 0.005em;
+}
+nav a:hover { color: var(--accent); }
+nav a[aria-current="page"] { color: var(--ink); }
+
+/* ---------- Headings ---------- */
+
+h1 {
+  font-family: ui-serif, "Iowan Old Style", "Charter", Georgia, serif;
+  font-size: 2.8rem;
+  line-height: 1.05;
+  margin: 0 0 0.5rem;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  color: var(--ink);
+}
+
+h2 {
+  font-family: ui-serif, "Iowan Old Style", "Charter", Georgia, serif;
+  font-size: 1.55rem;
+  font-weight: 600;
+  margin: 0 0 1.1rem;
+  letter-spacing: -0.012em;
+  color: var(--ink);
+}
+
+h3 {
+  font-family: ui-serif, "Iowan Old Style", "Charter", Georgia, serif;
+  font-size: 1.18rem;
+  font-weight: 600;
+  margin: 0 0 0.45rem;
+  letter-spacing: -0.005em;
+  color: var(--ink);
+}
+
+.label {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 1.1rem;
+}
+
+/* ---------- Sections / rules ---------- */
+
+section {
+  padding: 2.5rem 0;
+  border-top: 1px solid var(--border-strong);
+  position: relative;
+}
+section:first-child {
+  padding-top: 0;
+  border-top: none;
+}
+
+/* ornamented section break: a § symbol on the rule */
+section.ornamented::before {
+  content: "§";
+  position: absolute;
+  top: -0.78rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg);
+  padding: 0 0.6rem;
+  color: var(--dim);
+  font-family: ui-serif, "Iowan Old Style", "Charter", Georgia, serif;
+  font-size: 1.05rem;
+  font-weight: 400;
+  font-style: italic;
+}
+
+/* ---------- Hero ---------- */
+
+.hero { padding-bottom: 2.5rem; }
+
+.hero .role,
+.eyebrow {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.74rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 1.4rem;
+  font-weight: 600;
+}
+
+.lede {
+  font-family: ui-serif, "Iowan Old Style", "Charter", Georgia, serif;
+  font-size: 1.42rem;
+  line-height: 1.38;
+  margin: 0 0 1.75rem;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+  font-weight: 500;
+}
+
+/* ---------- Drop cap + small caps first line on opening body paragraph ---------- */
+
+.body-open {
+  margin-bottom: 1.4rem;
+}
+.body-open::first-letter {
+  font-family: ui-serif, "Iowan Old Style", "Charter", Georgia, serif;
+  font-weight: 600;
+  font-size: 3.4em;
+  float: left;
+  line-height: 0.82;
+  padding: 0.42rem 0.5rem 0 0.02rem;
+  color: var(--ink);
+}
+.body-open::first-line {
+  font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 0.86em;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.hero .cta {
+  display: inline-block;
+  margin-top: 0.5rem;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+/* ---------- Facts strip ---------- */
+
+.facts-list {
+  margin: 0;
+  padding: 1.15rem 1.25rem;
+  display: grid;
+  grid-template-columns: 9rem 1fr;
+  row-gap: 0.75rem;
+  column-gap: 1.5rem;
+  font-size: 0.96rem;
+  background: var(--paper);
+  border-left: 2px solid var(--ink);
+}
+.facts-list dt {
+  margin: 0;
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 600;
+  padding-top: 0.18rem;
+}
+.facts-list dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+/* ---------- Case cards ---------- */
+
+.case-cards {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.case-card {
+  display: grid;
+  grid-template-columns: 3rem 1fr;
+  gap: 0 1.25rem;
+  padding: 1.5rem 0;
+  border-top: 1px solid var(--border);
+  align-items: start;
+}
+.case-card:first-child { border-top: none; padding-top: 0.4rem; }
+.case-card:last-child { padding-bottom: 0.2rem; }
+
+.case-num {
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  color: var(--dim);
+  font-weight: 600;
+  padding-top: 0.55rem;
+  font-feature-settings: "tnum" 1;
+}
+
+.case-body { min-width: 0; }
+.case-body h3 {
+  margin: 0 0 0.35rem;
+  font-size: 1.18rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 0.6rem;
+}
+.case-body h3 a { color: var(--ink); text-decoration: none; }
+.case-body h3 a:hover { color: var(--accent); text-decoration: underline; }
+
+.case-summary { margin: 0 0 0.5rem; color: var(--text); }
+.case-result {
+  margin: 0.45rem 0 0.55rem;
+  font-size: 0.98rem;
+  color: var(--ink);
+  padding-left: 0.7rem;
+  border-left: 2px solid var(--accent);
+}
+.case-meta {
+  margin: 0.35rem 0 0;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.76rem;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+}
+.case-meta a { color: var(--muted); text-decoration: underline; text-decoration-color: var(--border-strong); }
+.case-meta a:hover { color: var(--accent); text-decoration-color: var(--accent); }
+
+.case-card.placeholder .case-body h3 { color: var(--muted); font-weight: 500; }
+.case-card.placeholder .case-body h3 a,
+.case-card.placeholder .case-body h3 { font-weight: 500; }
+.case-card.placeholder .case-summary { color: var(--muted); }
+
+.status-tag {
+  display: inline-block;
+  font-size: 0.66rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  border: 1px solid var(--border-strong);
+  padding: 0.12rem 0.5rem;
+  font-weight: 600;
+  background: var(--bg);
+  white-space: nowrap;
+}
+
+/* ---------- Case study (article) page ---------- */
+
+.project-meta {
+  display: grid;
+  grid-template-columns: 7.5rem 1fr;
+  row-gap: 0.6rem;
+  column-gap: 1.5rem;
+  margin: 1.75rem 0 0;
+  padding: 1.1rem 0 1.25rem;
+  border-top: 1.5px solid var(--ink);
+  border-bottom: 1px solid var(--border-strong);
+  font-size: 0.96rem;
+}
+.project-meta dt {
+  margin: 0;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 600;
+  padding-top: 0.22rem;
+}
+.project-meta dd { margin: 0; color: var(--ink); }
+
+.pullquote {
+  margin: 2.25rem 0;
+  padding: 1.5rem 1.6rem;
+  border-left: 3px solid var(--accent);
+  background: var(--paper);
+  font-size: 1.22rem;
+  line-height: 1.4;
+  font-style: italic;
+  color: var(--ink);
+  font-family: ui-serif, "Iowan Old Style", "Charter", Georgia, serif;
+}
+.pullquote .attribution {
+  display: block;
+  margin-top: 0.7rem;
+  font-style: normal;
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-weight: 600;
+}
+
+dl.metrics {
+  margin: 1rem 0 0;
+  display: grid;
+  grid-template-columns: 11rem 1fr;
+  row-gap: 0.95rem;
+  column-gap: 1.5rem;
+}
+dl.metrics dt {
+  margin: 0;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-weight: 600;
+  font-size: 0.96rem;
+  padding-top: 0.05rem;
+  color: var(--ink);
+}
+dl.metrics dd { margin: 0; color: var(--text); }
+
+/* ---------- SVG chart ---------- */
+
+.chart-wrap {
+  margin: 2.25rem 0 0.5rem;
+  padding: 1.5rem 1.5rem 1.25rem;
+  background: var(--paper);
+  border-left: 2px solid var(--ink);
+}
+.chart-wrap svg { display: block; width: 100%; height: auto; max-width: 28rem; }
+.chart-caption {
+  margin: 0.85rem 0 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+  line-height: 1.5;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+}
+
+/* ---------- Method ---------- */
+
+ol.method {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  counter-reset: step;
+}
+ol.method > li {
+  counter-increment: step;
+  padding: 1.3rem 0;
+  border-top: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: 2.5rem 1fr;
+  gap: 0 1rem;
+}
+ol.method > li:first-child { border-top: none; padding-top: 0.5rem; }
+ol.method > li::before {
+  content: counter(step, decimal-leading-zero);
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  color: var(--dim);
+  font-weight: 600;
+  padding-top: 0.32rem;
+}
+ol.method h3 { margin: 0 0 0.35rem; font-size: 1.08rem; }
+ol.method p { margin: 0; }
+
+/* ---------- Writing ---------- */
+
+.writing-intro {
+  color: var(--ink);
+  font-size: 1rem;
+  margin: 0;
+  padding: 1.1rem 1.25rem;
+  background: var(--paper);
+  border-left: 2px solid var(--ink);
+}
+.writing-intro strong {
+  display: block;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 600;
+  margin-bottom: 0.45rem;
+}
+
+.writing-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.writing-list li {
+  padding: 1.5rem 0;
+  border-top: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.4rem 1.5rem;
+  align-items: baseline;
+}
+.writing-list li:first-child { border-top: none; padding-top: 0.4rem; }
+.writing-list h3 {
+  grid-column: 1 / 2;
+  margin: 0 0 0.4rem;
+  font-size: 1.18rem;
+  font-weight: 600;
+}
+.writing-list h3 a { color: var(--ink); text-decoration: none; }
+.writing-list h3 a:hover { color: var(--accent); text-decoration: underline; }
+.writing-list .meta {
+  grid-column: 2 / 3;
+  grid-row: 1 / 2;
+  text-align: right;
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 600;
+  white-space: nowrap;
+}
+.writing-list .summary {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.98rem;
+}
+.writing-list .coming h3 { color: var(--muted); font-weight: 500; }
+
+/* ---------- Contact ---------- */
+
+.contact-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.contact-list li {
+  padding: 0.95rem 0;
+  border-top: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: 7rem 1fr;
+  gap: 0.4rem 1.5rem;
+  align-items: baseline;
+}
+.contact-list li:first-child { border-top: none; padding-top: 0.3rem; }
+.contact-list .label { margin: 0; align-self: baseline; }
+
+/* ---------- Experience timeline ---------- */
+
+.timeline {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.timeline li {
+  display: grid;
+  grid-template-columns: 9rem 1fr;
+  gap: 0.4rem 1.5rem;
+  padding: 1.15rem 0;
+  border-top: 1px solid var(--border);
+  align-items: baseline;
+}
+.timeline li:first-child { border-top: none; padding-top: 0.4rem; }
+.timeline .when {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 600;
+  padding-top: 0.18rem;
+  white-space: nowrap;
+}
+.timeline .what { min-width: 0; }
+.timeline .role {
+  margin: 0 0 0.2rem;
+  font-family: ui-serif, "Iowan Old Style", Georgia, serif;
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: var(--ink);
+}
+.timeline .org {
+  margin: 0 0 0.3rem;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+.timeline .stack {
+  margin: 0;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.03em;
+  color: var(--muted);
+}
+.timeline .education .role { font-weight: 500; }
+
+/* ---------- Anchored case sub-sections ---------- */
+
+.case-section {
+  scroll-margin-top: 5rem;
+}
+.case-section h2.title {
+  font-family: ui-serif, "Iowan Old Style", "Charter", Georgia, serif;
+  font-size: 2.1rem;
+  letter-spacing: -0.018em;
+  margin: 0 0 0.4rem;
+  font-weight: 600;
+  line-height: 1.1;
+  color: var(--ink);
+}
+.case-section .case-eyebrow {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.74rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 600;
+  margin: 0 0 0.85rem;
+}
+.case-section ul.outcomes {
+  list-style: none;
+  padding: 0;
+  margin: 1.1rem 0 0;
+}
+.case-section ul.outcomes li {
+  padding: 0.65rem 0 0.65rem 1.2rem;
+  border-top: 1px solid var(--border);
+  position: relative;
+  color: var(--text);
+}
+.case-section ul.outcomes li:first-child { border-top: 1px solid var(--border-strong); }
+.case-section ul.outcomes li::before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.confidential {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--dim);
+  font-weight: 600;
+  margin-top: 1.25rem;
+}
+
+/* ---------- Writing archive ---------- */
+
+.year-group { margin-bottom: 1.75rem; }
+.year-group:last-child { margin-bottom: 0; }
+.year-group .year {
+  font-family: ui-serif, "Iowan Old Style", Georgia, serif;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin: 0 0 0.55rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1.5px solid var(--ink);
+  letter-spacing: -0.01em;
+}
+.archive-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.archive-list li {
+  padding: 0.65rem 0;
+  border-bottom: 1px solid var(--border);
+  display: grid;
+  grid-template-columns: 5.5rem 1fr;
+  gap: 0.4rem 1.25rem;
+  align-items: baseline;
+}
+.archive-list .when {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 600;
+  padding-top: 0.1rem;
+  white-space: nowrap;
+}
+.archive-list .title {
+  margin: 0;
+  font-size: 0.98rem;
+  color: var(--ink);
+}
+.archive-list .title a { color: var(--ink); text-decoration: underline; text-decoration-color: var(--border-strong); }
+.archive-list .title a:hover { color: var(--accent); text-decoration-color: var(--accent); }
+.archive-list .title.coming { color: var(--muted); font-style: italic; }
+
+/* ---------- Footer ---------- */
+
+.note {
+  color: var(--muted);
+  margin-top: 2rem;
+  font-size: 0.95rem;
+  font-style: italic;
+}
+
+.site-footer {
+  border-top: 1px solid var(--border-strong);
+  margin-top: 4.5rem;
+  padding: 1.6rem 0 2.4rem;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.8rem;
+  color: var(--muted);
+  letter-spacing: 0.005em;
+  background: var(--bg);
+}
+.site-footer .container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.85rem;
+  align-items: baseline;
+}
+.site-footer a { color: var(--muted); text-decoration: underline; text-decoration-color: var(--border-strong); }
+.site-footer a:hover { color: var(--accent); text-decoration-color: var(--accent); }
+.site-footer .sep { color: var(--border-strong); }
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 640px) {
+  body { font-size: 17px; }
+  .container { padding: 0 1.15rem; }
+  main.container { padding-top: 2rem; }
+
+  h1 { font-size: 2.05rem; }
+  h2 { font-size: 1.32rem; }
+  .lede { font-size: 1.2rem; }
+
+  nav { gap: 0.95rem; }
+  nav a { font-size: 0.84rem; }
+
+  section { padding: 2rem 0; }
+
+  .body-open::first-letter { font-size: 3em; padding: 0.32rem 0.45rem 0 0; }
+
+  .facts-list,
+  .writing-intro,
+  .chart-wrap { padding-left: 1rem; padding-right: 1rem; }
+  .facts-list { grid-template-columns: 1fr; row-gap: 0.85rem; }
+  .facts-list dt { padding-top: 0; margin-bottom: -0.35rem; }
+
+  .project-meta { grid-template-columns: 1fr; row-gap: 0.7rem; }
+  .project-meta dt { padding-top: 0; margin-bottom: -0.4rem; }
+
+  dl.metrics { grid-template-columns: 1fr; row-gap: 0.95rem; }
+  dl.metrics dt { padding-top: 0; }
+
+  .case-card { grid-template-columns: 2.2rem 1fr; gap: 0 0.85rem; }
+  .case-num { padding-top: 0.55rem; font-size: 0.72rem; }
+
+  ol.method > li { grid-template-columns: 2rem 1fr; gap: 0 0.85rem; }
+
+  .writing-list li { grid-template-columns: 1fr; }
+  .writing-list .meta { text-align: left; grid-column: 1 / -1; grid-row: auto; margin-bottom: 0.15rem; }
+
+  .contact-list li { grid-template-columns: 1fr; gap: 0.05rem; }
+
+  .pullquote { padding: 1.15rem 1.2rem; font-size: 1.1rem; }
+}
