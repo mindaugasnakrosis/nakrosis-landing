@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Case studies — Mindaugas Nakrošis</title>
-<meta name="description" content="mdjira, derivatives trading platform (VP of Technology), and the Cult Wines asset-trading platform. Three engagements across agentic AI, FinTech, and Azure-native architecture.">
+<meta name="description" content="mdjira, azure-costs-analyzer, derivatives trading platform (VP of Technology), and the Cult Wines asset-trading platform. Four engagements across agentic AI, FinOps, FinTech, and Azure-native architecture.">
 <link rel="canonical" href="https://nakrosis.com/case-studies">
 <meta name="robots" content="index, follow">
 <meta property="og:title" content="Case studies — Mindaugas Nakrošis">
-<meta property="og:description" content="mdjira, derivatives trading platform, Cult Wines asset-trading platform.">
+<meta property="og:description" content="mdjira, azure-costs-analyzer, derivatives trading platform, Cult Wines asset-trading platform.">
 <meta property="og:url" content="https://nakrosis.com/case-studies">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="Mindaugas Nakrošis">
@@ -19,7 +19,7 @@
 <meta property="og:image:alt" content="Portrait of Mindaugas Nakrošis">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Case studies — Mindaugas Nakrošis">
-<meta name="twitter:description" content="mdjira, derivatives trading platform, Cult Wines asset-trading platform.">
+<meta name="twitter:description" content="mdjira, azure-costs-analyzer, derivatives trading platform, Cult Wines asset-trading platform.">
 <meta name="twitter:image" content="https://nakrosis.com/mindaugas.jpg">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
@@ -43,9 +43,9 @@
 <main class="container">
 
   <section class="hero">
-    <p class="eyebrow">Three engagements</p>
+    <p class="eyebrow">Four engagements</p>
     <h1>Case studies</h1>
-    <p class="lede">One open-source skill shipped in 2026, one VP-level architecture engagement in FinTech derivatives, and three and a half years rebuilding a front-office asset trading platform on <span class="sc">Azure</span>.</p>
+    <p class="lede">Two open-source <span class="sc">Claude Code</span> skills shipped in 2026, one VP-level architecture engagement in FinTech derivatives, and three and a half years rebuilding a front-office asset trading platform on <span class="sc">Azure</span>.</p>
   </section>
 
   <!-- ========== 01 mdjira ========== -->
@@ -136,10 +136,74 @@
     </ol>
   </section>
 
-  <!-- ========== 02 VP of Technology ========== -->
+  <!-- ========== 02 azure-costs-analyzer ========== -->
+
+  <section class="ornamented case-section" id="azure-costs-analyzer">
+    <p class="case-eyebrow">Case 02 · 2026 · open source</p>
+    <h2 class="title">azure-costs-analyzer</h2>
+    <p class="lede">A read-only <span class="sc">Claude Code</span> skill that runs a 20-minute Azure cost review on any tenant — fifteen citation-grounded rules, eighteen collectors, an <span class="sc">HTML</span>+Markdown report. Built for portfolio operators who want one repeatable agent across every portco's tenant, not a £15k consultant deck per company.</p>
+
+    <dl class="project-meta">
+      <dt>Status</dt>
+      <dd>Shipped 2026-05-04</dd>
+      <dt>Source</dt>
+      <dd><a href="https://github.com/mindaugasnakrosis/azure-costs-analyzer" target="_blank" rel="noopener">github.com/mindaugasnakrosis/azure-costs-analyzer</a></dd>
+      <dt>Write-up</dt>
+      <dd><a href="https://mindaugasnakr.medium.com/i-built-a-claude-code-skill-that-does-a-20-minute-azure-cost-review-40efc3cf5b19" target="_blank" rel="noopener">Medium · 2026-05</a></dd>
+      <dt>Stack</dt>
+      <dd>Python · Azure CLI · Pydantic · Claude Code skill · MIT-licensed</dd>
+    </dl>
+
+    <h3 class="label" style="margin-top:2rem">Headline result</h3>
+    <blockquote class="pullquote">
+      £5,436 – £7,369 / month identified savings on a tenant doing roughly £30k/month in Azure spend — roughly 3× Azure Advisor's published recommendation ceiling for the same tenant.
+      <span class="attribution">Real run · UK-based Azure tenant · 2026-05</span>
+    </blockquote>
+
+    <dl class="metrics">
+      <dt>Cost rules</dt>
+      <dd>15, each citing a committed Microsoft / FinOps Foundation source.</dd>
+      <dt>Collectors</dt>
+      <dd>18, all routed through one read-only gate that rejects 33 forbidden write verbs before subprocess.</dd>
+      <dt>Knowledge corpus</dt>
+      <dd>14 documents, frontmatter-versioned with source <span class="sc">URL</span>, retrieval date, and <span class="sc">SHA</span>256.</dd>
+      <dt>Tests</dt>
+      <dd>227 passing (1 skipped — real-tenant smoke test gated on env var).</dd>
+      <dt>Output</dt>
+      <dd><code>report.md</code> + <code>report.html</code> (print-friendly <span class="sc">CSS</span>) + <code>findings.yaml</code>.</dd>
+      <dt>Wall-clock</dt>
+      <dd>~20 minutes for a tenant with a few dozen subscriptions.</dd>
+    </dl>
+
+    <h3 class="label" style="margin-top:2.5rem">Architectural bets</h3>
+    <ol class="method">
+      <li><div>
+        <h3>Read-only is a guarantee</h3>
+        <p>Single function (<code>azcli.run_json</code>) gates every Azure <span class="sc">CLI</span> call. Twenty-three unit tests verify it rejects every one of 33 forbidden write verbs before <code>subprocess</code> is reached. Adding new collectors does not loosen this.</p>
+      </div></li>
+      <li><div>
+        <h3>Citation-grounded knowledge</h3>
+        <p>Every rule declares <code>KNOWLEDGE_REFS</code> pointing at committed <span class="sc">.md</span> files. A rule that cites a missing document fails to load. The model computes; the rule cites. Refresh script tracks upstream <span class="sc">SHA</span>256 drift.</p>
+      </div></li>
+      <li><div>
+        <h3>Severity × Confidence as independent axes</h3>
+        <p>"We <em>think</em> this £4k reservation is wasted" gets handled differently from "this £4 <span class="sc">IP</span> is definitely orphaned". Single-axis lists hide that distinction; the report keeps it.</p>
+      </div></li>
+      <li><div>
+        <h3>Forecast over snapshot</h3>
+        <p>Underused-reservation findings combine spend, utilisation, and term-remaining (read from <code>expiryDateTime</code>) into one forward-looking £ figure — e.g. "<strong>£4,558 – £5,535 between now and expiry</strong>" on a 9-month-remaining reservation. Advisor doesn't combine those axes.</p>
+      </div></li>
+      <li><div>
+        <h3>Savings as ranges, not point estimates</h3>
+        <p>Every monetary recommendation comes with a non-empty <code>assumption</code> string explaining what's <em>not</em> netted out: negotiated discounts, reservation coverage, regional price drift. The range itself is the answer.</p>
+      </div></li>
+    </ol>
+  </section>
+
+  <!-- ========== 03 VP of Technology ========== -->
 
   <section class="ornamented case-section" id="vp-of-technology">
-    <p class="case-eyebrow">Case 02 · Oct 2024 – Feb 2025 · VP of Technology</p>
+    <p class="case-eyebrow">Case 03 · Oct 2024 – Feb 2025 · VP of Technology</p>
     <h2 class="title">Derivatives trading platform</h2>
     <p class="lede">VP of Technology for a buy-side <span class="sc">FinTech</span> derivatives platform. Owned the architecture for real-time trade execution, the Java backend on <span class="sc">Azure</span>, and the integration of agentic <span class="sc">AI</span> into trading workflows.</p>
 
@@ -169,10 +233,10 @@
     <p class="confidential">Client name confidential — references on request</p>
   </section>
 
-  <!-- ========== 03 Cult Wines ========== -->
+  <!-- ========== 04 Cult Wines ========== -->
 
   <section class="ornamented case-section" id="cult-wines">
-    <p class="case-eyebrow">Case 03 · May 2021 – Oct 2024 · 3 years 6 months</p>
+    <p class="case-eyebrow">Case 04 · May 2021 – Oct 2024 · 3 years 6 months</p>
     <h2 class="title">Cult Wines · asset trading platform</h2>
     <p class="lede">Front-office architect on the green-field asset-trading platform for an alternative-investments firm. Drove the full-stack of the front office across <span class="sc">React</span>, Next.js, React Native, and an <span class="sc">Azure</span>-native event-driven backend.</p>
 
