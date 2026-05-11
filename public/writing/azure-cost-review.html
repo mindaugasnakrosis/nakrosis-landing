@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>I built a Claude Code skill that does a 20-minute Azure cost review — Mindaugas Nakrošis</title>
+<meta name="description" content="A read-only Azure cost auditor that produces a written report a human can read and act on. Calibrated against a real tenant. Finds roughly 3× what Azure Advisor surfaces.">
+<link rel="canonical" href="https://nakrosis.com/writing/azure-cost-review">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="I built a Claude Code skill that does a 20-minute Azure cost review">
+<meta property="og:description" content="A read-only Azure cost auditor that produces a written report a human can read and act on. Calibrated against a real tenant. Finds roughly 3× what Azure Advisor surfaces.">
+<meta property="og:url" content="https://nakrosis.com/writing/azure-cost-review">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Mindaugas Nakrošis">
+<meta property="og:locale" content="en_GB">
+<meta property="og:image" content="https://nakrosis.com/mindaugas.jpg">
+<meta property="article:published_time" content="2026-05-04">
+<meta property="article:author" content="Mindaugas Nakrošis">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="I built a Claude Code skill that does a 20-minute Azure cost review">
+<meta name="twitter:description" content="A read-only Azure cost auditor that produces a written report a human can read and act on. Calibrated against a real tenant. Finds roughly 3× what Azure Advisor surfaces.">
+<meta name="twitter:image" content="https://nakrosis.com/mindaugas.jpg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/styles.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "I built a Claude Code skill that does a 20-minute Azure cost review",
+  "description": "A read-only Azure cost auditor that produces a written report a human can read and act on. Calibrated against a real tenant. Finds roughly 3× what Azure Advisor surfaces.",
+  "datePublished": "2026-05-04",
+  "author": {
+    "@type": "Person",
+    "name": "Mindaugas Nakrošis",
+    "url": "https://nakrosis.com/"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Mindaugas Nakrošis"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://nakrosis.com/writing/azure-cost-review"
+  }
+}
+</script>
+<style>
+  .article-meta {
+    font-size: 0.95rem;
+    color: var(--muted);
+    margin-bottom: 1.25rem;
+  }
+  .article-meta a {
+    color: var(--muted);
+    text-decoration: underline;
+    text-decoration-color: var(--border-strong);
+  }
+  .article-meta a:hover { color: var(--accent); }
+  .article-meta .sep { margin: 0 0.4rem; color: var(--border-strong); }
+  .article-body {
+    max-width: 38rem;
+    margin: 0 auto;
+  }
+  .article-body h2 { margin-top: 2.5rem; }
+  .article-body h3 { margin-top: 1.8rem; }
+  .article-body pre, .article-body code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.92rem;
+  }
+  .article-body pre {
+    background: #f5f3ef;
+    padding: 1rem 1.25rem;
+    border-radius: 4px;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+  }
+  .article-body code {
+    background: #f5f3ef;
+    padding: 0.1rem 0.35rem;
+    border-radius: 3px;
+  }
+  .article-body pre code { background: transparent; padding: 0; }
+  .article-body blockquote {
+    border-left: 3px solid var(--border-strong);
+    padding: 0.3rem 0 0.3rem 1.2rem;
+    margin: 1.5rem 0;
+    color: var(--muted);
+    font-style: italic;
+  }
+  .article-body ul, .article-body ol {
+    padding-left: 1.4rem;
+    margin: 0 0 1.25rem;
+  }
+  .article-body li { margin-bottom: 0.45rem; }
+  .article-body img { max-width: 100%; height: auto; border-radius: 4px; }
+  .repo-card {
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1rem 1.25rem;
+    margin: 2.5rem 0;
+    background: #faf8f4;
+  }
+  .repo-card .label { margin-bottom: 0.3rem; }
+  .repo-card a {
+    color: var(--ink);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .repo-card a:hover { color: var(--accent); text-decoration: underline; }
+  .back-link {
+    display: inline-block;
+    margin-bottom: 1.5rem;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.95rem;
+  }
+  .back-link:hover { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a class="site-name" href="/">Mindaugas Nakrošis</a>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/case-studies">Case studies</a>
+      <a href="/writing" aria-current="page">Writing</a>
+      <a href="/contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+
+  <article class="article-body">
+    <a class="back-link" href="/writing">← All writing</a>
+
+    <p class="eyebrow">Claude Code · Azure · FinOps</p>
+    <h1>I built a Claude Code skill that does a 20-minute Azure cost review</h1>
+    <p class="lede">A read-only Azure cost auditor that produces a written report a human can read and act on. Calibrated against a real tenant. Finds roughly 3× what Azure Advisor surfaces.</p>
+
+    <p class="article-meta">
+      <time datetime="2026-05-04">May 4, 2026</time>
+      <span class="sep">·</span>
+      <a href="https://github.com/mindaugasnakrosis/azure-costs-analyzer" target="_blank" rel="noopener">GitHub: mindaugasnakrosis/azure-costs-analyzer</a>
+      <span class="sep">·</span><a href="https://mindaugasnakr.medium.com/i-built-a-claude-code-skill-that-does-a-20-minute-azure-cost-review-40efc3cf5b19" target="_blank" rel="noopener">Also on Medium</a>
+    </p>
+
+    <div class="repo-card">
+      <p class="label">Code</p>
+      <p style="margin:0"><a href="https://github.com/mindaugasnakrosis/azure-costs-analyzer" target="_blank" rel="noopener">https://github.com/mindaugasnakrosis/azure-costs-analyzer</a></p>
+    </div>
+
+    <h2>The pitch</h2>
+<p>Most Azure cost reviews are some combination of: someone clicking through the portal for a day, a £15k consultant deck three weeks later, or Azure Advisor — which is honest about what it sees but conservative by design.</p>
+<p>I wanted a fourth option: a Claude Code skill that runs in twenty minutes, against a snapshot of the tenant, and produces a written report a human can read and act on. Read-only. Citation-grounded. Reproducible.</p>
+<p>Run against a tenant doing roughly <strong>£30k/month</strong> in Azure spend, the latest run produces:</p>
+<blockquote>
+<p><strong>Total estimated monthly savings: £5,436 – £7,369 / month</strong></p>
+<p>Findings by severity: <strong>0 Critical · 18 High · 38 Medium · 174 Low · 8 Info</strong></p>
+</blockquote>
+<p>That's roughly <strong>3× Azure Advisor's published recommendation ceiling</strong> for the same tenant (~£20k/year). Not because Advisor is wrong — because the skill carries opinions Advisor cannot.</p>
+<p>Below: what it catches, and the architecture that lets it grow without becoming flaky.</p>
+<hr />
+<h2>What it found</h2>
+<p>The single biggest finding wasn't a misconfigured VM. It was a <strong>5× App Service P2v3 reservation</strong> running at low utilisation with <strong>9 months remaining</strong> before expiry. The skill reports both the monthly band and the term-to-expiry forecast:</p>
+<blockquote>
+<p>Underused reservation: P2v3 × 5 — 40% utilisation
+Forecast: <strong>£4,558 – £5,535 between now and expiry</strong></p>
+</blockquote>
+<p>That single line is worth more attention than any number of orphaned-disk findings. It's also the kind of thing Advisor never says, because Advisor doesn't combine <em>spend</em> + <em>utilisation</em> + <em>term remaining</em> into a single forward-looking £ figure.</p>
+<p>Other examples from the same run:</p>
+<ul>
+<li><strong>GeoRedundant backup vault</strong> flagged on a non-production subscription — switching to LocallyRedundant is a 50% storage cut on Microsoft published rates, but only if there are no protected items at switch time.</li>
+<li><strong>Backup retention bloat</strong> on a workload-policy vault: weekly=104, monthly=60, yearly=10 — well above what the source workload actually needs.</li>
+<li><strong>Subscription on full PAYG/EA/CSP whose name says non-prod</strong>: a hint that whoever provisioned it skipped the Dev/Test offer. The skill is offer-aware (CSP vs EA vs PAYG) and writes the recommendation accordingly.</li>
+<li><strong>Premium SSD P30 reservations</strong> at 25% utilisation, forecast £1,447–£1,953 over the remaining 8 months.</li>
+</ul>
+<p>The point isn't any single number — it's the texture. The skill surfaces the kinds of findings that show up in a senior FinOps consultant's deck, not the kinds an Advisor cron job emits.</p>
+<hr />
+<h2>The architecture</h2>
+<p>The skill is a monorepo of two installable Python packages:</p>
+<ul>
+<li><strong><code>azure-investigator-core</code></strong> — the read-only collectors. Pulls from <code>az</code> CLI, normalises into a snapshot directory.</li>
+<li><strong><code>azure-cost-investigator</code></strong> — the rule engine. Reads a snapshot, evaluates rules, writes a report.</li>
+</ul>
+<p>Numbers as of the latest commit:</p>
+<ul>
+<li><strong>15</strong> cost rules</li>
+<li><strong>14</strong> knowledge corpus docs</li>
+<li><strong>18</strong> collectors</li>
+<li><strong>227 passing tests</strong> (1 skipped — a smoke test gated on a real-tenant snapshot env var)</li>
+<li>Output: <code>report.md</code> + <code>report.html</code> + <code>findings.yaml</code></li>
+</ul>
+<hr />
+<h2>Reservation forecast: a small change with a big narrative effect</h2>
+<p>A naïve "underused reservation" rule reports a <em>monthly</em> band: "this reservation is wasting £X/month at current utilisation". True, but small.</p>
+<p>The skill reads <code>expiryDateTime</code> from the reservation snapshot and adds two evidence fields:</p>
+<pre><code>term_remaining_months: 9
+forecast_low_gbp_to_expiry: 4558
+forecast_high_gbp_to_expiry: 5535
+</code></pre>
+<p>If <code>expiryDateTime</code> is missing, it falls back to a 12-month default (overridable via config). The recommendation copy reads "<strong>£4,558–£5,535 between now and expiry</strong>" instead of "<strong>£506–£615/month</strong>" — same underlying data, dramatically clearer impact.</p>
+<p>The same rule dispatches across <strong>VM, App Service, and Premium SSD</strong> SKU families, not just VMs.</p>
+<hr />
+<h2>Six architectural bets</h2>
+<p><strong>1. Read-only is absolute.</strong> A single function (<code>azcli.run_json</code>) gates every Azure CLI call. Twenty-three unit tests verify it rejects every one of 33 forbidden write verbs <em>before</em> <code>subprocess</code> is reached. Every collector — vms, disks, reservations, recovery_services, log_analytics — goes through the same gate. There is no escape hatch.</p>
+<p><strong>2. Citation-grounded knowledge corpus.</strong> Every rule declares <code>KNOWLEDGE_REFS</code> pointing at committed <code>.md</code> files in the corpus. Each knowledge doc has frontmatter with <code>source_url</code>, <code>source_retrieved</code>, and <code>source_sha256</code>. A rule that cites a missing document fails to load. This is how I keep the model from inventing numbers — the rule is allowed to compute, but it must justify its limits from a doc that has a Microsoft URL on it.</p>
+<p><strong>3. Severity × Confidence as independent axes.</strong> Findings carry both. A high-severity / low-confidence finding ("we <em>think</em> this £4k reservation is wasted, but utilisation data is sparse") gets handled differently from a low-severity / high-confidence finding ("this £4 IP is definitely orphaned"). Single-axis lists hide that distinction.</p>
+<p><strong>4. Savings as ranges, not point estimates.</strong> Every monetary recommendation comes with a non-empty <code>assumption</code> string explaining what's <em>not</em> netted out: negotiated discounts, reservation coverage, regional price drift. Treating the range itself as the answer is a feature.</p>
+<p><strong>5. Persona separation in the core package.</strong> The <code>core</code> package is shared with a sibling <code>azure-security-investigator</code> skill (a v2 stub in the same repo). When I added the recovery-services collector for cost, the security skill inherited it for free.</p>
+<p><strong>6. Rendering is a first-class output.</strong> The skill produces <code>report.html</code> automatically alongside <code>report.md</code>, with print-friendly CSS. Browser-print-to-PDF works without extra tooling. This matters because cost reports get sent to humans who don't read terminal Markdown.</p>
+<hr />
+<h2>The rule corpus</h2>
+<p>The fifteen rules currently in the skill:</p>
+<ul>
+<li><code>orphaned_disks</code> — unattached managed disks billed by capacity.</li>
+<li><code>unattached_public_ips</code> — Public IPs not bound to a NIC or load balancer.</li>
+<li><code>vm_rightsizing</code> — P95 CPU under 3% and outbound under 2 Mb/s on a 7-day window.</li>
+<li><code>underused_reservations</code> — VM, App Service, and Premium SSD reservations under utilisation threshold, with term-to-expiry forecast.</li>
+<li><code>appservice_idle_plans</code> — App Service Plans with zero traffic.</li>
+<li><code>storage_tier_mismatch</code> — Hot blobs older than the Cool break-even.</li>
+<li><code>basic_sku_retirement</code> — Public IP Basic SKU and other deprecated SKUs.</li>
+<li><code>tagging_governance</code> — missing CAF-recommended tags.</li>
+<li><code>env_mismatch_in_prod_sub</code> — non-prod-named resources living in production subs.</li>
+<li><code>unused_snapshots</code> — disk snapshots older than the retention threshold.</li>
+<li><code>nic_orphans</code> — NICs detached from any VM.</li>
+<li><code>rsv_backup_retention</code> — Recovery Services Vault retention bloat plus GRS-redundancy scrutiny.</li>
+<li><code>dev_test_offer_eligibility</code> — PAYG/EA/CSP subscriptions that look non-prod by name.</li>
+<li><code>log_analytics_retention</code> — Log Analytics workspace retention exceeding workload need.</li>
+<li><code>advisor_cost_recommendations</code> — surfaces Azure Advisor's own £-quantified findings.</li>
+</ul>
+<p>Adding a sixteenth rule means: writing a new file in <code>rules/</code>, declaring its <code>KNOWLEDGE_REFS</code>, writing the knowledge doc, writing tests. No registration step.</p>
+<hr />
+<h2>What it deliberately doesn't do</h2>
+<p>A short list:</p>
+<ul>
+<li><strong>No remediation verbs.</strong> Read-only is a guarantee, not a default.</li>
+<li><strong>No live web fetches at runtime.</strong> Knowledge is committed and SHA256-tracked.</li>
+<li><strong>No reservation purchase recommendations.</strong> Sizing reservations is a finance decision, not a script's call.</li>
+<li><strong>No multi-cloud comparisons.</strong> AWS/GCP have different mental models.</li>
+<li><strong>No ticket-system integration.</strong> The output is a Markdown file. What you do with it is yours.</li>
+<li><strong>No web UI.</strong> A static <code>report.html</code> is the closest concession.</li>
+</ul>
+<p>Security findings live in <code>azure-security-investigator</code>, a separate v2 stub in the same repo, sharing the core package. Splitting cost from security at the skill boundary keeps each persona's report focused.</p>
+<hr />
+<h2>Running it</h2>
+<pre><code class="language-bash">az login                                  # interactive
+uv sync --all-packages                    # one-time
+azure-investigator pull -s &lt;SUB_NAME&gt;     # one or more --subscription flags
+azure-cost-investigator analyse latest    # writes report.md + report.html + findings.yaml
+</code></pre>
+<p>Twenty minutes is roughly the wall-clock for a tenant with a few dozen subscriptions worth of resources. Most of it is <code>az</code> calls; the rule evaluation is sub-second.</p>
+<p>For a printable PDF: open <code>report.html</code> in a browser, ⌘P → Save as PDF. The CSS is print-tuned.</p>
+<hr />
+<h2>Repo</h2>
+<p><a href="https://github.com/mindaugasnakrosis/azure-costs-analyzer">github.com/mindaugasnakrosis/azure-costs-analyzer</a></p>
+<p>MIT-licensed. Python 3.11+. CI green on 3.11 and 3.12.</p>
+<p>If you run it against your own tenant and it surfaces something interesting (or — more usefully — something <em>wrong</em>), open an issue. Calibration against more tenants is the next thing keeping this honest.</p>
+<hr />
+<p><em>Written with Claude Code. The code is the artefact; the article is the receipt.</em></p>
+
+    <div class="repo-card" style="margin-top:3rem">
+      <p class="label">Try it</p>
+      <p style="margin:0">Clone the repo and follow the README — the install path is documented end-to-end, including a smoke test that runs without network or LLM. <a href="https://github.com/mindaugasnakrosis/azure-costs-analyzer" target="_blank" rel="noopener">mindaugasnakrosis/azure-costs-analyzer →</a></p>
+    </div>
+  </article>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>London</span><span class="sep">·</span>
+    <a href="mailto:mnakrosis@trustflux.co.uk">mnakrosis@trustflux.co.uk</a><span class="sep">·</span>
+    <a href="https://github.com/mindaugasnakrosis" target="_blank" rel="noopener">GitHub</a><span class="sep">·</span>
+    <a href="https://www.linkedin.com/in/mindaugas-nakro%C5%A1is-142a4a108/" target="_blank" rel="noopener">LinkedIn</a><span class="sep">·</span>
+    <a href="https://mindaugasnakr.medium.com/" target="_blank" rel="noopener">Medium</a>
+  </div>
+</footer>
+
+</body>
+</html>

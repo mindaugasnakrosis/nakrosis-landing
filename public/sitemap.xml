@@ -14,9 +14,27 @@
   </url>
   <url>
     <loc>https://nakrosis.com/writing</loc>
-    <lastmod>2026-04-29</lastmod>
+    <lastmod>2026-05-11</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://nakrosis.com/writing/from-markdown-to-jira</loc>
+    <lastmod>2026-05-11</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://nakrosis.com/writing/azure-cost-review</loc>
+    <lastmod>2026-05-11</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://nakrosis.com/writing/pre-merge-spec-review</loc>
+    <lastmod>2026-05-11</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.6</priority>
   </url>
   <url>
     <loc>https://nakrosis.com/contact</loc>

@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>From markdown notes to a sized Jira backlog in five minutes — Mindaugas Nakrošis</title>
+<meta name="description" content="A working agent that does the unglamorous part of agile delivery — and refuses to ship vague work.">
+<link rel="canonical" href="https://nakrosis.com/writing/from-markdown-to-jira">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="From markdown notes to a sized Jira backlog in five minutes">
+<meta property="og:description" content="A working agent that does the unglamorous part of agile delivery — and refuses to ship vague work.">
+<meta property="og:url" content="https://nakrosis.com/writing/from-markdown-to-jira">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Mindaugas Nakrošis">
+<meta property="og:locale" content="en_GB">
+<meta property="og:image" content="https://nakrosis.com/mindaugas.jpg">
+<meta property="article:published_time" content="2026-04-29">
+<meta property="article:author" content="Mindaugas Nakrošis">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="From markdown notes to a sized Jira backlog in five minutes">
+<meta name="twitter:description" content="A working agent that does the unglamorous part of agile delivery — and refuses to ship vague work.">
+<meta name="twitter:image" content="https://nakrosis.com/mindaugas.jpg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/styles.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "From markdown notes to a sized Jira backlog in five minutes",
+  "description": "A working agent that does the unglamorous part of agile delivery — and refuses to ship vague work.",
+  "datePublished": "2026-04-29",
+  "author": {
+    "@type": "Person",
+    "name": "Mindaugas Nakrošis",
+    "url": "https://nakrosis.com/"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Mindaugas Nakrošis"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://nakrosis.com/writing/from-markdown-to-jira"
+  }
+}
+</script>
+<style>
+  .article-meta {
+    font-size: 0.95rem;
+    color: var(--muted);
+    margin-bottom: 1.25rem;
+  }
+  .article-meta a {
+    color: var(--muted);
+    text-decoration: underline;
+    text-decoration-color: var(--border-strong);
+  }
+  .article-meta a:hover { color: var(--accent); }
+  .article-meta .sep { margin: 0 0.4rem; color: var(--border-strong); }
+  .article-body {
+    max-width: 38rem;
+    margin: 0 auto;
+  }
+  .article-body h2 { margin-top: 2.5rem; }
+  .article-body h3 { margin-top: 1.8rem; }
+  .article-body pre, .article-body code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.92rem;
+  }
+  .article-body pre {
+    background: #f5f3ef;
+    padding: 1rem 1.25rem;
+    border-radius: 4px;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+  }
+  .article-body code {
+    background: #f5f3ef;
+    padding: 0.1rem 0.35rem;
+    border-radius: 3px;
+  }
+  .article-body pre code { background: transparent; padding: 0; }
+  .article-body blockquote {
+    border-left: 3px solid var(--border-strong);
+    padding: 0.3rem 0 0.3rem 1.2rem;
+    margin: 1.5rem 0;
+    color: var(--muted);
+    font-style: italic;
+  }
+  .article-body ul, .article-body ol {
+    padding-left: 1.4rem;
+    margin: 0 0 1.25rem;
+  }
+  .article-body li { margin-bottom: 0.45rem; }
+  .article-body img { max-width: 100%; height: auto; border-radius: 4px; }
+  .repo-card {
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1rem 1.25rem;
+    margin: 2.5rem 0;
+    background: #faf8f4;
+  }
+  .repo-card .label { margin-bottom: 0.3rem; }
+  .repo-card a {
+    color: var(--ink);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .repo-card a:hover { color: var(--accent); text-decoration: underline; }
+  .back-link {
+    display: inline-block;
+    margin-bottom: 1.5rem;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.95rem;
+  }
+  .back-link:hover { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a class="site-name" href="/">Mindaugas Nakrošis</a>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/case-studies">Case studies</a>
+      <a href="/writing" aria-current="page">Writing</a>
+      <a href="/contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+
+  <article class="article-body">
+    <a class="back-link" href="/writing">← All writing</a>
+
+    <p class="eyebrow">Claude Code · Jira · Agile</p>
+    <h1>From markdown notes to a sized Jira backlog in five minutes</h1>
+    <p class="lede">A working agent that does the unglamorous part of agile delivery — and refuses to ship vague work.</p>
+
+    <p class="article-meta">
+      <time datetime="2026-04-29">April 29, 2026</time>
+      <span class="sep">·</span>
+      <a href="https://github.com/mindaugasnakrosis/mdjira" target="_blank" rel="noopener">GitHub: mindaugasnakrosis/mdjira</a>
+      <span class="sep">·</span><a href="https://medium.com/p/3fbca07a9c3f" target="_blank" rel="noopener">Also on Medium</a>
+    </p>
+
+    <div class="repo-card">
+      <p class="label">Code</p>
+      <p style="margin:0"><a href="https://github.com/mindaugasnakrosis/mdjira" target="_blank" rel="noopener">https://github.com/mindaugasnakrosis/mdjira</a></p>
+    </div>
+
+    <p>Last week I tested an idea on a deliberately rough product brief — an Inventory Management System change list, six themes, eighteen features, three bugs, written in the kind of plain language people actually use when they're thinking. No Jira terminology, no story-point talk, no acceptance criteria. Just sections like "Real-Time Stock Visibility" and bullets like "extend the stock read model to track bonded and duty-paid quantities independently."</p>
+<p>The traditional next step is for a business analyst or a senior engineer to spend half a day grooming that into Jira: deciding the Epic / Story / Subtask split, writing INVEST-compliant summaries, sizing in modified Fibonacci, picking priorities, applying a label taxonomy, and writing acceptance criteria a tester can actually verify.</p>
+<p>I gave the markdown to Claude Code with a Jira-aware skill loaded. Five minutes later there were 48 tickets in a Jira project, sized, prioritised, and labelled, with descriptions written to a senior-coach standard.</p>
+<p>Here's what came out, what didn't, and why the interesting thing isn't the tool.</p>
+<h2>The run</h2>
+<p>The skill is <code>mdjira</code> — a tiny Python CLI plus a Claude skill file that encodes the working canon of agile and Jira practice. Citations to Bill Wake on INVEST, Mike Cohn on the user-story template and Fibonacci sizing, Dan North on Given/When/Then, Atlassian on the epic/story/subtask hierarchy and the "Miscellaneous Bug Fixes" anti-pattern, Roman Pichler on slicing the cake. Open the skill file and every rule has a footnote.</p>
+<p>The flow:</p>
+<ol>
+<li>I typed <code>/mdjira IMS-project-example.md</code> in Claude Code.</li>
+<li>The skill read the markdown, made structural decisions, and drafted an <code>intake.yaml</code> next to the source file.</li>
+<li>It ran a lint check (17 mechanical anti-pattern rules — empty descriptions, single-child epics, unsized stories, uniform priorities, padding subtasks, label spam) and reported a 30-second human-readable preview.</li>
+<li>I approved.</li>
+<li>The CLI made three bulk API calls to Jira (<code>POST /rest/api/3/issue/bulk</code>, one per hierarchy level — Epics, Stories, Subtasks) and wrote a <code>results.json</code> audit file. 48 tickets, SCRUM-5 through SCRUM-52.</li>
+</ol>
+<p>That's the surface story. The interesting part is what the skill <em>decided</em> in step 2.</p>
+<h2>The judgment shown</h2>
+<p>Three calls stood out, the kind a junior would miss and a senior would defend.</p>
+<p><strong>It killed a "Defects to Fix" epic.</strong> The source markdown had a section titled "Defects to Fix" with three bugs underneath: a concurrency race, a timezone export bug, and a search bug ignoring accented characters. The naive move is to honour the source structure: Epic "Defects", three child Stories. The skill refused. Atlassian's own guidance calls a "Miscellaneous Bug Fixes" epic an anti-pattern by name — <em>only create an Epic if there is a clear beginning, end, and specific value being delivered.</em> The three bugs share nothing except being defects. So the skill distributed them: the concurrency race attached to the real-time stock epic (it directly threatens the data-integrity outcome that epic depends on), the timezone bug to the audit-and-compliance epic (where exports live), and the accented-character search bug to the UX epic (catalogue-search friction). Each kept a <code>defect</code> label so they remain filterable as a set.</p>
+<p><strong>It split a too-big story.</strong> The source had a single recommendation called "Two-way sync with the trading platform" — publish stock-reservation events from IMS, consume shipment events back, with idempotency on redelivery. As a single story that's a sub-epic in disguise: two surfaces, two teams' concerns, sequenced consumer-depends-on-publisher. The skill split it into <code>INTEG-PUB</code> and <code>INTEG-CONS</code>, sized each at 5 points, and noted in the description that the consumer is dependent on the publisher's contract. That's textbook Pichler — slicing the cake on goal lines, not technical lines.</p>
+<p><strong>It refused a uniform Highest.</strong> A common mistake under time pressure is to mark everything as High because everything <em>feels</em> important. The skill flagged exactly one ticket as Highest: the negative-stock concurrency race. Its rationale, in the preview message: <em>silent data corruption from a known race, undermines every other RTSV story, active fire.</em> Everything else landed at High / Medium / Low in proportion. The final spread was 1 Highest, 5 High, 9 Medium, 2 Low — which is what a healthy backlog looks like. If everything is Highest, nothing is.</p>
+<h2>What got written, not just decided</h2>
+<p>Each story description follows a fixed template — <em>Why this matters</em>, <em>Scope</em>, <em>Acceptance criteria</em>, <em>Source</em> — so a stakeholder can read any single ticket cold and know what's being done and why. The acceptance criteria are written as observable outcomes, not implementation steps. From the live-stock story:</p>
+<blockquote>
+<ul>
+<li>A stock movement recorded by the warehouse adjustment service is reflected on the dashboard tile within 60s</li>
+<li>When the client loses connectivity for up to five minutes, it reconnects and resyncs to current stock without user action</li>
+<li>No regression in initial dashboard load time (within ±10% of baseline)</li>
+</ul>
+</blockquote>
+<p>Compare to what a rushed draft would have written: "Real-time updates work. Reconnection handled." Both describe the same feature; only one is testable.</p>
+<p>For backend / infra / bug stories, AC are bullet checklists. For user-facing flows, AC are Given/When/Then. The skill picks per story and doesn't mix formats — force-fitting Given/When/Then onto a database resize is something amateurs do.</p>
+<p>Story points are on the modified Fibonacci scale (1, 2, 3, 5, 8, 13). Anything that would size to 20+ has to be split before it can leave the skill — Cohn's point about the gaps growing with size is the explicit policy. The 17 stories from this run totalled 91 points: 1×2pt, 3×3pt, 8×5pt, 5×8pt, no 13s. Every 5-point or larger story has a sizing rationale in the preview.</p>
+<h2>What this is, and what it isn't</h2>
+<p><code>mdjira</code> is not a "wrap GPT around Jira" wrapper. The LLM is a substitutable component; Claude today, something else next year. The product is the <strong>encoded senior-coach prompt</strong> — about 400 lines of agile and Jira practice with citations, anti-pattern checks, title patterns by ticket type, and a description template that's mandatory for every ticket. It's the kind of thing a £1000/day Jira contractor would charge a quarter to teach a team and then leave behind half-applied.</p>
+<p>What surprised me, building it: the prompt's value is mostly in the <em>refusals</em>. The skill refuses to write a ticket without a "Why this matters" line. It refuses to size a story above 13 without splitting. It refuses to ship an epic with one child. It refuses to mix Given/When/Then with bullet AC in the same ticket. It refuses to use labels as priority synonyms. The cumulative effect is that the output is <em>worse to argue with than to accept</em>, because the alternative is producing the same level of rigour by hand.</p>
+<p>That last sentence is the whole bet. Most agile tooling assumes you'll fight the rigour and lose. This one assumes you've already lost the fight against the rigour and want help applying it consistently.</p>
+<h2>Try it</h2>
+<p>Repo: <a href="https://github.com/mindaugasnakrosis/mdjira">https://github.com/mindaugasnakrosis/mdjira</a></p>
+<pre><code class="language-bash">pip install mdjira
+mdjira init
+mdjira install-skill
+</code></pre>
+<p>Then in Claude Code, on any markdown file:</p>
+<pre><code>&gt; /mdjira specs/your-doc.md
+</code></pre>
+<p>It will preview before writing. It will refuse to ship vague work. The first run on a real document is the only review you need to decide whether the bet — that encoded judgment is more valuable than encoded automation — holds for your team.</p>
+<hr />
+<p><em>MIT licensed. Issues, forks, and bug reports welcome. The skill file is the spec — disagree with a rule? Fork it. That's the point.</em></p>
+
+    <div class="repo-card" style="margin-top:3rem">
+      <p class="label">Try it</p>
+      <p style="margin:0">Clone the repo and follow the README — the install path is documented end-to-end, including a smoke test that runs without network or LLM. <a href="https://github.com/mindaugasnakrosis/mdjira" target="_blank" rel="noopener">mindaugasnakrosis/mdjira →</a></p>
+    </div>
+  </article>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>London</span><span class="sep">·</span>
+    <a href="mailto:mnakrosis@trustflux.co.uk">mnakrosis@trustflux.co.uk</a><span class="sep">·</span>
+    <a href="https://github.com/mindaugasnakrosis" target="_blank" rel="noopener">GitHub</a><span class="sep">·</span>
+    <a href="https://www.linkedin.com/in/mindaugas-nakro%C5%A1is-142a4a108/" target="_blank" rel="noopener">LinkedIn</a><span class="sep">·</span>
+    <a href="https://mindaugasnakr.medium.com/" target="_blank" rel="noopener">Medium</a>
+  </div>
+</footer>
+
+</body>
+</html>

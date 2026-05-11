@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>I built an AI code reviewer that refuses to write anything — Mindaugas Nakrošis</title>
+<meta name="description" content="A Claude Code skill that reviews a feature branch against its Notion spec — grounded in citable authorities, read-only by architectural firewall.">
+<link rel="canonical" href="https://nakrosis.com/writing/pre-merge-spec-review">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="I built an AI code reviewer that refuses to write anything">
+<meta property="og:description" content="A Claude Code skill that reviews a feature branch against its Notion spec — grounded in citable authorities, read-only by architectural firewall.">
+<meta property="og:url" content="https://nakrosis.com/writing/pre-merge-spec-review">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Mindaugas Nakrošis">
+<meta property="og:locale" content="en_GB">
+<meta property="og:image" content="https://nakrosis.com/mindaugas.jpg">
+<meta property="article:published_time" content="2026-05-11">
+<meta property="article:author" content="Mindaugas Nakrošis">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="I built an AI code reviewer that refuses to write anything">
+<meta name="twitter:description" content="A Claude Code skill that reviews a feature branch against its Notion spec — grounded in citable authorities, read-only by architectural firewall.">
+<meta name="twitter:image" content="https://nakrosis.com/mindaugas.jpg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/styles.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "I built an AI code reviewer that refuses to write anything",
+  "description": "A Claude Code skill that reviews a feature branch against its Notion spec — grounded in citable authorities, read-only by architectural firewall.",
+  "datePublished": "2026-05-11",
+  "author": {
+    "@type": "Person",
+    "name": "Mindaugas Nakrošis",
+    "url": "https://nakrosis.com/"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Mindaugas Nakrošis"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://nakrosis.com/writing/pre-merge-spec-review"
+  }
+}
+</script>
+<style>
+  .article-meta {
+    font-size: 0.95rem;
+    color: var(--muted);
+    margin-bottom: 1.25rem;
+  }
+  .article-meta a {
+    color: var(--muted);
+    text-decoration: underline;
+    text-decoration-color: var(--border-strong);
+  }
+  .article-meta a:hover { color: var(--accent); }
+  .article-meta .sep { margin: 0 0.4rem; color: var(--border-strong); }
+  .article-body {
+    max-width: 38rem;
+    margin: 0 auto;
+  }
+  .article-body h2 { margin-top: 2.5rem; }
+  .article-body h3 { margin-top: 1.8rem; }
+  .article-body pre, .article-body code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.92rem;
+  }
+  .article-body pre {
+    background: #f5f3ef;
+    padding: 1rem 1.25rem;
+    border-radius: 4px;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+  }
+  .article-body code {
+    background: #f5f3ef;
+    padding: 0.1rem 0.35rem;
+    border-radius: 3px;
+  }
+  .article-body pre code { background: transparent; padding: 0; }
+  .article-body blockquote {
+    border-left: 3px solid var(--border-strong);
+    padding: 0.3rem 0 0.3rem 1.2rem;
+    margin: 1.5rem 0;
+    color: var(--muted);
+    font-style: italic;
+  }
+  .article-body ul, .article-body ol {
+    padding-left: 1.4rem;
+    margin: 0 0 1.25rem;
+  }
+  .article-body li { margin-bottom: 0.45rem; }
+  .article-body img { max-width: 100%; height: auto; border-radius: 4px; }
+  .repo-card {
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1rem 1.25rem;
+    margin: 2.5rem 0;
+    background: #faf8f4;
+  }
+  .repo-card .label { margin-bottom: 0.3rem; }
+  .repo-card a {
+    color: var(--ink);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .repo-card a:hover { color: var(--accent); text-decoration: underline; }
+  .back-link {
+    display: inline-block;
+    margin-bottom: 1.5rem;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.95rem;
+  }
+  .back-link:hover { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a class="site-name" href="/">Mindaugas Nakrošis</a>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/case-studies">Case studies</a>
+      <a href="/writing" aria-current="page">Writing</a>
+      <a href="/contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+
+  <article class="article-body">
+    <a class="back-link" href="/writing">← All writing</a>
+
+    <p class="eyebrow">Claude Code · Notion · Code review</p>
+    <h1>I built an AI code reviewer that refuses to write anything</h1>
+    <p class="lede">A Claude Code skill that reviews a feature branch against its Notion spec — grounded in citable authorities, read-only by architectural firewall.</p>
+
+    <p class="article-meta">
+      <time datetime="2026-05-11">May 11, 2026</time>
+      <span class="sep">·</span>
+      <a href="https://github.com/mindaugasnakrosis/notion-spec-checker" target="_blank" rel="noopener">GitHub: mindaugasnakrosis/notion-spec-checker</a>
+      
+    </p>
+
+    <div class="repo-card">
+      <p class="label">Code</p>
+      <p style="margin:0"><a href="https://github.com/mindaugasnakrosis/notion-spec-checker" target="_blank" rel="noopener">https://github.com/mindaugasnakrosis/notion-spec-checker</a></p>
+    </div>
+
+    <p>Most "AI for code review" tools have the same problem. They're confident, ungrounded, and one bad prompt away from running <code>git push --force</code> on the wrong branch. I wanted something narrower and more honest, so I built <strong><code>spec-check</code></strong> — a Claude Code skill that does exactly one thing: read a feature branch and the Notion page that specs it, and produce a pre-merge review report grounded in a hardcoded knowledge corpus.</p>
+<p>It's a v0.1. It works end-to-end. It's also unfinished in ways I'll name at the end. The point of writing this up now is to put the design decisions on record before they become folklore — and to invite people to break it.</p>
+<h2>The job-to-be-done</h2>
+<p>There's a 15-minute review every engineering manager and tech lead does dozens of times a sprint. <em>"Does this PR actually meet the spec it was opened against?"</em> You skim the diff, you flip to the Notion page, you check whether the acceptance criteria are vaguely covered, you flag the suspicious bits, you approve or push back.</p>
+<p>It's a high-leverage review and an annoying one. You're not looking for bugs — there are linters and tests for that — you're looking for <strong>scope creep, ambiguous criteria, missing test coverage, and silent goalpost moves on the spec page</strong>. Those four things are what <code>spec-check</code> was built to surface.</p>
+<p>Not catch. <em>Surface.</em> That distinction matters and I'll come back to it.</p>
+<h2>The shape of the thing</h2>
+<p>The skill is invoked from Claude Code with a natural-language prompt:</p>
+<blockquote>
+<p><em>Review this branch against the Notion spec at https://notion.so/Login-flow-abc123.</em></p>
+</blockquote>
+<p>Claude recognises the trigger, runs <code>spec-check doctor</code> to confirm the environment, fetches the Notion page via the official Notion MCP plugin, writes the payload to a temp JSON file, runs the <code>spec-check</code> CLI against it, and narrates the resulting <code>report.md</code> back to the reviewer. The report is severity-grouped (Critical → High → Medium → Low → Info), every finding is grounded in a knowledge document, and every recommendation is phrased as a question for the human, not an instruction.</p>
+<p>A real run, against a deliberately mediocre spec, produces something like this:</p>
+<pre><code># spec-check report — feat/PROJ-1-login
+
+- Branch: feat/PROJ-1-login
+- Spec: PROJ-1: Login flow
+- Resolution method: ticket_key
+
+4 finding(s): 1 High, 3 Medium.
+
+## High (1)
+
+### Spec was modified after the branch was created
+- Rule: spec_modified_after_branch · Severity: High · Confidence: Medium
+- Knowledge: spec-drift.md
+
+Question: The spec page was edited 2965s after this branch was created.
+Notion's API doesn't expose what changed — can the spec author confirm
+whether the edit was a typo or clarification, or did the criteria
+themselves move while the branch was open?
+
+## Medium (3)
+
+### Ambiguous language in AC-2
+- Rule: ambiguous_criterion · Severity: Medium · Confidence: Medium
+- Knowledge: ambiguity-in-acceptance-criteria.md
+
+Question: Criterion AC-2 contains the imprecise phrases 'fast',
+'user-friendly', and 'should'. Could the criterion be re-phrased so a
+reviewer would not have to guess what passing looks like — or is the
+phrase a domain term that the team has agreed to accept?
+</code></pre>
+<p>The output is a forward-able artefact. You can paste it into a PR comment and the conversation that follows is anchored to specific criteria and specific authorities, not vibes.</p>
+<h2>The two design decisions worth defending</h2>
+<h3>1. Two read-only firewalls</h3>
+<p>Most LLM-driven dev tools are read-only <strong>by convention</strong> — the prompt says "don't edit anything" and you hope. <code>spec-check</code> is read-only by <strong>architecture</strong>, on both surfaces it touches.</p>
+<ul>
+<li><strong>Git</strong>: every shell-out goes through <code>gitwrap.py</code>, which has an explicit allowlist of read verbs (<code>status</code>, <code>log</code>, <code>diff</code>, <code>rev-parse</code>, <code>show</code>, <code>for-each-ref</code>, <code>reflog</code>, <code>branch --show-current</code>, <code>symbolic-ref</code>). Any other verb — <code>checkout</code>, <code>commit</code>, <code>push</code>, <code>rebase</code>, <code>apply</code>, <code>reset</code>, <code>restore</code>, anything that mutates state — raises <code>GitWriteRefused</code> <em>before</em> <code>git</code> is invoked. Verified by dedicated unit tests, one per refused verb.</li>
+<li><strong>Notion</strong>: the <code>notion.py</code> wrapper allows only <code>notion-fetch</code> and the explicit search verbs the resolver needs. <code>update_page</code>, <code>append_block</code>, <code>create_page</code>, <code>delete</code>, comment posts, property edits — all refused at the wrapper boundary. Same test discipline.</li>
+</ul>
+<p>That sounds paranoid for a skill that <em>intends</em> to be read-only. The point is exactly that: the skill's intent is irrelevant. The architecture is what a reviewer can audit, and the architecture is what survives a prompt injection or a hallucinated tool call. If the LLM hallucinates a <code>git checkout</code> mid-review, the wrapper refuses; the skill can't bypass it because the skill doesn't have a code path that reaches <code>git</code> outside the allowlist.</p>
+<h3>2. Every claim cites an authority</h3>
+<p>Each rule fires against a specific document in a hardcoded <code>knowledge/*.md</code> corpus that ships with the skill. There are five today: an INVEST verbatim quote (Bill Wake, 2003), and four authored project conventions covering Notion page conventions, ambiguity in acceptance criteria, observable acceptance criteria, and spec drift.</p>
+<p>Each knowledge document carries frontmatter with its canonical URL, retrieval date, and a content SHA-256 for verbatim quotes. Authored documents are explicitly marked <code>canonical_url: null</code> so they can't be confused with external authorities.</p>
+<p>The Pydantic validator on <code>Finding</code> refuses to construct a non-Info finding without at least one <code>knowledge_refs</code> entry. <em>If you can't cite, you can't claim.</em> That constraint forced an interesting discipline during development: every time I wanted a rule to flag something, I had to write the document first. Several rules I thought I wanted got cut at that step, because I couldn't ground them in anything I'd defend in front of a reviewer.</p>
+<p>The corpus is committed. There are no live web fetches at runtime. Refresh is a maintainer-only operation reviewed by a human before commit.</p>
+<h2>Surface, don't catch</h2>
+<p><code>spec-check</code> produces questions, not directives. The <code>Finding</code> validator rejects 17 imperative prefixes (<code>Add</code>, <code>Fix</code>, <code>Rewrite</code>, <code>Update</code>, <code>Implement</code>, <code>Replace</code>, …). Every <code>recommended_investigation</code> field has to end with a <code>?</code>. The skill's persona instructions reinforce the same constraint: <em>"Has the spec author confirmed AC-3 was intentionally omitted?"</em> — never <em>"the author should add AC-3."</em></p>
+<p>This isn't a stylistic choice. It's the difference between an LLM tool that <strong>decides</strong> and an LLM tool that <strong>prepares a human to decide</strong>. The former is, today, mostly broken in subtle ways the user can't audit. The latter is just a really good staff engineer pre-reading a PR for you.</p>
+<p>A High-severity, Medium-confidence finding is fundamentally different from a High-severity, High-confidence finding. The first means <em>"the signal is strong but the inference depends on a heuristic you can override."</em> The second means <em>"the signal is in the data, not in a heuristic."</em> Both axes are reported, always. Severity rubric and confidence rubric are independent and explicit.</p>
+<h2>What v0.1 actually does</h2>
+<p>Nine rules, grounded in five knowledge documents:</p>
+<table>
+<thead>
+<tr>
+<th>Rule</th>
+<th>Severity</th>
+<th>Confidence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>missing_ac_section</code></td>
+<td>High</td>
+<td>High</td>
+</tr>
+<tr>
+<td><code>missing_acceptance_criteria</code></td>
+<td>High</td>
+<td>High</td>
+</tr>
+<tr>
+<td><code>large_diff_without_spec</code></td>
+<td>High</td>
+<td>High / Medium</td>
+</tr>
+<tr>
+<td><code>multiple_specs_referenced</code></td>
+<td>Medium</td>
+<td>High</td>
+</tr>
+<tr>
+<td><code>scope_creep</code></td>
+<td>Medium</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td><code>criterion_without_test</code></td>
+<td>Medium</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td><code>ambiguous_criterion</code></td>
+<td>Medium</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td><code>untestable_criterion</code></td>
+<td>Medium</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td><code>spec_modified_after_branch</code></td>
+<td>High</td>
+<td>High / Medium</td>
+</tr>
+</tbody>
+</table>
+<p>372 tests, ~5s on my laptop. Repo conventions enforced at import-time, not at evaluate-time, so missing knowledge docs fail fast. CI on Python 3.11 and 3.12.</p>
+<h2>What v0.1 doesn't do, and why I'm shipping anyway</h2>
+<p>The report header has a known display bug when the spec is resolved via <code>--spec</code> override but fetched via <code>--spec-payload</code>: the spec slot says <code>(unresolved)</code> even though the rules ran against the right page. The findings are correct. The header is misleading. Filing for v0.2.</p>
+<p>There's no per-criterion test mapping. <code>criterion_without_test</code> is a coarse signal at the diff/spec level — it doesn't yet match each criterion's text against test names. That's the most-asked-for v0.2 feature and the most likely place I'll regret cutting corners.</p>
+<p>There's no Confluence or Google Docs adapter. The <code>notion.py</code> wrapper is the only spec-source-specific code; a sibling adapter is mechanically straightforward. I haven't built it because I don't need it yet.</p>
+<p>There's no semantic similarity between criteria and code. That's a deliberate cut — embeddings introduce non-determinism the "every claim cites a knowledge doc" discipline depends on, and I'd rather be auditable than clever.</p>
+<p>I'm shipping v0.1 because the alternative is to keep iterating in private until the v2 features above are perfect, by which point the design decisions in v0.1 will have congealed into folklore I can't push back on. Better to put the read-only-firewall and citation-or-it-doesn't-claim disciplines in front of people while they're still fresh enough to argue about.</p>
+<h2>Try it</h2>
+<p><a href="https://github.com/mindaugasnakrosis/notion-spec-checker">github.com/mindaugasnakrosis/notion-spec-checker</a></p>
+<pre><code class="language-bash">git clone https://github.com/mindaugasnakrosis/notion-spec-checker
+cd notion-spec-checker
+uv sync --all-packages
+bash scripts/install_skill.sh
+</code></pre>
+<p>Then in Claude Code, against any repo where you've connected Notion's MCP plugin:</p>
+<blockquote>
+<p><em>Review this branch against the Notion spec at &lt;url&gt;.</em></p>
+</blockquote>
+<p>Open issues for rules I should have written, knowledge documents I should have cited, and authorities I missed. The pattern of <em>knowledge document → citing rule → testable threshold</em> is reusable for anything with published thresholds — INVEST is just the first one I cared about.</p>
+<p>If you find a way to get either firewall to write something, that's a security report, not an issue. <code>SECURITY.md</code> in the repo.</p>
+<hr />
+<p><em>This is the third skill in a small portfolio aimed at PE operating partners and portco CTOs evaluating engineering hygiene. Each is single-purpose, read-only by architectural guarantee, and ships with a citable knowledge corpus. The other two are <a href="https://github.com/mindaugasnakrosis/mdjira"><code>md-to-jira</code></a> (markdown product doc → structured Jira backlog) and <a href="https://github.com/mindaugasnakrosis/azure-costs-analyzer"><code>azure-cost-investigator</code></a> (read-only Azure FinOps audit).</em></p>
+
+    <div class="repo-card" style="margin-top:3rem">
+      <p class="label">Try it</p>
+      <p style="margin:0">Clone the repo and follow the README — the install path is documented end-to-end, including a smoke test that runs without network or LLM. <a href="https://github.com/mindaugasnakrosis/notion-spec-checker" target="_blank" rel="noopener">mindaugasnakrosis/notion-spec-checker →</a></p>
+    </div>
+  </article>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>London</span><span class="sep">·</span>
+    <a href="mailto:mnakrosis@trustflux.co.uk">mnakrosis@trustflux.co.uk</a><span class="sep">·</span>
+    <a href="https://github.com/mindaugasnakrosis" target="_blank" rel="noopener">GitHub</a><span class="sep">·</span>
+    <a href="https://www.linkedin.com/in/mindaugas-nakro%C5%A1is-142a4a108/" target="_blank" rel="noopener">LinkedIn</a><span class="sep">·</span>
+    <a href="https://mindaugasnakr.medium.com/" target="_blank" rel="noopener">Medium</a>
+  </div>
+</footer>
+
+</body>
+</html>
