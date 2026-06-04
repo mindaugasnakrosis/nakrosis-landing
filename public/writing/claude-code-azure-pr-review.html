@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>I Review Pull Requests With AI From My Terminal — Here's How to Set It Up in 15 Minutes — Mindaugas Nakrošis</title>
+<meta name="description" content="A step-by-step guide to installing Claude Code and using it to review Azure DevOps PRs — from zero to posting inline review comments in 15 minutes.">
+<link rel="canonical" href="https://nakrosis.com/writing/claude-code-azure-pr-review">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="I Review Pull Requests With AI From My Terminal — Here's How to Set It Up in 15 Minutes">
+<meta property="og:description" content="A step-by-step guide to installing Claude Code and using it to review Azure DevOps PRs — from zero to posting inline review comments in 15 minutes.">
+<meta property="og:url" content="https://nakrosis.com/writing/claude-code-azure-pr-review">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Mindaugas Nakrošis">
+<meta property="og:locale" content="en_GB">
+<meta property="og:image" content="https://nakrosis.com/mindaugas.jpg">
+<meta property="article:published_time" content="2026-06-04">
+<meta property="article:author" content="Mindaugas Nakrošis">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="I Review Pull Requests With AI From My Terminal — Here's How to Set It Up in 15 Minutes">
+<meta name="twitter:description" content="A step-by-step guide to installing Claude Code and using it to review Azure DevOps PRs — from zero to posting inline review comments in 15 minutes.">
+<meta name="twitter:image" content="https://nakrosis.com/mindaugas.jpg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/styles.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "I Review Pull Requests With AI From My Terminal — Here's How to Set It Up in 15 Minutes",
+  "description": "A step-by-step guide to installing Claude Code and using it to review Azure DevOps PRs — from zero to posting inline review comments in 15 minutes.",
+  "datePublished": "2026-06-04",
+  "author": {
+    "@type": "Person",
+    "name": "Mindaugas Nakrošis",
+    "url": "https://nakrosis.com/"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Mindaugas Nakrošis"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://nakrosis.com/writing/claude-code-azure-pr-review"
+  }
+}
+</script>
+<style>
+  .article-meta {
+    font-size: 0.95rem;
+    color: var(--muted);
+    margin-bottom: 1.25rem;
+  }
+  .article-meta a {
+    color: var(--muted);
+    text-decoration: underline;
+    text-decoration-color: var(--border-strong);
+  }
+  .article-meta a:hover { color: var(--accent); }
+  .article-meta .sep { margin: 0 0.4rem; color: var(--border-strong); }
+  .article-body {
+    max-width: 38rem;
+    margin: 0 auto;
+  }
+  .article-body h2 { margin-top: 2.5rem; }
+  .article-body h3 { margin-top: 1.8rem; }
+  .article-body pre, .article-body code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.92rem;
+  }
+  .article-body pre {
+    background: #f5f3ef;
+    padding: 1rem 1.25rem;
+    border-radius: 4px;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+  }
+  .article-body code {
+    background: #f5f3ef;
+    padding: 0.1rem 0.35rem;
+    border-radius: 3px;
+  }
+  .article-body pre code { background: transparent; padding: 0; }
+  .article-body blockquote {
+    border-left: 3px solid var(--border-strong);
+    padding: 0.3rem 0 0.3rem 1.2rem;
+    margin: 1.5rem 0;
+    color: var(--muted);
+    font-style: italic;
+  }
+  .article-body ul, .article-body ol {
+    padding-left: 1.4rem;
+    margin: 0 0 1.25rem;
+  }
+  .article-body li { margin-bottom: 0.45rem; }
+  .article-body img { max-width: 100%; height: auto; border-radius: 4px; }
+  .back-link {
+    display: inline-block;
+    margin-bottom: 1.5rem;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.95rem;
+  }
+  .back-link:hover { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a class="site-name" href="/">Mindaugas Nakrošis</a>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/case-studies">Case studies</a>
+      <a href="/writing" aria-current="page">Writing</a>
+      <a href="/contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+
+  <article class="article-body">
+    <a class="back-link" href="/writing">← All writing</a>
+
+    <p class="eyebrow">Claude Code · Azure DevOps · Developer Productivity</p>
+    <h1>I Review Pull Requests With AI From My Terminal — Here's How to Set It Up in 15 Minutes</h1>
+    <p class="lede">A step-by-step guide to installing Claude Code and using it to review Azure DevOps PRs — for developers who've never touched an AI coding tool.</p>
+
+    <p class="article-meta">
+      <time datetime="2026-06-04">June 4, 2026</time>
+      <span class="sep">·</span>
+      <a href="https://mindaugasnakr.medium.com/" target="_blank" rel="noopener">Also on Medium</a>
+    </p>
+
+    <p>A colleague stopped by my desk last month, watched me paste a PR URL into my terminal, and said: "what the hell was that?" I'd just given a 40-file diff a thorough first pass in under three minutes. He'd been staring at the same PR for twenty.</p>
+    <p>I'm a technical architect. I review pull requests on Azure DevOps every day. For the past few months I've been using Claude Code — Anthropic's terminal-based AI coding tool — to do the first pass automatically. It fetches the diff via the Azure DevOps API, reads every changed file, spots issues I'd be likely to miss at 4pm on a Friday, and posts review comments directly to the PR thread. Not a summary. Actual inline comments, on specific files and lines.</p>
+    <p>There's no beginner guide for this specific workflow. Most AI-in-coding articles assume you're building something new. This one assumes you want to review code faster. Here's the full setup, from zero to posting review comments on Azure DevOps, in roughly 15 minutes.</p>
+
+    <hr />
+
+    <h2>What is Claude Code?</h2>
+    <p>Claude Code is a command-line tool made by Anthropic — the company behind the Claude family of AI models. You install it once, run it in your terminal, and talk to it in plain English.</p>
+    <p>It's not an IDE plugin. It's not a chat window you copy-paste code into. It's an agent: it has read access to your filesystem, can run shell commands, call external APIs, and write files. You describe what you want done, and it decides how to approach it.</p>
+    <p>For PR reviews, that means: you give it a pull request URL, it calls the Azure DevOps REST API to fetch the diff, reads through every changed file, applies its judgement to identify issues, and then calls the same API to post its findings as comments.</p>
+    <p>The current models available through Claude Code are Sonnet 4.6 and Opus 4.6. For most PR reviews, Sonnet handles diffs well. Opus is worth the token cost on large or complex PRs where you need deeper reasoning.</p>
+    <p><strong>Pricing.</strong> As of June 2026 — verify at <a href="https://claude.ai/pricing" target="_blank" rel="noopener">claude.ai/pricing</a> before committing, as Anthropic adjusts plans regularly:</p>
+    <ul>
+      <li><strong>Pro:</strong> $20/month with usage limits. Fine for light use.</li>
+      <li><strong>Max 5x:</strong> $100/month — 5× the Pro token budget. The practical starting point for a developer running reviews daily.</li>
+      <li><strong>Max 20x:</strong> $200/month — 20× the Pro budget. For all-day use or teams running heavy review workflows.</li>
+      <li><strong>API key:</strong> Pay-per-use. Worth considering if your company has an enterprise arrangement or you want per-call billing visibility.</li>
+    </ul>
+
+    <hr />
+
+    <h2>Prerequisites — what you need before starting</h2>
+    <p>A few things need to be in place before the install.</p>
+    <p><strong>Node.js 18 or later.</strong> Claude Code is distributed as an npm package. Check your version with <code>node --version</code>. If you're on 16 or below, update first.</p>
+    <p><strong>An Anthropic account with a subscription or API key.</strong> Pro works for getting started. Max is more comfortable for sustained daily use.</p>
+    <p><strong>An Azure DevOps Personal Access Token.</strong> This is the key piece. It's how Claude Code will read PR diffs and post review comments on your behalf, via the Azure DevOps REST API. You need two scopes: Code (Read &amp; Write) and Pull Request Threads (Read &amp; Write). Step 2 walks through creating one.</p>
+    <p><strong>Git installed and configured.</strong> Claude Code should be run from inside a git repository — it uses git context to understand your codebase structure.</p>
+    <p><strong>A terminal.</strong> Bash, Zsh, and PowerShell all work.</p>
+
+    <hr />
+
+    <h2>Step 1 — Install Claude Code</h2>
+    <pre><code class="language-bash">npm install -g @anthropic-ai/claude-code</code></pre>
+    <p>One note on permissions: don't use <code>sudo</code> here. If you see a "permission denied" error, the correct fix is to configure npm to install global packages into a user-writable directory — typically <code>~/.npm-global</code> — and add that to your <code>PATH</code>. The npm docs cover this under "resolving EACCES errors."</p>
+    <p>Check your Node version if the install fails:</p>
+    <pre><code class="language-bash">node --version
+# should output v18.0.0 or higher</code></pre>
+    <p>If you're on a corporate network with a proxy, you may need to configure npm's proxy settings before the install reaches npm's registry. Ask your IT team for the proxy address, or try on a VPN first.</p>
+    <p>Once installed, launch Claude Code from your project directory:</p>
+    <pre><code class="language-bash">cd /path/to/your/repo
+claude</code></pre>
+    <p>On first run, Claude Code opens your browser to an Anthropic login page. Sign in, authorise the app, and the terminal resumes automatically. You'll land at a prompt like:</p>
+    <pre><code class="language-plaintext">Claude Code 1.x.x
+Type / for commands, or just start typing.
+
+&gt;</code></pre>
+    <p>That's the whole install. If you're using an API key instead of a subscription, set it before running <code>claude</code>:</p>
+    <pre><code class="language-bash">export ANTHROPIC_API_KEY="sk-ant-..."</code></pre>
+
+    <hr />
+
+    <h2>Step 2 — Set up Azure DevOps access</h2>
+    <p>This is the step most AI-tooling tutorials skip because they assume you're working with local files. For this workflow, you need an Azure DevOps Personal Access Token (PAT) so Claude Code can call the REST API to fetch PR diffs and post comments.</p>
+    <p><strong>Create the token:</strong></p>
+    <ol>
+      <li>Go to <code>dev.azure.com</code> and sign in to your organisation</li>
+      <li>Click your profile picture in the top right → <strong>Personal access tokens</strong></li>
+      <li>Click <strong>+ New Token</strong></li>
+      <li>Give it a name and set an expiry (90 days is a reasonable default; set a calendar reminder to rotate it)</li>
+      <li>Under <strong>Scopes</strong>, select: <strong>Code</strong> — Read &amp; Write; <strong>Pull Request Threads</strong> — Read &amp; Write</li>
+      <li>Click <strong>Create</strong>, then copy the token immediately — Azure DevOps won't show it again</li>
+    </ol>
+    <p><strong>Set the environment variables:</strong></p>
+    <pre><code class="language-bash">export AZURE_DEVOPS_PAT="your-token-here"
+export AZURE_DEVOPS_ORG="https://dev.azure.com/your-organisation"</code></pre>
+    <p>Add these to your <code>~/.zshrc</code> or <code>~/.bashrc</code> so they persist across terminal sessions:</p>
+    <pre><code class="language-bash">echo 'export AZURE_DEVOPS_PAT="your-token-here"' >> ~/.zshrc
+echo 'export AZURE_DEVOPS_ORG="https://dev.azure.com/your-org"' >> ~/.zshrc
+source ~/.zshrc</code></pre>
+    <p><strong>Why this works.</strong> Claude Code doesn't have built-in Azure DevOps integration. What it has is the ability to make HTTP requests using any credentials available in its environment. When you instruct it to review a PR and post comments, it constructs REST calls to the Azure DevOps API — using your PAT as the Bearer token in the <code>Authorization</code> header — the same calls you'd make with <code>curl</code> or the <code>az devops</code> CLI. The key endpoints it uses:</p>
+    <ul>
+      <li><code>GET .../pullRequests/{id}</code> — fetch PR metadata and description</li>
+      <li><code>GET .../pullRequests/{id}/iterations</code> — fetch the diff</li>
+      <li><code>POST .../pullRequests/{id}/threads</code> — create a new review thread with file and line position</li>
+      <li><code>POST .../pullRequests/{id}/threads/{threadId}/comments</code> — add a reply to a thread</li>
+    </ul>
+    <p>Claude Code constructs these calls itself. You just provide the PR URL.</p>
+
+    <hr />
+
+    <h2>Step 3 — Your first PR review</h2>
+    <p>Open a terminal in your repository directory and run <code>claude</code>. Then paste something like this:</p>
+    <pre><code class="language-plaintext">Review this PR: https://dev.azure.com/myorg/myproject/_git/myrepo/pullrequest/12345
+
+Focus on:
+- Logic errors and edge cases
+- Security issues (SQL injection, auth bypasses, exposed secrets)
+- Missing error handling
+- Code that contradicts the PR description
+- Naming and readability issues
+
+Post your review comments directly to the PR using the Azure DevOps REST API.
+Use my PAT from the AZURE_DEVOPS_PAT environment variable.
+For each issue, post an inline comment on the specific file and line.
+At the end, post a summary comment on the PR thread.</code></pre>
+    <p>Here's what happens over the next two to three minutes:</p>
+    <p>Claude Code calls the Azure DevOps API, fetches the PR diff, and starts reading. For a 40-file PR — the kind that would take a senior developer 20–30 minutes to review carefully — it takes roughly two to three minutes. It reads everything. It doesn't skim the smaller files and slow down on the larger ones the way a tired human reviewer does.</p>
+    <p>Then it starts posting. Each finding becomes an inline thread comment on the relevant file and line. A realistic comment on a backend service might look like this:</p>
+    <blockquote>
+      <p><strong>UserService.ts, line 147</strong> — <code>getUserById</code> builds the query with string interpolation: <code>`SELECT * FROM users WHERE id = '${userId}'`</code>. If <code>userId</code> is not validated before this call — and the validation at line 89 only checks for empty string — this is a SQL injection risk. Replace with a parameterised query or use the ORM's query builder method instead.</p>
+    </blockquote>
+    <p>That's a specific issue, on a specific line, with context about the upstream call. Not a generic "check your SQL queries" note.</p>
+    <p>After the inline comments, Claude Code posts a summary to the PR thread covering what it reviewed, what it found, and what it deliberately skipped (generated files, migrations, lock files — if you told it to).</p>
+    <p>A 40-file PR that used to take me 25 minutes to review now gets a thorough first pass in about three minutes. The pass isn't perfect — I'll come back to what it misses — but it catches the mechanical layer reliably.</p>
+
+    <hr />
+
+    <h2>What I've learned after months of AI PR reviews</h2>
+    <p>The honest assessment, not the sales pitch.</p>
+    <p><strong>What it catches reliably.</strong> Null checks and missing defensive guards. Unhandled promise rejections and async errors swallowed in empty <code>catch</code> blocks. String-interpolated SQL queries. Hardcoded credentials or API keys committed to configuration files. Mismatches between what the PR description says it does and what the code actually does — a particularly useful check when a PR description hasn't been updated after a scope change.</p>
+    <p>On large PRs, the fatigue resistance is the underrated benefit. A human reviewer reads the first 15 files carefully and the last 10 quickly. Claude Code reads file 35 with the same attention as file 1.</p>
+    <p><strong>What it gets wrong.</strong> It doesn't know your architecture. It can't tell whether using a singleton here is an intentional design trade-off your team made two years ago or a careless choice. It doesn't know that <code>LegacyReportingService.cs</code> is a read-only compatibility layer that hasn't been touched in three years and shouldn't be touched now either.</p>
+    <p>Tone is also variable. Some comments are well-calibrated. Others are too formal or too pedantic in a way that would annoy the PR author rather than help them.</p>
+    <p><strong>My rule.</strong> Claude Code does the first pass. I do the second. It handles the mechanical layer so I can focus on the design questions — the ones that require understanding why the code is the way it is. I still approve or request changes. The AI doesn't have merge authority, and it shouldn't.</p>
+
+    <hr />
+
+    <h2>Tips to get better reviews</h2>
+    <p><strong>Be specific in your prompt.</strong> "Focus on security and error handling in the authentication module" gets better results than "review this PR." The more precisely you describe what matters, the more the review focuses on what's actually risky in this specific change.</p>
+    <p><strong>Include domain context.</strong> "This is a payment processing service that handles PCI-scoped card data" isn't overhead — it changes what Claude Code treats as high-severity. A hardcoded test key in a utility library is a Low finding. The same key anywhere near a payment flow is Critical.</p>
+    <p><strong>Use a <code>CLAUDE.md</code> file.</strong> This is a persistent instruction file that Claude Code reads automatically when it starts a session in a directory. Put your team's coding conventions, architectural decisions, and known patterns there. For a .NET team that prohibits synchronous I/O in the service layer, putting that rule in <code>CLAUDE.md</code> means every PR gets reviewed against it automatically — without you mentioning it each time.</p>
+    <p><strong>Skip generated files on large PRs.</strong> For PRs with 50 or more files, tell Claude Code explicitly: "focus on the business logic files, skip EF migrations, package-lock files, auto-generated API clients, and resource files." Otherwise it will read every file — which is thorough, but review time increases and findings on generated files are rarely useful.</p>
+    <p><strong>Iterate within the session.</strong> If the review misses something you spotted, say so directly: "you missed the race condition in <code>OrderProcessor.cs</code> — there's no lock around the <code>_activeOrders</code> dictionary in the <code>ProcessBatch</code> method." Claude Code will pick it up and post the additional comment. The session retains context, so follow-up prompts are fast.</p>
+
+    <hr />
+
+    <h2>The setup is 15 minutes. The workflow shift takes longer.</h2>
+    <p>This isn't about replacing human reviewers. The decisions that actually require engineering judgement — trade-offs between approaches, code that encodes six months of production incident learning, choices that are technically wrong but correct for your specific system — those still need a human who understands the context.</p>
+    <p>What the setup does is remove the mechanical layer from my plate. The null checks, the error handling gaps, the security antipatterns — I stopped finding those at 4pm on a Friday. Claude Code finds them at 9am, before anyone's eyes are glazing over.</p>
+    <p>The quality of our actual review discussions has gone up, because they're not about "you forgot to handle the null case." They're about whether the approach is right.</p>
+    <p>I've written about other Claude Code setups on <a href="https://mindaugasnakr.medium.com/" target="_blank" rel="noopener">Medium</a> and here on nakrosis.com — including an <a href="/writing/azure-cost-review">Azure cost investigator</a> and a <a href="/writing/pre-merge-spec-review">pre-merge spec-review skill</a>. If you try this setup, I'd like to hear how it goes. Find me on <a href="https://www.linkedin.com/in/mindaugas-nakro%C5%A1is-142a4a108/" target="_blank" rel="noopener">LinkedIn</a>.</p>
+
+    <hr />
+    <p><em>Written with Claude Code. The code is the artefact; the article is the receipt.</em></p>
+
+  </article>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>London</span><span class="sep">·</span>
+    <a href="mailto:mnakrosis@trustflux.co.uk">mnakrosis@trustflux.co.uk</a><span class="sep">·</span>
+    <a href="https://github.com/mindaugasnakrosis" target="_blank" rel="noopener">GitHub</a><span class="sep">·</span>
+    <a href="https://www.linkedin.com/in/mindaugas-nakro%C5%A1is-142a4a108/" target="_blank" rel="noopener">LinkedIn</a><span class="sep">·</span>
+    <a href="https://mindaugasnakr.medium.com/" target="_blank" rel="noopener">Medium</a>
+  </div>
+</footer>
+
+</body>
+</html>
