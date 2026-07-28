@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Your AI agent works in the demo. Can you explain what it did last night? — Mindaugas Nakrošis</title>
+<meta name="description" content="An agent you cannot reconstruct is an agent you cannot deploy. What trace-level observability actually means for agents in regulated environments — and what writing my own trace revealed.">
+<link rel="canonical" href="https://nakrosis.com/writing/agent-observability">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="Your AI agent works in the demo. Can you explain what it did last night?">
+<meta property="og:description" content="An agent you cannot reconstruct is an agent you cannot deploy. What trace-level observability actually means for agents in regulated environments — and what writing my own trace revealed.">
+<meta property="og:url" content="https://nakrosis.com/writing/agent-observability">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Mindaugas Nakrošis">
+<meta property="og:locale" content="en_GB">
+<meta property="og:image" content="https://nakrosis.com/mindaugas.jpg">
+<meta property="article:published_time" content="2026-07-28">
+<meta property="article:author" content="Mindaugas Nakrošis">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Your AI agent works in the demo. Can you explain what it did last night?">
+<meta name="twitter:description" content="An agent you cannot reconstruct is an agent you cannot deploy. What trace-level observability actually means for agents in regulated environments — and what writing my own trace revealed.">
+<meta name="twitter:image" content="https://nakrosis.com/mindaugas.jpg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/styles.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Your AI agent works in the demo. Can you explain what it did last night?",
+  "description": "An agent you cannot reconstruct is an agent you cannot deploy. What trace-level observability actually means for agents in regulated environments — and what writing my own trace revealed.",
+  "datePublished": "2026-07-28",
+  "author": {
+    "@type": "Person",
+    "name": "Mindaugas Nakrošis",
+    "url": "https://nakrosis.com/"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Mindaugas Nakrošis"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://nakrosis.com/writing/agent-observability"
+  }
+}
+</script>
+<style>
+  .article-meta {
+    font-size: 0.95rem;
+    color: var(--muted);
+    margin-bottom: 1.25rem;
+  }
+  .article-meta a {
+    color: var(--muted);
+    text-decoration: underline;
+    text-decoration-color: var(--border-strong);
+  }
+  .article-meta a:hover { color: var(--accent); }
+  .article-meta .sep { margin: 0 0.4rem; color: var(--border-strong); }
+  .article-body {
+    max-width: 38rem;
+    margin: 0 auto;
+  }
+  .article-body h2 { margin-top: 2.5rem; }
+  .article-body h3 { margin-top: 1.8rem; }
+  .article-body pre, .article-body code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.92rem;
+  }
+  .article-body pre {
+    background: #f5f3ef;
+    padding: 1rem 1.25rem;
+    border-radius: 4px;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+  }
+  .article-body code {
+    background: #f5f3ef;
+    padding: 0.1rem 0.35rem;
+    border-radius: 3px;
+  }
+  .article-body pre code { background: transparent; padding: 0; }
+  .article-body blockquote {
+    border-left: 3px solid var(--border-strong);
+    padding: 0.3rem 0 0.3rem 1.2rem;
+    margin: 1.5rem 0;
+    color: var(--muted);
+    font-style: italic;
+  }
+  .article-body ul, .article-body ol {
+    padding-left: 1.4rem;
+    margin: 0 0 1.25rem;
+  }
+  .article-body li { margin-bottom: 0.45rem; }
+  .article-body img { max-width: 100%; height: auto; border-radius: 4px; }
+  .repo-card {
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1rem 1.25rem;
+    margin: 2.5rem 0;
+    background: #faf8f4;
+  }
+  .repo-card .label { margin-bottom: 0.3rem; }
+  .repo-card a {
+    color: var(--ink);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .repo-card a:hover { color: var(--accent); text-decoration: underline; }
+  .back-link {
+    display: inline-block;
+    margin-bottom: 1.5rem;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.95rem;
+  }
+  .back-link:hover { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a class="site-name" href="/">Mindaugas Nakrošis</a>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/case-studies">Case studies</a>
+      <a href="/writing" aria-current="page">Writing</a>
+      <a href="/contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+
+  <article class="article-body">
+    <a class="back-link" href="/writing">← All writing</a>
+
+    <p class="eyebrow">Agent observability · Audit trails · Regulated AI</p>
+    <h1>Your AI agent works in the demo. Can you explain what it did last night?</h1>
+    <p class="lede">An agent you cannot reconstruct is an agent you cannot deploy. In regulated environments, that is not a preference — it is the gate.</p>
+
+    <p class="article-meta">
+      <time datetime="2026-07-28">Jul 28, 2026</time>
+      <span class="sep">·</span>
+      <a href="https://mindaugasnakr.medium.com/4391b624d56a" target="_blank" rel="noopener">Also on Medium</a>
+    </p>
+
+<p>At 02:14 an agent picked up a job. It read a queue, called four tools, updated three records, and decided one case did not need a human. By 09:00 someone in operations has noticed that one of those records looks wrong, and asks the only question that matters: what exactly did it do, and why?</p>
+
+<p>The dashboards are green. Uptime was fine, latency was fine, the error rate was zero. Every one of those numbers is true and none of them answers the question. You can prove the agent ran. You cannot explain what it decided.</p>
+
+<p>That gap is the whole problem. Traditional monitoring watches the system; agent observability explains the chain of decisions between the request and the outcome. Most teams do not discover the difference until they need it, which is the worst possible moment to find out that the reasoning was never recorded.</p>
+
+<p>I have spent most of the last decade in FinTech and asset trading, where "the system did something and we cannot say why" is not an inconvenience to triage next sprint. It is a compliance failure that stops the deployment. Agents do not get an exemption from that standard.</p>
+
+<h2>The pilot-to-production chasm is an observability problem</h2>
+
+<p>The numbers on agent adoption look impressive until you separate adoption from deployment. KPMG's AI Pulse survey, published on 31 March 2026 and covering 2,110 senior leaders across 20 countries, found that only 11% of organisations qualify as leaders actively scaling AI agents across operations. The other 89% are running pilots, managing isolated deployments, or not seeing the returns they expected. McKinsey's State of AI survey the previous November pointed the same direction: 62% of organisations at least experimenting with agents, 23% scaling in even one function.</p>
+
+<p>That is not a capability gap. The models are good enough. The frameworks work. The demo genuinely does what the demo says it does.</p>
+
+<p>It is a trust gap, and trust is downstream of observability. An engineering leader signing off on a production deployment is being asked to accept accountability for decisions they cannot inspect. The rational answer is no. So the pilot stays a pilot, and everyone blames "the technology not being ready" when what is missing is the ability to answer for it afterwards.</p>
+
+<p>Here is the distinction I would put on a wall.</p>
+
+<p><strong>Monitoring</strong> watches outputs and system health: latency, uptime, error rates, throughput. It tells you the agent ran and whether it fell over.</p>
+
+<p><strong>Observability</strong> explains the chain of decisions between the request and the outcome: what the agent believed, what it chose to do about it, what came back, and how that changed what it did next.</p>
+
+<p>A monitored agent that silently made a bad decision looks identical to a monitored agent that made a good one. Both return 200. That is why the dashboards were green at 09:00.</p>
+
+<!-- IMAGE: monitoring-vs-observability diagram. Export from diagrams.html in the reActLoop project. -->
+
+<h2>What observability actually means for an agent</h2>
+
+<p>An agent's trace is not a log line. It is a hierarchical record: each reasoning step, each tool call with its inputs and outputs, each state transition, memory reads and writes, and the model responses that drove all of it. The industry has converged on six signals worth tracking — tokens, cost, latency, errors, tool and model calls, and output quality — and on OpenTelemetry's GenAI semantic conventions as the shape to record them in, with <code>invoke_agent</code> wrapping <code>chat</code> and <code>execute_tool</code> spans beneath it. Most <code>gen_ai.*</code> attributes still carry Development stability badges, so the names can move. The structure is settling faster than the vocabulary.</p>
+
+<p>I did not want to take any of this on faith, so I built a ReAct agent from scratch — no framework, raw Anthropic API, a while loop and a list — specifically to see what a reasoning cycle actually produces when you record every step of it. It takes a repository with failing tests and debugs it autonomously.</p>
+
+<p>Writing this article exposed a hole in it. The loop rendered a perfectly readable trace to my terminal and then threw it away when the window closed. That is a debug log. It is not an audit trail, and I had been quietly calling it one. So I added a <code>--trace</code> flag that serialises every iteration to JSON.</p>
+
+<p>Here is record 6 of 9 from a real run against an off-by-one bug, copied out of the file unedited:</p>
+
+<pre><code class="language-json">{
+  "iteration": 6,
+  "thought": "The bug is clear. Both `find_max` and `find_min` use
+              `range(len(items) - 1)` which skips the last element. It should
+              be `range(len(items))` (or alternatively `range(1, len(items))`).",
+  "actions": [
+    {
+      "tool": "edit_file",
+      "input": {
+        "path": "buggy_code.py",
+        "old_string": "    for i in range(len(items) - 1):  # BUG: should be range(len(items))",
+        "new_string": "    for i in range(len(items)):"
+      },
+      "tool_use_id": "toolu_01LA7bNLcm4rd5aQuRvmYCXP"
+    }
+  ],
+  "observations": [
+    {
+      "tool_use_id": "toolu_01LA7bNLcm4rd5aQuRvmYCXP",
+      "output": "Successfully replaced 1 occurrence in buggy_code.py",
+      "is_error": false,
+      "truncated_for_model": false
+    }
+  ],
+  "tokens_cumulative": 14809,
+  "elapsed_seconds": 29.27,
+  "prev_hash": "66853d8984ed6d66bed5d5cd78d71840acbb3e1eacfecb105587b729359cb675",
+  "record_hash": "af9e89a2dcec386959ac19159248900356483a3ec3d383cba4cb186c3697ca88"
+}
+</code></pre>
+
+<p>Read that as an auditor rather than as an engineer and the value becomes obvious.</p>
+
+<p><code>thought</code> is the only field that tells you <em>why</em>. Strip it out and you have a record of a file being edited by an automated process for no stated reason. It is the difference between a diff and a justification.</p>
+
+<p><code>actions[].input</code> is the exact payload, not a summary of it. When something goes wrong, "the agent edited a file" is useless and "the agent replaced this string with that string in this path" is a root cause. Note that it is a list: the model can return several tool calls in one turn, and a trace that records only the first one is lying by omission.</p>
+
+<p><code>observations[].output</code> is what the agent actually saw come back — which is frequently not what you assume it saw. Most agent failures I have looked at are not reasoning failures. They are the agent reasoning perfectly well over a truncated, malformed, or stale observation.</p>
+
+<p><code>tokens_cumulative</code> is the boring one that saves you money, because runaway loops show up as a cost curve long before they show up as an incident.</p>
+
+<p><code>prev_hash</code> and <code>record_hash</code> are what turn a log into evidence. Each record is hashed with the hash of the record before it, so editing iteration 3 invalidates records 4 through 9, and deleting a step breaks the chain link. That is roughly what EU AI Act Article 12 means by tamper-evident logging, and it is about twenty lines of <code>hashlib</code>. One caveat worth naming: a chain stored in the same file it protects only defeats an editor who does not recompute it. Real tamper-evidence needs the final digest anchored where the writing process cannot reach — an append-only store, a signed receipt, a WORM bucket.</p>
+
+<p>Then the finding I did not expect, which is the whole argument for writing traces down.</p>
+
+<p>In that nine-iteration run, the <code>thought</code> field was empty five times.</p>
+
+<p>The model went straight to a tool call with no stated reason on more than half the steps. It still solved the problem correctly, including a second instance of the bug I had not asked it to find. But if you had asked me beforehand whether my agent explained its reasoning at every step, I would have said yes — I had watched it run several times and the output looked coherent. The steps where it said nothing did not register as absences.</p>
+
+<p>Reasoning capture is not something you get by default because the model is usually chatty. The text block is optional, the model skips it whenever the next action feels obvious, and "usually explains itself" is not a standard any auditor will accept. If you need a stated reason for every consequential action, force it — make rationale a required parameter on the tool schema, or capture extended thinking — then measure your coverage rather than assuming it.</p>
+
+<p>I only know this about my own agent because I wrote the trace to disk and counted. That is the whole thesis in one example.</p>
+
+<p>The insight is about timing. Record this from the first sprint and a production incident is an afternoon of reading. Bolt it on after the incident and you are reconstructing a crime scene with no cameras — interviewing the model about what it might have been thinking eight hours ago, which is exactly as reliable as it sounds.</p>
+
+<!-- IMAGE: terminal run showing consecutive THOUGHT / ACTION / OBSERVATION panels, including iterations with no THOUGHT panel. -->
+
+<h2>Why regulated industries cannot skip this</h2>
+
+<p>In trading, healthcare, or lending, "the model decided" is not an answer you can give a regulator, an auditor, or a risk committee. It is not a partial answer that needs more detail. It is a non-answer, and the people asking have the authority to stop your deployment over it.</p>
+
+<p>This is less novel than it sounds. Regulated firms already run on audit trails: every trade, every privileged access, every production change has a record, an approver, and a timestamp. Nobody in that world argues the principle. An autonomous agent taking consequential actions is a new actor inside a control environment that has demanded this of every other actor for decades. It feels like a burden only because agent frameworks arrived without it.</p>
+
+<p>The regulatory deadline is no longer theoretical either. The EU AI Act's obligations for high-risk systems apply from 2 August 2026 — days away as I write this. Article 12 requires tamper-evident logging retained for at least six months. Article 14 requires that a natural person can effectively oversee the system, understand its limitations, interpret its output, and stop it. Article 72 requires post-market monitoring from day one of deployment. Non-compliance carries fines up to €35 million or 6% of global turnover.</p>
+
+<p>Read Articles 12 and 14 as an engineer and they describe a trace and an approval gate. That is the entire technical requirement. The compliance department is asking for the thing good engineering practice would give you anyway.</p>
+
+<p>The approval gate is where this gets interesting, because the tooling has just caught up. On 21 July 2026 Yubico shipped YubiKey 5.8, built on CTAP 2.3 with a developer preview of the WebAuthn signing extension. It turns a hardware key from a session-entry gate into a per-action authorisation primitive: an agent proposes a schema change or a large transfer, and nothing executes without a cryptographic signature proving a physically present human approved that action at that moment.</p>
+
+<p>A logged approval says someone clicked a button. A hardware-signed approval is evidence that survives an adversarial reading.</p>
+
+<p>So the reframe I would offer any engineering leader treating governance as drag: the audit trail is not overhead that slows the deployment down. It is the permission slip that lets you deploy into higher-value scenarios at all. Teams with trace-level observability and a working approval gate get to point agents at consequential work. Teams without one are permanently restricted to the low-stakes end of the problem space, which is precisely where agents are least worth the effort.</p>
+
+<!-- IMAGE: approval-gate flow — classify by reversibility, hardware-signed approval for irreversible actions, both paths write to the same trace. -->
+
+<h2>Observability and evaluation are two halves of one practice</h2>
+
+<p>Observability tells you what the agent did. Evaluation tells you whether it was any good. Running one without the other is a common and expensive mistake: traces without evaluation give you an instrumented system nobody reads until something breaks, and evaluation without traces gives you a score with no path back to the reasoning step that produced it.</p>
+
+<p>The pattern that works is continuous evaluation against sampled production traffic. Score somewhere between 1% and 10% of production traces with an LLM-as-judge, watch the scores over time to catch drift, and promote any flagged trace into a regression test so a failure found in production becomes a permanent check in CI. That last step is what turns evaluation from a report into a ratchet.</p>
+
+<p>There is a deeper point here about which agents actually ship. Every skill I have built for regulated work targets a verifiable domain: <code>md-to-jira</code> produces a backlog you can inspect, <code>azure-cost-review</code> produces findings you can check against the bill, <code>spec-check</code> produces findings that cite the authority they rest on. In each case a reviewer can hold the output against ground truth and say yes or no.</p>
+
+<p>That is not an aesthetic preference — it is what makes evaluation possible at all. You cannot run LLM-as-judge against a domain where nobody can say what "correct" looks like. Which is why agents in verifiable domains — code, tickets, cloud spend, structured document review — are the ones crossing into production, while open-ended browser automation is still generating impressive demos and very few deployments. Verifiability determines whether you can evaluate. Evaluation determines whether you can trust. Trust determines whether you can deploy.</p>
+
+<h2>What to actually do about it</h2>
+
+<p>Five things, in the order I would do them.</p>
+
+<ol>
+<li><strong>Instrument from sprint one.</strong> Trace every reasoning step and every tool call with its full input and output, not just the request and the final response. Retrofitting this after an incident is the single most expensive way to acquire it.</li>
+<li><strong>Treat the trace as an audit artefact, not a debug log.</strong> The most commonly skipped recommendation, and I had skipped it myself. A trace that only exists in a scrollback buffer cannot be reviewed by risk or compliance, and cannot be produced six months later when someone asks. Serialise it, structure it so a non-engineer can read it, chain the records so edits are detectable, and ship the verifier alongside the writer — a tamper-evident log nobody verifies provides exactly as much assurance as no log at all.</li>
+<li><strong>Add a human approval gate for irreversible actions.</strong> Classify the action space by reversibility, not by importance. Scope agent permissions tightly, let reversible actions run, and block the small set of things you cannot undo behind an explicit approval — cryptographically signed if the stakes justify it.</li>
+<li><strong>Run continuous evaluation against sampled traces.</strong> Do not wait for a complaint. Complaints are a lagging indicator with terrible coverage.</li>
+<li><strong>Find your shadow agents.</strong> Gartner published guidance in April 2026 on managing agent sprawl, and the underlying problem is familiar: teams deploying agents with no central registration, no ownership, and no monitoring. Shadow IT surfaced bad answers. A shadow agent holds credentials and takes autonomous action. Know what is running before you are asked.</li>
+</ol>
+
+<h2>The morning after</h2>
+
+<p>Back to 09:00, and the question: what did it do, and why?</p>
+
+<p>In a system built this way, that question is boring. You open the trace. You read the reasoning step, the tool call, the exact input, what came back, and what the agent did next. Ten minutes, not two days, and you can hand the record to someone in risk without translating it first.</p>
+
+<p>That is what production-readiness looks like. Not the demo, not the benchmark — the unglamorous ability to reconstruct every decision after the fact, in a form somebody outside engineering can read.</p>
+
+<p>The teams that win with agents over the next two years will not be the ones with the most capable systems. They will be the ones who can always answer for what their agents did — because in a regulated environment that answer is the difference between a pilot and a deployment.</p>
+
+<h2>Sources</h2>
+
+<ul>
+<li><a href="https://enterprisedna.co/resources/news/kpmg-ai-pulse-enterprise-agent-adoption-2026/" target="_blank" rel="noopener">KPMG AI Pulse survey, 31 March 2026</a></li>
+<li><a href="https://prefactor.tech/learn/ai-agent-adoption-statistics" target="_blank" rel="noopener">McKinsey State of AI, November 2025</a></li>
+<li><a href="https://opentelemetry.io/blog/2026/genai-observability/" target="_blank" rel="noopener">OpenTelemetry GenAI observability and semantic conventions</a></li>
+<li><a href="https://artificialintelligenceact.eu/article/14/" target="_blank" rel="noopener">EU AI Act, Article 14 — Human oversight</a></li>
+<li><a href="https://www.yubico.com/press-releases/yubico-extends-passkeys-beyond-trusted-authentication-to-verified-authorization-with-launch-of-yubikey-5-8/" target="_blank" rel="noopener">Yubico — YubiKey 5.8, verified authorisation, 21 July 2026</a></li>
+<li><a href="https://www.gartner.com/en/newsroom/press-releases/2026-04-28-gartner-identifies-six-steps-to-manage-artificial-intelligence-agent-sprawl" target="_blank" rel="noopener">Gartner — six steps to manage AI agent sprawl, April 2026</a></li>
+<li><a href="https://www.braintrust.dev/articles/continuous-evaluation-ai-agents-trace-classifications-2026" target="_blank" rel="noopener">Braintrust — continuous evaluation with trace classifications</a></li>
+</ul>
+
+<hr />
+
+<p><em>I build agentic tooling for regulated environments through Trustflux Ltd. The other skills in the portfolio are <a href="https://github.com/mindaugasnakrosis/mdjira"><code>md-to-jira</code></a> (markdown product doc → structured Jira backlog), <a href="https://github.com/mindaugasnakrosis/azure-costs-analyzer"><code>azure-cost-investigator</code></a> (read-only Azure FinOps audit) and <a href="https://github.com/mindaugasnakrosis/notion-spec-checker"><code>spec-check</code></a> (pre-merge review against a Notion spec). Each is single-purpose, read-only by architectural guarantee, and built for a verifiable domain.</em></p>
+
+<p><em>Written with Claude Code. The code is the artefact; the article is the receipt.</em></p>
+
+  </article>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>London</span><span class="sep">·</span>
+    <a href="mailto:mnakrosis@trustflux.co.uk">mnakrosis@trustflux.co.uk</a><span class="sep">·</span>
+    <a href="https://github.com/mindaugasnakrosis" target="_blank" rel="noopener">GitHub</a><span class="sep">·</span>
+    <a href="https://www.linkedin.com/in/mindaugas-nakro%C5%A1is-142a4a108/" target="_blank" rel="noopener">LinkedIn</a><span class="sep">·</span>
+    <a href="https://mindaugasnakr.medium.com/" target="_blank" rel="noopener">Medium</a>
+  </div>
+</footer>
+
+</body>
+</html>
