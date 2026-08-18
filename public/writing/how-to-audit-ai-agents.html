@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How to audit AI agents: a practical playbook for regulated firms - Mindaugas Nakrošis</title>
+<meta name="description" content="A stepwise playbook for auditing an AI agent system you did not build: inventory, action space, the reconstruction test, tamper evidence, evaluation, security and paperwork - for risk teams, acquirers and regulated firms.">
+<link rel="canonical" href="https://nakrosis.com/writing/how-to-audit-ai-agents">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="How to audit AI agents: a practical playbook for regulated firms">
+<meta property="og:description" content="A stepwise playbook for auditing an AI agent system you did not build: inventory, action space, the reconstruction test, tamper evidence, evaluation, security and paperwork.">
+<meta property="og:url" content="https://nakrosis.com/writing/how-to-audit-ai-agents">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Mindaugas Nakrošis">
+<meta property="og:locale" content="en_GB">
+<meta property="og:image" content="https://nakrosis.com/mindaugas.jpg">
+<meta property="article:published_time" content="2026-08-18">
+<meta property="article:author" content="Mindaugas Nakrošis">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="How to audit AI agents: a practical playbook for regulated firms">
+<meta name="twitter:description" content="A stepwise playbook for auditing an AI agent system you did not build: inventory, action space, the reconstruction test, tamper evidence, evaluation, security and paperwork.">
+<meta name="twitter:image" content="https://nakrosis.com/mindaugas.jpg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/styles.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "How to audit AI agents: a practical playbook for regulated firms",
+  "description": "A stepwise playbook for auditing an AI agent system you did not build: inventory, action space, the reconstruction test, tamper evidence, evaluation, security and paperwork - for risk teams, acquirers and regulated firms.",
+  "datePublished": "2026-08-18",
+  "author": {
+    "@type": "Person",
+    "name": "Mindaugas Nakrošis",
+    "url": "https://nakrosis.com/"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Mindaugas Nakrošis"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://nakrosis.com/writing/how-to-audit-ai-agents"
+  }
+}
+</script>
+<style>
+  .article-meta {
+    font-size: 0.95rem;
+    color: var(--muted);
+    margin-bottom: 1.25rem;
+  }
+  .article-meta a {
+    color: var(--muted);
+    text-decoration: underline;
+    text-decoration-color: var(--border-strong);
+  }
+  .article-meta a:hover { color: var(--accent); }
+  .article-meta .sep { margin: 0 0.4rem; color: var(--border-strong); }
+  .article-body {
+    max-width: 38rem;
+    margin: 0 auto;
+  }
+  .article-body h2 { margin-top: 2.5rem; }
+  .article-body h3 { margin-top: 1.8rem; }
+  .article-body pre, .article-body code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.92rem;
+  }
+  .article-body pre {
+    background: #f5f3ef;
+    padding: 1rem 1.25rem;
+    border-radius: 4px;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+  }
+  .article-body code {
+    background: #f5f3ef;
+    padding: 0.1rem 0.35rem;
+    border-radius: 3px;
+  }
+  .article-body pre code { background: transparent; padding: 0; }
+  .article-body blockquote {
+    border-left: 3px solid var(--border-strong);
+    padding: 0.3rem 0 0.3rem 1.2rem;
+    margin: 1.5rem 0;
+    color: var(--muted);
+    font-style: italic;
+  }
+  .article-body ul, .article-body ol {
+    padding-left: 1.4rem;
+    margin: 0 0 1.25rem;
+  }
+  .article-body li { margin-bottom: 0.45rem; }
+  .article-body img { max-width: 100%; height: auto; border-radius: 4px; }
+  .repo-card {
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1rem 1.25rem;
+    margin: 2.5rem 0;
+    background: #faf8f4;
+  }
+  .repo-card .label { margin-bottom: 0.3rem; }
+  .repo-card a {
+    color: var(--ink);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .repo-card a:hover { color: var(--accent); text-decoration: underline; }
+  .back-link {
+    display: inline-block;
+    margin-bottom: 1.5rem;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.95rem;
+  }
+  .back-link:hover { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a class="site-name" href="/">Mindaugas Nakrošis</a>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/case-studies">Case studies</a>
+      <a href="/writing" aria-current="page">Writing</a>
+      <a href="/contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+
+  <article class="article-body">
+    <a class="back-link" href="/writing">← All writing</a>
+
+    <p class="eyebrow">AI agent audits · Audit trails · Regulated AI</p>
+    <h1>How to audit AI agents: a practical playbook for regulated firms</h1>
+    <p class="lede">Sooner or later someone hands you an agent system you did not build and asks whether it can be trusted. Here is the playbook, step by step, with the tests that separate governance from governance theatre.</p>
+
+    <p class="article-meta">
+      <time datetime="2026-08-18">Aug 18, 2026</time>
+    </p>
+
+<p>The request usually arrives sideways. Risk finds out that operations has had an agent triaging cases for three months. An acquirer's deal team discovers the target's "AI platform" the week before exclusivity ends. Or a board, reading about the EU AI Act's fines, asks compliance a question nobody has an answer to: what are our agents actually doing, and could we prove it?</p>
+
+<p>I have sat on the other side of this. I took agentic AI into production at a regulated trading venue, under my own technical authority, alongside an ISO 27001 programme - which means I have had to produce the evidence an auditor asks for, and I know which questions are easy to wave away and which ones are not. This piece is the second half of a pair: <a href="/writing/agent-observability">the observability article</a> argues why the trace is the load-bearing artefact. This one is for the person holding the clipboard - internal audit, a risk function, or a deal team - who has to assess an agent system someone else built.</p>
+
+<p>The timing is not academic. The EU AI Act's obligations for high-risk systems have been enforceable since 2 August 2026, with tamper-evident logging retained for at least six months under Article 12 and effective human oversight under Article 14. The FCA is running AI Live Testing with UK firms right now. And in US markets, firms are already being warned that a missing trace reads as a books-and-records problem, not a technology quirk. The audit is coming either way; better to run it yourself first.</p>
+
+<h2>Step 1: Inventory - find every agent, including the ones nobody registered</h2>
+
+<p>You cannot audit what you have not found, and you will not find everything by asking the platform team. Gartner published guidance in April 2026 on managing agent sprawl precisely because teams deploy agents with no central registration, no named owner and no monitoring. Shadow IT surfaced bad answers; a shadow agent holds credentials and takes actions.</p>
+
+<p>For every agent, record four things: what it does, what credentials and API scopes it holds, who owns it, and what happens if it is switched off. The credential question is the one that bites. An agent with a service account inherited from a decommissioned integration is a finding on its own, before you look at anything it decides.</p>
+
+<h2>Step 2: The action space - classify by reversibility, not importance</h2>
+
+<p>List every action each agent can take, then sort the list by a single criterion: can this be undone? Reading a queue is reversible. Updating a record is usually reversible. Sending money, deleting data, or communicating with a customer is not.</p>
+
+<p>Then check two things. First, permission scoping: does the agent hold only the permissions its action list requires, or does it run with something broad because that was easier at the time? Second, human checkpoints: every irreversible action should sit behind an explicit approval, and the approval should be recorded in the same trail as the action. A checkpoint that exists in a policy document but not in the execution path is the most common gap I see described, and the easiest to test for.</p>
+
+<h2>Step 3: The trace - run the reconstruction test</h2>
+
+<p>This is the centre of the audit, and it takes one meeting. Pick a production run from last month - not last night, last month - and ask the team to reconstruct it in front of you: what the agent was asked, what it reasoned at each step, every tool call with its full inputs and outputs, what came back, which model and version produced each decision, and how the run ended.</p>
+
+<p>A team with a real audit trail does this in minutes, and the record is readable by someone outside engineering. A team without one starts assembling fragments from application logs, dashboards and memory. Both outcomes are informative. Only one of them is acceptable in a regulated setting, because "the model decided" is not an answer a regulator, an auditor or a risk committee will take - it is a non-answer from people with the authority to stop your deployment.</p>
+
+<p>The follow-up question matters as much: is the reasoning captured for every consequential action, or only when the model felt like explaining itself? Models skip the explanation step routinely; if rationale is not enforced - as a required field, or via captured extended thinking - coverage will be far lower than anyone in the room believes.</p>
+
+<h2>Step 4: Tamper evidence - who can edit the log?</h2>
+
+<p>A trail that the writing process can rewrite is a debug log, not evidence. Article 12 of the EU AI Act asks for tamper-evident logging for a reason: after an incident, the record is only worth what it can withstand.</p>
+
+<p>Three questions do the work. Are records chained - hashed with the hash of the record before them - so an edit or deletion breaks the chain? Is the log anchored somewhere the writing process cannot reach, such as an append-only store or a WORM bucket, rather than sitting in the same place it protects? And does anyone actually run the verifier - because a tamper-evident log nobody verifies provides exactly as much assurance as no log at all. The FINOS AI Governance Framework's mitigation on agent decision audit and explainability is a useful public reference point here if you need one to hold a vendor against.</p>
+
+<h2>Step 5: Evaluation - is anyone checking whether it is any good?</h2>
+
+<p>Observability tells you what the agent did; evaluation tells you whether it should have. Ask to see the evaluation suite, then ask three questions of it. Does it run continuously against sampled production traffic, or only before releases? When an incident happened, did the failing case become a permanent regression test? And is anyone watching the scores over time for drift, or is the suite a one-off artefact from the original build?</p>
+
+<p>A team that cannot show you an evaluation suite is trusting the demo. A team whose suite has not changed since launch is trusting the past.</p>
+
+<h2>Step 6: Security - map it against the OWASP agentic Top 10</h2>
+
+<p>Agent security now has a public baseline: the OWASP Top 10 for Agentic Applications, published in December 2025. Use it as the checklist rather than inventing your own. The items that most often produce findings: prompt injection paths - every place untrusted content (emails, documents, web pages, tickets) enters the context of an agent that holds credentials; tool misuse - whether a compromised or confused agent can chain legitimate tools into an illegitimate outcome; and credential exposure - secrets in prompts, over-scoped tokens, and agents that can read the configuration that governs them.</p>
+
+<p>Fewer than half of organisations run regular security testing on their agent workflows, by the surveys circulating this year. If the team cannot show you when the agent's toolset was last tested against injected instructions, that is the finding.</p>
+
+<h2>Step 7: The paperwork - does the governance match the system?</h2>
+
+<p>Finally, put the governance documents next to the system and check they describe the same thing. The most common failure mode in this space is not a missing policy - it is a handsome governance deck with nothing behind it: an oversight committee that has never seen a trace, a human-in-the-loop diagram with no approval step in the code, a retention policy for logs that are not actually retained.</p>
+
+<p>This is also the test I would run as an acquirer, because it converts directly into deal language. Audit trails cannot be meaningfully retrofitted - the execution model has to generate structured evidence at each decision step - so a target whose agents run without them is not carrying a small remediation item. It is carrying a rebuild, and the price should say so.</p>
+
+<h2>What good looks like</h2>
+
+<p>When the system is right, the audit is boring. The inventory exists and matches reality. Irreversible actions sit behind recorded approvals. The reconstruction test takes ten minutes and produces a record a non-engineer can read. The log verifies. The evaluation suite has grown since launch because incidents fed it. The OWASP mapping has an owner and a date. The paperwork describes the system you just inspected.</p>
+
+<p>None of that requires exotic tooling. It requires that the trail was built in from the first sprint, treated as an audit artefact rather than a debug log, and owned by someone. Which is why the audit doubles as a due diligence instrument: the same seven steps that satisfy a risk committee will tell an investor, faster than any management presentation, whether a company's agents are an asset or a liability. If you are assessing a target's AI claims more broadly, the companion pieces cover <a href="/writing/ai-due-diligence-checklist">the full AI due diligence checklist</a> and <a href="/writing/is-the-ai-real">how to tell whether the AI is real or a wrapper</a>.</p>
+
+<h2>Sources</h2>
+
+<ul>
+<li><a href="https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/" target="_blank" rel="noopener">OWASP Top 10 for Agentic Applications, December 2025</a></li>
+<li><a href="https://artificialintelligenceact.eu/article/14/" target="_blank" rel="noopener">EU AI Act, Article 14 - Human oversight</a></li>
+<li><a href="https://www.fca.org.uk/firms/innovation/ai-lab" target="_blank" rel="noopener">FCA AI Lab and AI Live Testing</a></li>
+<li><a href="https://air-governance-framework.finos.org/mitigations/mi-21_agent-decision-audit-and-explainability.html" target="_blank" rel="noopener">FINOS AI Governance Framework - agent decision audit and explainability</a></li>
+<li><a href="https://www.gartner.com/en/newsroom/press-releases/2026-04-28-gartner-identifies-six-steps-to-manage-artificial-intelligence-agent-sprawl" target="_blank" rel="noopener">Gartner - six steps to manage AI agent sprawl, April 2026</a></li>
+<li><a href="https://galileo.ai/blog/ai-agent-compliance-governance-audit-trails-risk-management" target="_blank" rel="noopener">Galileo - AI agent compliance, governance and audit trails</a></li>
+</ul>
+
+<hr />
+
+<p><em>I run AI agent security reviews and build <a href="https://trustflux.co.uk/#agentic-ai">agentic AI with audit trails regulators accept</a> through Trustflux Ltd, alongside technology and AI due diligence for investors. The open-source practice tooling - <a href="https://github.com/mindaugasnakrosis/mdjira"><code>md-to-jira</code></a>, <a href="https://github.com/mindaugasnakrosis/azure-costs-analyzer"><code>azure-cost-investigator</code></a> and <a href="https://github.com/mindaugasnakrosis/notion-spec-checker"><code>spec-check</code></a> - is read-only by architectural guarantee, so you can inspect the standard before you engage it.</em></p>
+
+<p><em>Written with Claude Code. The playbook is the artefact; the article is the receipt.</em></p>
+
+  </article>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>London</span><span class="sep">·</span>
+    <a href="mailto:mnakrosis@trustflux.co.uk">mnakrosis@trustflux.co.uk</a><span class="sep">·</span>
+    <a href="https://github.com/mindaugasnakrosis" target="_blank" rel="noopener">GitHub</a><span class="sep">·</span>
+    <a href="https://www.linkedin.com/in/mindaugas-nakro%C5%A1is-142a4a108/" target="_blank" rel="noopener">LinkedIn</a><span class="sep">·</span>
+    <a href="https://mindaugasnakr.medium.com/" target="_blank" rel="noopener">Medium</a>
+  </div>
+</footer>
+
+</body>
+</html>

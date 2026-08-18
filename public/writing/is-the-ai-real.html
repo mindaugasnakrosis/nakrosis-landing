@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Is the AI real, or a wrapper? A technical due diligence guide - Mindaugas Nakrošis</title>
+<meta name="description" content="Every AI product wraps a model, so 'is it a wrapper' is the wrong binary. What to actually inspect - prompts, orchestration, evals, audit trails - before a valuation assumes a technology moat.">
+<link rel="canonical" href="https://nakrosis.com/writing/is-the-ai-real">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="Is the AI real, or a wrapper? A technical due diligence guide">
+<meta property="og:description" content="Every AI product wraps a model, so 'is it a wrapper' is the wrong binary. What to actually inspect - prompts, orchestration, evals, audit trails - before a valuation assumes a technology moat.">
+<meta property="og:url" content="https://nakrosis.com/writing/is-the-ai-real">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Mindaugas Nakrošis">
+<meta property="og:locale" content="en_GB">
+<meta property="og:image" content="https://nakrosis.com/mindaugas.jpg">
+<meta property="article:published_time" content="2026-08-18">
+<meta property="article:author" content="Mindaugas Nakrošis">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Is the AI real, or a wrapper? A technical due diligence guide">
+<meta name="twitter:description" content="Every AI product wraps a model, so 'is it a wrapper' is the wrong binary. What to actually inspect - prompts, orchestration, evals, audit trails - before a valuation assumes a technology moat.">
+<meta name="twitter:image" content="https://nakrosis.com/mindaugas.jpg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/styles.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Is the AI real, or a wrapper? A technical due diligence guide",
+  "description": "Every AI product wraps a model, so 'is it a wrapper' is the wrong binary. What to actually inspect - prompts, orchestration, evals, audit trails - before a valuation assumes a technology moat.",
+  "datePublished": "2026-08-18",
+  "author": {
+    "@type": "Person",
+    "name": "Mindaugas Nakrošis",
+    "url": "https://nakrosis.com/"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Mindaugas Nakrošis"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://nakrosis.com/writing/is-the-ai-real"
+  }
+}
+</script>
+<style>
+  .article-meta {
+    font-size: 0.95rem;
+    color: var(--muted);
+    margin-bottom: 1.25rem;
+  }
+  .article-meta a {
+    color: var(--muted);
+    text-decoration: underline;
+    text-decoration-color: var(--border-strong);
+  }
+  .article-meta a:hover { color: var(--accent); }
+  .article-meta .sep { margin: 0 0.4rem; color: var(--border-strong); }
+  .article-body {
+    max-width: 38rem;
+    margin: 0 auto;
+  }
+  .article-body h2 { margin-top: 2.5rem; }
+  .article-body h3 { margin-top: 1.8rem; }
+  .article-body pre, .article-body code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.92rem;
+  }
+  .article-body pre {
+    background: #f5f3ef;
+    padding: 1rem 1.25rem;
+    border-radius: 4px;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+  }
+  .article-body code {
+    background: #f5f3ef;
+    padding: 0.1rem 0.35rem;
+    border-radius: 3px;
+  }
+  .article-body pre code { background: transparent; padding: 0; }
+  .article-body blockquote {
+    border-left: 3px solid var(--border-strong);
+    padding: 0.3rem 0 0.3rem 1.2rem;
+    margin: 1.5rem 0;
+    color: var(--muted);
+    font-style: italic;
+  }
+  .article-body ul, .article-body ol {
+    padding-left: 1.4rem;
+    margin: 0 0 1.25rem;
+  }
+  .article-body li { margin-bottom: 0.45rem; }
+  .article-body img { max-width: 100%; height: auto; border-radius: 4px; }
+  .repo-card {
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1rem 1.25rem;
+    margin: 2.5rem 0;
+    background: #faf8f4;
+  }
+  .repo-card .label { margin-bottom: 0.3rem; }
+  .repo-card a {
+    color: var(--ink);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .repo-card a:hover { color: var(--accent); text-decoration: underline; }
+  .back-link {
+    display: inline-block;
+    margin-bottom: 1.5rem;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.95rem;
+  }
+  .back-link:hover { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a class="site-name" href="/">Mindaugas Nakrošis</a>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/case-studies">Case studies</a>
+      <a href="/writing" aria-current="page">Writing</a>
+      <a href="/contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+
+  <article class="article-body">
+    <a class="back-link" href="/writing">← All writing</a>
+
+    <p class="eyebrow">AI due diligence · Vendor claims · Technical DD</p>
+    <h1>Is the AI real, or a wrapper? A technical due diligence guide</h1>
+    <p class="lede">Every AI product is a wrapper. That is not the question. The question is whether anything defensible lives between the model and the customer - and you can only answer it by reading the system.</p>
+
+    <p class="article-meta">
+      <time datetime="2026-08-18">Aug 18, 2026</time>
+    </p>
+
+<p>Somewhere in the second meeting of almost every AI deal, someone asks the question the whole room has been circling: is this real AI, or just a wrapper on ChatGPT?</p>
+
+<p>I understand why the question gets asked. Valuations for "AI-native" companies carry a premium, and nobody wants to pay a technology multiple for a prompt. But as a diligence question it is badly formed, because it treats "wrapper" as a binary when it is actually an address. Every AI product wraps a foundation model - the honest ones and the pretenders alike. Nobody outside a handful of labs trains frontier models, and choosing not to is usually the correct engineering decision. The useful question is not <em>whether</em> the product wraps a model. It is <em>where the defensible engineering lives</em>, and whether the price you are about to pay assumes more of it than exists.</p>
+
+<p>I have sat on both sides of this. I have shipped agentic AI into production trading workflows at a regulated venue, where "the model decided" is not an acceptable answer to anyone, and I read codebases for a living when investors want the claims checked. What follows is the shape of that check: what I look at, what a real system looks like from the inside, and what a thin wrapper looks like when it is dressed up as one.</p>
+
+<h2>The layers, from cheapest to hardest to copy</h2>
+
+<p>When I open an AI product, I am mentally sorting everything I find into five layers. They differ enormously in how fast a competent team could replicate them.</p>
+
+<ol>
+<li><strong>The prompt layer.</strong> System prompts, templates, few-shot examples. This is where thin products live. It is real work, but it is days-to-weeks of work, it leaks through the API to anyone who probes it, and it is portable to any competitor with the same model access.</li>
+<li><strong>Orchestration.</strong> Retrieval, tool use, routing between models, state management, agent loops, human checkpoints. This is months of engineering and it encodes actual product decisions. It is where most genuine differentiation in applied AI currently sits.</li>
+<li><strong>The evaluation harness.</strong> Regression sets built from real failures, scoring pipelines, gates that stop a bad prompt or a new model version reaching customers. This is the layer that tells you whether the company can <em>change anything safely</em>. It is also the layer most often missing entirely.</li>
+<li><strong>Data.</strong> Not "we have data" - data that is proprietary, permissioned, refreshed by product usage, and demonstrably improves output quality. Most claimed data moats fail at least one of those four tests.</li>
+<li><strong>Distribution and workflow.</strong> Being embedded where the work happens, integrations that took quarters to certify, a sales motion the model cannot commoditise. Not a technology layer at all, which is precisely why it survives model churn.</li>
+</ol>
+
+<p>A wrapper, properly defined, is a product whose value is concentrated in layer one while its valuation is priced as if it lived in layers two to five. That mismatch - not the architecture - is the diligence finding.</p>
+
+<h2>What a real system looks like from the inside</h2>
+
+<p>These are the signals I weight most heavily when the repo is open, roughly in the order I go looking for them.</p>
+
+<ul>
+<li><strong>An eval suite that has clearly been used in anger.</strong> Regression cases named after real incidents. Scores tracked over time. A gate in CI that blocks deploys on regression. When I ask "how do you know the new prompt is better", the answer is a dashboard, not a shrug.</li>
+<li><strong>A story for model migration.</strong> Models get deprecated on the provider's schedule, not yours. A real team can tell you what happened last time they moved versions, what broke, and what the eval suite caught. A thin one has never migrated and has no mechanism to do it safely.</li>
+<li><strong>Guardrails and fallback paths.</strong> What happens on a malformed model response, a timeout, a refusal, an answer outside the allowed range? In production systems, the unhappy path is most of the code. In demos, it does not exist.</li>
+<li><strong>Observability and audit trails.</strong> Can they reconstruct what the system did for a specific customer last Tuesday - the inputs, the model calls, the outputs, the decision? In regulated markets this is a legal requirement arriving on a schedule; I wrote up the mechanics in <a href="/writing/agent-observability">a separate piece on agent observability</a>, and the diligence version of that argument is in <a href="/writing/how-to-audit-ai-agents">how to audit AI agents</a>. A system with no trace is a system whose behaviour you are taking on faith.</li>
+<li><strong>Cost engineering.</strong> Caching, model routing by task difficulty, batching, token budgets per feature. Gross margin in an LLM product is an engineering artefact. If nobody can tell me cost per request by feature, nobody is managing it.</li>
+</ul>
+
+<p>And the mirror image, the wrapper tells: a system prompt in a trench coat, with the orchestration doing little more than string interpolation. No evals at all - the most common single finding. Behaviour that is polished on the demo path and unhandled everywhere else. No answer for model deprecation. Unit economics that die if token prices move against them or the provider changes rate limits. None of these is exotic; you find them by reading, not by genius.</p>
+
+<h2>Two hours off the demo path</h2>
+
+<p>You do not always get the repo on day one, but you can learn a lot from a supervised session with the product if you refuse to follow the demo script. My standard two hours looks like this: feed it inputs from the edges of the claimed domain, not the centre. Give it ambiguous cases where the correct behaviour is to ask or decline, and see whether it confabulates instead. Push adversarial input - instructions embedded in the data it processes - and watch whether the system or the demo driver flinches. Ask the same question five times and look at the variance. Ask for something the marketing page says it does, but the demo never shows.</p>
+
+<p>A real system degrades politely at its edges, because someone has been there before you and left handling code behind. A demo-shaped product falls off a cliff, and the founder reaches for the keyboard to steer you back to the happy path. That reach is a finding. Arvind Narayanan's <a href="https://www.cs.princeton.edu/~arvindn/talks/MIT-STS-AI-snakeoil.pdf" target="_blank" rel="noopener">AI snake oil</a> framing is a decade of this pattern condensed: the gap between what is claimed and what is checkable is where the risk lives. Vendor-claim red flags follow the same grammar in security - <a href="https://www.scylla.ai/beyond-ai-snake-oil-red-flags-in-vendor-claims/" target="_blank" rel="noopener">Scylla's list</a> is written for CCTV analytics and reads perfectly well for LLM products.</p>
+
+<h2>The rebuild test, answered honestly</h2>
+
+<p>The question investors actually care about compresses to: could a good team rebuild this on off-the-shelf models in a quarter? For the prompt layer, the answer is always yes. For orchestration plus a mature eval harness, usually no - not because any single piece is hard, but because the regression sets and the failure handling encode a year of contact with reality that a fast follower has not had yet.</p>
+
+<p>But here is the part that gets missed when the wrapper question is asked as a gotcha: sometimes the honest answer is "yes, they could rebuild it, and it would not matter". A product that is replicable at the technology layer can still be a fine business if the moat is workflow lock-in, certified integrations, a data flywheel that is actually spinning, or plain distribution. Thin wrappers are not automatically bad investments. Mispriced ones are. The diligence job is not to sneer at the architecture; it is to make sure the multiple being paid matches the layer where the value actually sits. If the deck says "proprietary AI" and the repo says "prompt plus distribution", the price chip is on the word <em>proprietary</em>, not on the business.</p>
+
+<p>For agentic products there is one more turn of the screw, because autonomy adds a risk layer that static LLM features do not have - tool access, action authority, and a new attack surface that the <a href="https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/" target="_blank" rel="noopener">OWASP Top 10 for Agentic Applications</a> now catalogues. An agent that is a wrapper is a much bigger problem than a chatbot that is a wrapper, because it is a thin system that has been handed credentials.</p>
+
+<p>This piece is one of three I published together: the <a href="/writing/ai-due-diligence-checklist">AI due diligence checklist</a> is the structured version of everything above, and <a href="/writing/how-to-audit-ai-agents">how to audit AI agents</a> covers the audit-trail side in depth.</p>
+
+<h2>What I would tell a deal team</h2>
+
+<p>Stop asking whether it is a wrapper. Ask where the engineering lives, get someone to actually read the system, and price the answer. The read takes days, not weeks. It routinely moves valuations by more than it costs, in either direction - I have seen it kill technology premiums, and I have seen it justify them, which is the outcome founders with real systems should actively want from diligence.</p>
+
+<h2>Sources</h2>
+
+<ul>
+<li><a href="https://www.cs.princeton.edu/~arvindn/talks/MIT-STS-AI-snakeoil.pdf" target="_blank" rel="noopener">Arvind Narayanan - How to recognize AI snake oil (Princeton)</a></li>
+<li><a href="https://www.scylla.ai/beyond-ai-snake-oil-red-flags-in-vendor-claims/" target="_blank" rel="noopener">Scylla - Beyond AI snake oil: red flags in vendor claims</a></li>
+<li><a href="https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/" target="_blank" rel="noopener">OWASP - Top 10 for Agentic Applications, 2026</a></li>
+<li><a href="https://www.finextra.com/blogposting/31653/the-eu-ai-acts-august-2026-deadline-what-financial-services-firms-must-do-now" target="_blank" rel="noopener">Finextra - The EU AI Act's August 2026 deadline for financial services</a></li>
+</ul>
+
+<hr />
+
+<p><em>I do technology and AI due diligence for investors and acquirers through <a href="https://trustflux.co.uk/#due-diligence">Trustflux Ltd</a> - evidence-backed findings with explicit assumptions and confidence levels, from someone who has shipped agentic AI in production at a regulated trading platform. If you have an AI claim you want verified before a term sheet, that is the practice.</em></p>
+
+<p><em>Written with Claude Code. The repo read is the artefact; the article is the method.</em></p>
+
+  </article>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>London</span><span class="sep">·</span>
+    <a href="mailto:mnakrosis@trustflux.co.uk">mnakrosis@trustflux.co.uk</a><span class="sep">·</span>
+    <a href="https://github.com/mindaugasnakrosis" target="_blank" rel="noopener">GitHub</a><span class="sep">·</span>
+    <a href="https://www.linkedin.com/in/mindaugas-nakro%C5%A1is-142a4a108/" target="_blank" rel="noopener">LinkedIn</a><span class="sep">·</span>
+    <a href="https://mindaugasnakr.medium.com/" target="_blank" rel="noopener">Medium</a>
+  </div>
+</footer>
+
+</body>
+</html>

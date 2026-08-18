@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI due diligence: how to assess an AI company before you invest - Mindaugas Nakrošis</title>
+<meta name="description" content="A practical AI due diligence checklist for investors and acquirers: model vs prompt, behaviour off the demo path, training data provenance, inference economics, EU AI Act risk category, audit trails and team.">
+<link rel="canonical" href="https://nakrosis.com/writing/ai-due-diligence-checklist">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="AI due diligence: how to assess an AI company before you invest">
+<meta property="og:description" content="A practical AI due diligence checklist for investors and acquirers: model vs prompt, behaviour off the demo path, training data provenance, inference economics, EU AI Act risk category, audit trails and team.">
+<meta property="og:url" content="https://nakrosis.com/writing/ai-due-diligence-checklist">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Mindaugas Nakrošis">
+<meta property="og:locale" content="en_GB">
+<meta property="og:image" content="https://nakrosis.com/mindaugas.jpg">
+<meta property="article:published_time" content="2026-08-18">
+<meta property="article:author" content="Mindaugas Nakrošis">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AI due diligence: how to assess an AI company before you invest">
+<meta name="twitter:description" content="A practical AI due diligence checklist for investors and acquirers: model vs prompt, behaviour off the demo path, training data provenance, inference economics, EU AI Act risk category, audit trails and team.">
+<meta name="twitter:image" content="https://nakrosis.com/mindaugas.jpg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/styles.css">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "AI due diligence: how to assess an AI company before you invest",
+  "description": "A practical AI due diligence checklist for investors and acquirers: model vs prompt, behaviour off the demo path, training data provenance, inference economics, EU AI Act risk category, audit trails and team.",
+  "datePublished": "2026-08-18",
+  "author": {
+    "@type": "Person",
+    "name": "Mindaugas Nakrošis",
+    "url": "https://nakrosis.com/"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Mindaugas Nakrošis"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://nakrosis.com/writing/ai-due-diligence-checklist"
+  }
+}
+</script>
+<style>
+  .article-meta {
+    font-size: 0.95rem;
+    color: var(--muted);
+    margin-bottom: 1.25rem;
+  }
+  .article-meta a {
+    color: var(--muted);
+    text-decoration: underline;
+    text-decoration-color: var(--border-strong);
+  }
+  .article-meta a:hover { color: var(--accent); }
+  .article-meta .sep { margin: 0 0.4rem; color: var(--border-strong); }
+  .article-body {
+    max-width: 38rem;
+    margin: 0 auto;
+  }
+  .article-body h2 { margin-top: 2.5rem; }
+  .article-body h3 { margin-top: 1.8rem; }
+  .article-body pre, .article-body code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.92rem;
+  }
+  .article-body pre {
+    background: #f5f3ef;
+    padding: 1rem 1.25rem;
+    border-radius: 4px;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+  }
+  .article-body code {
+    background: #f5f3ef;
+    padding: 0.1rem 0.35rem;
+    border-radius: 3px;
+  }
+  .article-body pre code { background: transparent; padding: 0; }
+  .article-body blockquote {
+    border-left: 3px solid var(--border-strong);
+    padding: 0.3rem 0 0.3rem 1.2rem;
+    margin: 1.5rem 0;
+    color: var(--muted);
+    font-style: italic;
+  }
+  .article-body ul, .article-body ol {
+    padding-left: 1.4rem;
+    margin: 0 0 1.25rem;
+  }
+  .article-body li { margin-bottom: 0.45rem; }
+  .article-body img { max-width: 100%; height: auto; border-radius: 4px; }
+  .repo-card {
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1rem 1.25rem;
+    margin: 2.5rem 0;
+    background: #faf8f4;
+  }
+  .repo-card .label { margin-bottom: 0.3rem; }
+  .repo-card a {
+    color: var(--ink);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .repo-card a:hover { color: var(--accent); text-decoration: underline; }
+  .back-link {
+    display: inline-block;
+    margin-bottom: 1.5rem;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.95rem;
+  }
+  .back-link:hover { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a class="site-name" href="/">Mindaugas Nakrošis</a>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/case-studies">Case studies</a>
+      <a href="/writing" aria-current="page">Writing</a>
+      <a href="/contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+
+  <article class="article-body">
+    <a class="back-link" href="/writing">← All writing</a>
+
+    <p class="eyebrow">AI due diligence · Technical DD · For investors</p>
+    <h1>AI due diligence: how to assess an AI company before you invest</h1>
+    <p class="lede">Two different things get called AI due diligence, and the one that moves valuations is the one almost nobody sells. This is the checklist for it.</p>
+
+    <p class="article-meta">
+      <time datetime="2026-08-18">Aug 18, 2026</time>
+    </p>
+
+<p>Search for "AI due diligence" and most of what comes back is about using AI to do due diligence: tools that read the data room faster, summarise contracts, draft the red-flag memo. Useful, and not what this article is about. This is about due diligence <em>of</em> an AI company - the work of finding out whether the AI in the pitch deck actually exists, whether it is defensible, and what it will cost the buyer to own it.</p>
+
+<p>That second kind is where deals move. The tech file is now routinely one of the most heavily priced workstreams in a transaction, and for software and AI targets it is often the first. Yet the market for doing it properly is thin, because most advisers pivoted to selling the tooling instead. When I run this work through my <a href="https://trustflux.co.uk/#due-diligence">technology and AI due diligence practice</a>, the brief from the deal team is usually one sentence: is it real, and what does it break if it is not?</p>
+
+<p>I have sat on the other side of this table. I took agentic AI into production at a regulated derivatives trading venue, where the systems I signed off carried real orders with real money behind them, and before that I was principal architect on the platform behind $330M of assets under management. The checklist below is the one I wish every deal team used, in the order I would run it.</p>
+
+<h2>1. Find out where the defensibility actually lives</h2>
+
+<p>Every AI product decomposes into three layers: the model, the prompt and orchestration layer, and the product around them. The first question of AI diligence is which layer the target actually owns, because the valuation usually assumes ownership of a layer the target is merely renting.</p>
+
+<ul>
+<li>If the capability lives in the <strong>model</strong> and the model is a frontier API, the target owns nothing there. Anyone with an API key has the same model.</li>
+<li>If it lives in the <strong>prompt and orchestration layer</strong>, ask what stops a competent team from rebuilding it in a quarter. Sometimes the honest answer is domain knowledge encoded over years and a data flywheel that feeds it. Sometimes the honest answer is nothing.</li>
+<li>If it lives in the <strong>product</strong> - distribution, workflow lock-in, proprietary data the model is grounded on - then the AI is an amplifier of an existing moat rather than the moat itself. That can be a perfectly good investment. It just should not be priced as a foundation-model company.</li>
+</ul>
+
+<p>The question a venture investor should keep asking, borrowed from the wrapper debate: could this be rebuilt on off-the-shelf foundation models? If yes, what you are pricing is everything except the AI. I go deeper on how to answer that question by reading the system rather than the pitch in the companion piece, <a href="/writing/is-the-ai-real">Is the AI real, or a wrapper?</a></p>
+
+<h2>2. Take the system off the demo path</h2>
+
+<p>A demo is a rehearsed path through a system. Diligence is about every other path. Arvind Narayanan's "AI snake oil" work made the academic version of this argument years ago: impressive performance on curated inputs tells you very little about behaviour on the inputs the real world will supply.</p>
+
+<p>Practically, that means sitting with the product and doing what the demo never does: paste in the malformed document, the ambiguous instruction, the adversarial input, the query in the wrong language. Watch three things - what the system gets wrong, whether it knows it got it wrong, and what it does about it. A system that fails loudly and hands off to a human is production engineering. A system that fails confidently is a liability the buyer inherits at close.</p>
+
+<p>Ask for the evaluation harness. A team that ships LLM systems seriously will have one: versioned test sets, regression scores over time, a record of what each model or prompt change did to quality. If evaluation happens by someone eyeballing outputs before release, write that down, because it means quality is a function of who was in the room.</p>
+
+<h2>3. Trace the training data and the model licences</h2>
+
+<p>If the target claims to have trained or fine-tuned anything, provenance is the red-flag topic of the moment in AI M&amp;A, and for good reason: it is the one defect that cannot be fixed post-close with engineering effort.</p>
+
+<ul>
+<li>Where did the training data come from, and is there consent or licence coverage for each source? Scraped data with no paper trail is a contingent liability, not an asset.</li>
+<li>Do customer contracts permit the use of customer data for training? Many older MSAs do not, and retrofitting consent across a customer base is slow and lossy.</li>
+<li>Are the open-weight models in the stack actually licensed for this commercial use? "Open" licences differ in ways that matter at acquisition time.</li>
+</ul>
+
+<p>None of this needs a lawyer to start. It needs someone technical asking for the data lineage and reading the licence files in the repo, then handing the specifics to the lawyers with the right questions attached.</p>
+
+<h2>4. Do the unit economics of inference</h2>
+
+<p>Classic software has near-zero marginal cost. LLM products do not. Every action the product takes burns tokens, and the margin story depends on numbers most pitch decks omit.</p>
+
+<p>Get to a cost per unit of value: per document processed, per conversation, per resolved ticket. Then stress it. What happens to gross margin if usage grows the way the plan says it will? What happens if the model provider reprices, or if the product is quietly subsidised by a discounted tier that expires? And in the other direction: has the team done any engineering to bring inference cost down - caching, model routing, smaller models for cheap steps - or does every request go to the most expensive frontier model because nobody has looked?</p>
+
+<p>A target that knows these numbers cold is telling you something about the team. A target that has never computed them is too.</p>
+
+<h2>5. Place the product under the EU AI Act before someone else does</h2>
+
+<p>Since 2 August 2026 the EU AI Act's obligations for high-risk systems are enforceable, with penalties scaling up to EUR 35 million or 7% of global turnover at the top of the range. For fintech targets this is not a peripheral question: credit scoring, insurance risk pricing and similar automated decisioning sit in Annex III, which is the high-risk list.</p>
+
+<p>Diligence needs to establish three things: which risk category the product genuinely falls into, whether the target's own classification is defensible, and what the gap is between current engineering practice and the obligations that category carries - logging, human oversight, technical documentation, post-market monitoring. A UK-only company serving EU users is in scope whether it likes it or not. The cost of closing that gap belongs in the model, priced, not in a footnote.</p>
+
+<h2>6. Ask whether the audit trail can carry the claims</h2>
+
+<p>This is the item I weight most heavily for any product with agentic behaviour, because I have watched it decide whether systems ship. If the product takes consequential actions - moves money, files documents, makes decisions about people - can the target reconstruct, after the fact, what the system did and why?</p>
+
+<p>Ask to see the trace for a real production incident: the reasoning steps, the tool calls with their exact inputs, what came back, who approved what. If the answer is a dashboard of green uptime graphs, the target is monitoring the system, not observing it, and the claims made to customers and regulators are resting on nothing. I wrote up what a real agent trace looks like, field by field, in <a href="/writing/agent-observability">Your AI agent works in the demo. Can you explain what it did last night?</a>, and the buyer-side version of the test in <a href="/writing/how-to-audit-ai-agents">How to audit AI agents</a>. The short version: audit trails cannot be meaningfully retrofitted, so their absence is a cost, not a to-do.</p>
+
+<h2>7. Meet the people who actually built it</h2>
+
+<p>Org charts flatter. In most AI companies the capability concentrates in a very small number of people, and diligence should find out who they are, whether they are staying, and what walks out of the building if they do not. An hour of technical conversation with the person who built the orchestration layer tells you more than the architecture deck: whether the design decisions were reasoned or cargo-culted, whether the failure modes are understood, whether the roadmap is theirs or the founder's wish list.</p>
+
+<p>While you are there, ask what they would fix first with the new money. Engineers answer that question honestly almost every time, and the answer is a free look at the real state of the codebase.</p>
+
+<h2>Running this inside a deal window</h2>
+
+<p>All of the above fits in one to two weeks alongside the rest of the workstreams, provided the person doing it can read the codebase rather than interview about it. The output that deal teams actually use is not a fifty-page appendix; it is a position - what is real, what is priced wrong, which findings are a price chip, which are a condition, and which, rarely, are a reason to walk - with every finding quantified where it can be and the assumptions stated where it cannot.</p>
+
+<p>That is the standard this checklist is built to feed. If a diligence report cannot tell the partner what to do on Monday, it was research, not diligence.</p>
+
+<h2>Sources</h2>
+
+<ul>
+<li><a href="https://www.finextra.com/blogposting/31653/the-eu-ai-acts-august-2026-deadline-what-financial-services-firms-must-do-now" target="_blank" rel="noopener">Finextra - the EU AI Act's August 2026 deadline for financial services firms</a></li>
+<li><a href="https://artificialintelligenceact.eu/article/14/" target="_blank" rel="noopener">EU AI Act, Article 14 - Human oversight</a></li>
+<li><a href="https://www.cs.princeton.edu/~arvindn/talks/MIT-STS-AI-snakeoil.pdf" target="_blank" rel="noopener">Arvind Narayanan - How to recognize AI snake oil</a></li>
+<li><a href="https://www.scylla.ai/beyond-ai-snake-oil-red-flags-in-vendor-claims/" target="_blank" rel="noopener">Scylla - red flags in AI vendor claims</a></li>
+<li><a href="https://www.thirdbridge.com/en-us/about-us/media/perspectives/ai-due-diligence-private-equity" target="_blank" rel="noopener">Third Bridge - AI due diligence in private equity (the other sense of the phrase)</a></li>
+<li><a href="https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/" target="_blank" rel="noopener">OWASP - Top 10 for Agentic Applications, 2026</a></li>
+</ul>
+
+<hr />
+
+<p><em>This is the first of three pieces on assessing AI systems from the buyer's side, alongside <a href="/writing/is-the-ai-real">Is the AI real, or a wrapper?</a> and <a href="/writing/how-to-audit-ai-agents">How to audit AI agents</a>. I run technology and AI due diligence for investors and acquirers through <a href="https://trustflux.co.uk/#due-diligence">Trustflux Ltd</a> - evidence-backed findings, explicit assumptions, delivered inside a deal window.</em></p>
+
+<p><em>Written with Claude Code. The checklist is the artefact; the article is the receipt.</em></p>
+
+  </article>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>London</span><span class="sep">·</span>
+    <a href="mailto:mnakrosis@trustflux.co.uk">mnakrosis@trustflux.co.uk</a><span class="sep">·</span>
+    <a href="https://github.com/mindaugasnakrosis" target="_blank" rel="noopener">GitHub</a><span class="sep">·</span>
+    <a href="https://www.linkedin.com/in/mindaugas-nakro%C5%A1is-142a4a108/" target="_blank" rel="noopener">LinkedIn</a><span class="sep">·</span>
+    <a href="https://mindaugasnakr.medium.com/" target="_blank" rel="noopener">Medium</a>
+  </div>
+</footer>
+
+</body>
+</html>
