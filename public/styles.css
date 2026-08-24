@@ -182,6 +182,10 @@ section.ornamented::before {
 
 .hero { padding-bottom: 2.5rem; }
 
+.hero-avatar-frame {
+  display: block;
+}
+
 .hero-avatar {
   display: block;
   width: 140px;

@@ -61,3 +61,32 @@ Draft articles and LinkedIn posts live in `/Users/mindaugasnakrosis/Darbas/claud
 - `medium-post.md` — the full article in Medium-compatible markdown
 - `linkedin-post.md` — the LinkedIn post with posting notes
 - The original prompt/brief file if applicable
+
+## Assets and caching
+
+`public/_headers` serves every `.css`, `.jpg`, `.png`, `.webp` and `.avif` with
+`max-age=31536000, immutable`. Nothing is re-fetched by returning visitors, so
+**cache-busting is manual**:
+
+- **Stylesheet** — every page links it as `styles.css?v=<yyyymmdd>`. After
+  editing `public/styles.css`, bump the version in all pages at once:
+  `grep -rl 'styles.css?v=' public | xargs sed -i '' 's|styles.css?v=[0-9]*|styles.css?v=<new>|'`
+- **Images** — never overwrite an image in place; ship a new filename.
+
+## Hero portrait
+
+The homepage avatar is a square crop of `mindaugas.jpg` (768x1024, kept as the
+OG/Twitter card image) pre-rendered at three densities in AVIF, WebP and JPEG:
+`avatar-140.*`, `avatar-280.*`, `avatar-420.*`. To regenerate after a new photo:
+
+```python
+from PIL import Image
+src = Image.open('mindaugas.jpg').convert('RGB')
+w, h = src.size
+sq = src.crop((0, round((h - w) * 0.18), w, round((h - w) * 0.18) + w))
+for size in (140, 280, 420):
+    sq.resize((size, size), Image.LANCZOS).save(f'avatar-{size}.jpg', quality=86, optimize=True, progressive=True)
+```
+
+then `cwebp -q 82 -sharp_yuv` and `avifenc -q 62 -s 4` from the same square crop.
+The 0.18 vertical offset matches the old `object-position: 50% 18%` framing.

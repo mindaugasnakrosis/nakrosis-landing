@@ -24,7 +24,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="styles.css?v=20260824">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -81,7 +81,11 @@
 <main class="container">
 
   <section class="hero">
-    <img class="hero-avatar" src="mindaugas.jpg" alt="Portrait of Mindaugas Nakrošis" width="140" height="140">
+    <picture class="hero-avatar-frame">
+      <source type="image/avif" srcset="/avatar-140.avif 1x, /avatar-280.avif 2x, /avatar-420.avif 3x">
+      <source type="image/webp" srcset="/avatar-140.webp 1x, /avatar-280.webp 2x, /avatar-420.webp 3x">
+      <img class="hero-avatar" src="/avatar-280.jpg" srcset="/avatar-140.jpg 1x, /avatar-280.jpg 2x, /avatar-420.jpg 3x" alt="Portrait of Mindaugas Nakrošis" width="140" height="140" fetchpriority="high" decoding="async">
+    </picture>
     <p class="eyebrow">Technical architect · Independent · London · Outside IR35</p>
     <h1>Mindaugas Nakrošis</h1>
     <p class="lede">Technical architect with a decade across FinTech, asset trading, and platform infrastructure. Now building agentic <span class="sc">AI</span> that encodes senior-judgment work — agile coaching, security review, financial-controls review — into auditable, citation-backed systems.</p>
