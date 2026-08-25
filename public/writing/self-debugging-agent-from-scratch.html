@@ -1,0 +1,399 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>I built a self-debugging AI agent from scratch - here's exactly how the reasoning cycle works - Mindaugas Nakrošis</title>
+<meta name="description" content="No LangChain, no agent framework - just the raw Anthropic API and about 200 lines of Python. What building the ReAct loop by hand teaches you about every agent framework you will ever use.">
+<link rel="canonical" href="https://nakrosis.com/writing/self-debugging-agent-from-scratch">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="I built a self-debugging AI agent from scratch - here's exactly how the reasoning cycle works">
+<meta property="og:description" content="No LangChain, no agent framework - just the raw Anthropic API and about 200 lines of Python. What building the ReAct loop by hand teaches you about every agent framework you will ever use.">
+<meta property="og:url" content="https://nakrosis.com/writing/self-debugging-agent-from-scratch">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Mindaugas Nakrošis">
+<meta property="og:locale" content="en_GB">
+<meta property="og:image" content="https://nakrosis.com/mindaugas.jpg">
+<meta property="article:published_time" content="2026-06-10">
+<meta property="article:author" content="Mindaugas Nakrošis">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="I built a self-debugging AI agent from scratch - here's exactly how the reasoning cycle works">
+<meta name="twitter:description" content="No LangChain, no agent framework - just the raw Anthropic API and about 200 lines of Python. What building the ReAct loop by hand teaches you about every agent framework you will ever use.">
+<meta name="twitter:image" content="https://nakrosis.com/mindaugas.jpg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/styles.css?v=20260824">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "I built a self-debugging AI agent from scratch - here's exactly how the reasoning cycle works",
+  "description": "No LangChain, no agent framework - just the raw Anthropic API and about 200 lines of Python. What building the ReAct loop by hand teaches you about every agent framework you will ever use.",
+  "datePublished": "2026-06-10",
+  "author": {
+    "@type": "Person",
+    "name": "Mindaugas Nakrošis",
+    "url": "https://nakrosis.com/"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Mindaugas Nakrošis"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://nakrosis.com/writing/self-debugging-agent-from-scratch"
+  }
+}
+</script>
+<style>
+  .article-meta {
+    font-size: 0.95rem;
+    color: var(--muted);
+    margin-bottom: 1.25rem;
+  }
+  .article-meta a {
+    color: var(--muted);
+    text-decoration: underline;
+    text-decoration-color: var(--border-strong);
+  }
+  .article-meta a:hover { color: var(--accent); }
+  .article-meta .sep { margin: 0 0.4rem; color: var(--border-strong); }
+  .article-body {
+    max-width: 38rem;
+    margin: 0 auto;
+  }
+  .article-body h2 { margin-top: 2.5rem; }
+  .article-body h3 { margin-top: 1.8rem; }
+  .article-body pre, .article-body code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.92rem;
+  }
+  .article-body pre {
+    background: #f5f3ef;
+    padding: 1rem 1.25rem;
+    border-radius: 4px;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+  }
+  .article-body code {
+    background: #f5f3ef;
+    padding: 0.1rem 0.35rem;
+    border-radius: 3px;
+  }
+  .article-body pre code { background: transparent; padding: 0; }
+  .article-body blockquote {
+    border-left: 3px solid var(--border-strong);
+    padding: 0.3rem 0 0.3rem 1.2rem;
+    margin: 1.5rem 0;
+    color: var(--muted);
+    font-style: italic;
+  }
+  .article-body ul, .article-body ol {
+    padding-left: 1.4rem;
+    margin: 0 0 1.25rem;
+  }
+  .article-body li { margin-bottom: 0.45rem; }
+  .article-body img { max-width: 100%; height: auto; border-radius: 4px; }
+  .repo-card {
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1rem 1.25rem;
+    margin: 2.5rem 0;
+    background: #faf8f4;
+  }
+  .repo-card .label { margin-bottom: 0.3rem; }
+  .repo-card a {
+    color: var(--ink);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .repo-card a:hover { color: var(--accent); text-decoration: underline; }
+  .back-link {
+    display: inline-block;
+    margin-bottom: 1.5rem;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.95rem;
+  }
+  .back-link:hover { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a class="site-name" href="/">Mindaugas Nakrošis</a>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/case-studies">Case studies</a>
+      <a href="/writing" aria-current="page">Writing</a>
+      <a href="/contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+
+  <article class="article-body">
+    <a class="back-link" href="/writing">← All writing</a>
+
+    <p class="eyebrow">Anthropic API · ReAct · Agent architecture</p>
+    <h1>I built a self-debugging AI agent from scratch - here's exactly how the reasoning cycle works</h1>
+    <p class="lede">No LangChain. No agent framework. Just the raw Anthropic API and a Python loop - and what that teaches you about every framework you will ever use.</p>
+
+    <p class="article-meta">
+      <time datetime="2026-06-10">Jun 10, 2026</time>
+      <span class="sep">·</span>
+      <a href="https://medium.com/@mindaugasnakr/i-built-a-self-debugging-ai-agent-from-scratch-heres-exactly-how-the-reasoning-cycle-works-c0ae1e9cf4c5" target="_blank" rel="noopener">Also on Medium</a>
+    </p>
+
+    <div class="repo-card">
+      <p class="label">Code</p>
+      <p style="margin:0"><a href="https://github.com/mindaugasnakrosis/ai-react-loop" target="_blank" rel="noopener">https://github.com/mindaugasnakrosis/ai-react-loop</a></p>
+    </div>
+
+<p>I built a self-debugging agent that takes a repository with failing tests and autonomously finds and fixes the bug. Not using LangChain, AutoGPT, or any agent framework - just the raw Anthropic API and about 200 lines of Python.</p>
+
+<p>The reason: I wanted to actually understand how AI agents work, not just call a library and hope for the best. If you have ever looked at an "AI agent" and thought <em>but what is it actually doing?</em> - this article is for you.</p>
+
+<h2>What is a ReAct agent?</h2>
+
+<p>ReAct (Reasoning + Acting) is a pattern introduced in a 2022 paper by Yao et al. The core idea is elegantly simple: give a language model tools it can call, and let it alternate between three steps until it is done:</p>
+
+<ol>
+  <li><strong>THOUGHT</strong> - the model reasons about what it knows and what it needs to find out</li>
+  <li><strong>ACTION</strong> - it calls a tool to gather information or make a change</li>
+  <li><strong>OBSERVATION</strong> - it reads the result and updates its understanding</li>
+</ol>
+
+<p>Then it loops. Each THOUGHT is informed by every OBSERVATION that came before it. The context window becomes a working memory that accumulates evidence across iterations.</p>
+
+<p>This sounds simple. The implementation is where it gets interesting.</p>
+
+<h2>The core problem: the API has no memory</h2>
+
+<p>Here is the thing most people miss: <strong>Claude has no memory between API calls.</strong> Every single call is completely stateless. Send a message, get a response - the model has no idea what happened in the previous call.</p>
+
+<p>So how does an agent that runs for 10 iterations remember what it tried in iteration 3?</p>
+
+<p>The answer is almost anticlimactic: <strong>you keep a list and send the entire thing on every call.</strong></p>
+
+<pre><code class="language-python">self.messages: list[dict] = []  # this IS the agent's memory</code></pre>
+
+<p>After three iterations, this list looks like:</p>
+
+<pre><code>[
+  { role: "user",      content: "Debug fixtures/01_off_by_one, tests are failing..." },
+  { role: "assistant", content: [TextBlock("I'll run the tests first"), ToolUseBlock("run_tests")] },
+  { role: "user",      content: [tool_result("1 failed: assert find_max([1,2,3,4,5]) == 5, got 4")] },
+  { role: "assistant", content: [TextBlock("The test shows find_max returns 4 instead of 5..."), ToolUseBlock("read_file")] },
+  { role: "user",      content: [tool_result("4: for i in range(len(items) - 1):  # BUG")] },
+  { role: "assistant", content: [TextBlock("Found it. range(len(items) - 1) skips the last element"), ToolUseBlock("edit_file")] },
+  { role: "user",      content: [tool_result("Successfully replaced 1 occurrence in buggy_code.py")] },
+]</code></pre>
+
+<p>Every iteration appends two things to this list: the assistant's thought plus tool call, and the tool's result. The next API call sends the whole list. The model reads the entire transcript from scratch and responds as if it remembers - but it does not. It just re-reads the conversation you handed it.</p>
+
+<p><strong>The context window is the agent's working memory. Nothing more.</strong></p>
+
+<h2>How tool calls actually work at the API level</h2>
+
+<p>When you pass <code>tools=TOOL_DECLARATIONS</code> to the Anthropic API, you are sending Claude a list of JSON schemas describing what actions are available. Claude reads the descriptions to decide which tool to use. Vague descriptions lead to bad tool choices - this is prompt engineering, whether you think of it that way or not.</p>
+
+<pre><code class="language-python">{
+    "name": "read_file",
+    "description": "Read the contents of a file. Optionally specify a line range. Use this to inspect code you suspect contains the bug.",
+    "input_schema": {
+        "type": "object",
+        "properties": {
+            "path": {"type": "string"},
+            "start_line": {"type": "integer"},
+            "end_line": {"type": "integer"},
+        },
+        "required": ["path"],
+    },
+}</code></pre>
+
+<p>The API response has a <code>content</code> field that is a <strong>list of blocks</strong>, not a single string. Two types matter:</p>
+
+<ul>
+  <li><strong>TextBlock</strong> - the model's reasoning in plain English (the THOUGHT)</li>
+  <li><strong>ToolUseBlock</strong> - which tool to call and what arguments (the ACTION)</li>
+</ul>
+
+<pre><code class="language-python">response.content = [
+    TextBlock(text="The test fails on the last element. Let me look at the loop bounds..."),
+    ToolUseBlock(id="toolu_abc123", name="read_file", input={"path": "buggy_code.py"}),
+]</code></pre>
+
+<p>The TextBlock comes first - reasoning before acting. That is the "Reason" in ReAct. Then comes the action.</p>
+
+<h2>The contract you must not break</h2>
+
+<p>Here is the part that took me a debugging session to understand properly.</p>
+
+<p>When Claude returns a <code>ToolUseBlock</code>, the API establishes a <strong>strict contract</strong>: before your next API call, you must send back a <code>tool_result</code> block whose <code>tool_use_id</code> matches the <code>id</code> in the <code>ToolUseBlock</code>. If you do not, you get a 400.</p>
+
+<p>The conversation structure the API enforces:</p>
+
+<pre><code>Turn 1: user      → task description
+Turn 2: assistant → [thought text] + [tool_use  id="abc"  name="run_tests"]
+Turn 3: user      → [tool_result   tool_use_id="abc"  content="1 failed..."]
+Turn 4: assistant → [thought text] + [tool_use  id="def"  name="read_file"]
+Turn 5: user      → [tool_result   tool_use_id="def"  content="line 4: range(len..."]</code></pre>
+
+<p>This broke for me when Claude returned <strong>two</strong> <code>ToolUseBlock</code>s in a single response - <code>list_files</code> and <code>read_file</code> in the same turn. My code only sent back one <code>tool_result</code>. The API rejected it immediately.</p>
+
+<p>The fix: collect every <code>ToolUseBlock</code> from the response, execute every one, return all results in a single user message.</p>
+
+<pre><code class="language-python"># WRONG: only handles the last tool call
+for block in response.content:
+    if block.type == "tool_use":
+        tool_call = ToolCall(name=block.name, input=block.input, id=block.id)
+
+# RIGHT: collect all of them
+tool_calls: list[ToolCall] = []
+for block in response.content:
+    if block.type == "tool_use":
+        tool_calls.append(ToolCall(name=block.name, input=block.input, id=block.id))</code></pre>
+
+<p>Claude may request parallel tool calls when it can gather multiple pieces of information at once. Every single one needs a matching result in the next message, or the entire request fails.</p>
+
+<h2>The loop structure in full</h2>
+
+<p>Here is the complete loop, simplified. This is the entire agentic pattern:</p>
+
+<pre><code class="language-python"># 1. Seed the conversation with the task
+messages.append({"role": "user", "content": "Debug this repo, tests are failing..."})
+
+while iteration &lt; max_iterations:
+
+    # 2. Ask Claude: given everything you've seen, what next?
+    response = client.messages.create(
+        model="claude-sonnet-4-6",
+        tools=TOOL_DECLARATIONS,
+        messages=messages,       # the FULL history every time
+    )
+
+    # 3. Parse the response into thought + tool calls
+    thought = ""
+    tool_calls = []
+    for block in response.content:
+        if block.type == "text":
+            thought += block.text          # THOUGHT: the reasoning
+        elif block.type == "tool_use":
+            tool_calls.append(block)       # ACTION: what to do
+
+    # 4. Stop if the agent declares success or failure
+    if any(tc.name == "finish" for tc in tool_calls):
+        break
+
+    # 5. Execute every tool call
+    results = [(tc.id, execute(tc)) for tc in tool_calls]
+
+    # 6. Append everything to history
+    messages.append({"role": "assistant", "content": response.content})
+    messages.append({"role": "user", "content": [
+        {"type": "tool_result", "tool_use_id": id, "content": result.output}
+        for id, result in results
+    ]})
+
+    # 7. Loop - Claude now sees the new observations and reasons again</code></pre>
+
+<p>That is it. Seven steps. Every agent framework you will ever use - LangChain, the Claude Agent SDK, AutoGen - is some variation of this loop with more scaffolding around it.</p>
+
+<h2>What the agent actually did</h2>
+
+<p>I gave the agent a Python file with an off-by-one bug: <code>range(len(items) - 1)</code> instead of <code>range(len(items))</code>. The tests were failing because the loop skipped the last element.</p>
+
+<p>The agent never saw the bug description. It had to find it.</p>
+
+<p>In six iterations it:</p>
+
+<ol>
+  <li>Ran tests, and saw <code>assert find_max([1,2,3,4,5]) == 5</code> failing with value <code>4</code></li>
+  <li>Listed files, and identified <code>buggy_code.py</code> as the source</li>
+  <li>Read the file, and saw <code>range(len(items) - 1)</code> with no surrounding context</li>
+  <li>Formed the hypothesis: the loop iterates indices 0 through n-2, skipping the last element</li>
+  <li>Called <code>edit_file</code> with the fix</li>
+  <li>Called <code>finish</code> with an accurate root cause summary</li>
+</ol>
+
+<p>Nobody told it that <code>range(len(items) - 1)</code> skips the last element. It connected two facts: the test fails on the last element, and the loop stops one short of the last element.</p>
+
+<p>That connection happened inside a single THOUGHT block - plain English reasoning, visible in the terminal, formed by reading the test failure and the source code in sequence. The context window was doing what a developer's working memory does.</p>
+
+<h2>Why not just ask "what's wrong with this code?" in one shot?</h2>
+
+<p>You could. For a small, self-contained file, a one-shot prompt would likely find the same bug.</p>
+
+<p>But the agent pattern scales to things a single prompt cannot handle:</p>
+
+<ul>
+  <li><strong>The bug is in file B, but you only know it exists because test A failed</strong> - you need to navigate there</li>
+  <li><strong>The fix requires reading context</strong> - imports, constants, how functions call each other</li>
+  <li><strong>Verification matters</strong> - apply the fix, then run the tests again to confirm</li>
+  <li><strong>Errors teach</strong> - if <code>edit_file</code> fails because the string was not found exactly, the agent reads the error and tries differently</li>
+</ul>
+
+<p>A single prompt gets one shot. The agent gets as many shots as you give it iterations. Each shot is informed by every observation that came before it.</p>
+
+<h2>The execution sandbox</h2>
+
+<p>One last piece: when the agent calls <code>run_tests</code> or <code>edit_file</code>, those calls need to execute somewhere safely. I used Docker.</p>
+
+<p>The agent's edits need to persist across tool calls within a run - it cannot apply a fix and then have <code>run_tests</code> see the original file. So the setup is:</p>
+
+<ol>
+  <li>Copy the repo to a temporary directory at the start of a run</li>
+  <li>Start a Docker container with that directory mounted at <code>/repo</code></li>
+  <li>File reads and writes go directly to the tmpdir on the host</li>
+  <li>Command execution (<code>pytest</code>, arbitrary shell commands) goes through <code>docker exec</code></li>
+  <li>Both see the same files because the tmpdir <em>is</em> <code>/repo</code> via the volume mount</li>
+</ol>
+
+<p>The container runs with <code>--network none</code> so the agent cannot make outbound HTTP requests, and <code>--memory 512m</code> to prevent runaway resource usage. At the end of the run, success or failure, the container stops and the tmpdir is deleted.</p>
+
+<p>The clean separation is the point: the ReAct loop itself does not change between Phase 1 (fake stubs) and Phase 2 (real Docker). Only what <code>execute_tool()</code> calls at the bottom changes. The reasoning cycle is completely independent of the execution environment.</p>
+
+<h2>What I learned</h2>
+
+<p>The ReAct pattern is not magic. It is a while loop with a list. The intelligence is entirely the language model's - the loop just gives it a structure to gather information before committing to an answer.</p>
+
+<p>The hardest part is not the loop. It is the details:</p>
+
+<ul>
+  <li>Every <code>tool_use</code> needs a matching <code>tool_result</code> in the very next message</li>
+  <li>Parallel tool calls are real and your code must handle all of them</li>
+  <li>Tool descriptions are prompt engineering - write them carefully</li>
+  <li>The context window fills up - you need to truncate long observations before they blow the token budget</li>
+</ul>
+
+<p>Build it from scratch once and you will understand every agent framework you ever use.</p>
+
+<p><em>I build agentic tooling for regulated environments through <a href="https://trustflux.co.uk/">Trustflux Ltd</a>. This loop is the foundation the rest of the portfolio sits on - <a href="https://github.com/mindaugasnakrosis/mdjira"><code>md-to-jira</code></a>, <a href="https://github.com/mindaugasnakrosis/azure-costs-analyzer"><code>azure-cost-investigator</code></a> and <a href="https://github.com/mindaugasnakrosis/notion-spec-checker"><code>spec-check</code></a> are all the same cycle with a narrower tool set and a stricter contract.</em></p>
+
+<p><em>Written with Claude Code. The code is the artefact; the article is the receipt.</em></p>
+
+    <div class="repo-card" style="margin-top:3rem">
+      <p class="label">Try it</p>
+      <p style="margin:0">The full agent, the Docker sandbox and the test fixtures are in the repo. <a href="https://github.com/mindaugasnakrosis/ai-react-loop" target="_blank" rel="noopener">mindaugasnakrosis/ai-react-loop →</a></p>
+    </div>
+
+  </article>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>London</span><span class="sep">·</span>
+    <a href="mailto:mnakrosis@trustflux.co.uk">mnakrosis@trustflux.co.uk</a><span class="sep">·</span>
+    <a href="https://github.com/mindaugasnakrosis" target="_blank" rel="noopener">GitHub</a><span class="sep">·</span>
+    <a href="https://www.linkedin.com/in/mindaugas-nakro%C5%A1is-142a4a108/" target="_blank" rel="noopener">LinkedIn</a><span class="sep">·</span>
+    <a href="https://mindaugasnakr.medium.com/" target="_blank" rel="noopener">Medium</a>
+  </div>
+</footer>
+
+</body>
+</html>
