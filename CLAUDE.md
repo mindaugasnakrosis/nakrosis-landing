@@ -35,7 +35,7 @@ public/
    ```
    Omit the Medium link if the article isn't published on Medium yet.
 
-3. Add a `<li>` entry to the **"Recent writing" section in `public/index.html`** (keep only the 3 most recent — remove the oldest when adding a new one):
+3. Add a `<li>` entry to the **"Recent writing" section in `public/index.html`** and the identical list in **`public/404.html`** (keep only the 3 most recent — remove the oldest when adding a new one):
    ```html
    <li>
      <span class="when">Jun 04</span>
