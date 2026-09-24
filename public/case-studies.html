@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Case studies — Mindaugas Nakrošis</title>
-<meta name="description" content="mdjira, azure-costs-analyzer, derivatives trading platform (VP of Technology), and the Cult Wines asset-trading platform. Four engagements across agentic AI, FinOps, FinTech, and Azure-native architecture.">
+<meta name="description" content="Intick (VP of Technology, production Claude incident-triage agent and MCP servers), azure-costs-analyzer, mdjira, and the Cult Wines $330M AUM platform rebuild.">
 <link rel="canonical" href="https://nakrosis.com/case-studies">
 <meta name="robots" content="index, follow">
 <meta property="og:title" content="Case studies — Mindaugas Nakrošis">
-<meta property="og:description" content="mdjira, azure-costs-analyzer, derivatives trading platform, Cult Wines asset-trading platform.">
+<meta property="og:description" content="Intick (VP of Technology, production Claude incident-triage agent and MCP servers), azure-costs-analyzer, mdjira, and the Cult Wines $330M AUM platform rebuild.">
 <meta property="og:url" content="https://nakrosis.com/case-studies">
 <meta property="og:type" content="article">
 <meta property="og:site_name" content="Mindaugas Nakrošis">
@@ -19,12 +19,12 @@
 <meta property="og:image:alt" content="Portrait of Mindaugas Nakrošis">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Case studies — Mindaugas Nakrošis">
-<meta name="twitter:description" content="mdjira, azure-costs-analyzer, derivatives trading platform, Cult Wines asset-trading platform.">
+<meta name="twitter:description" content="Intick (VP of Technology, production Claude incident-triage agent and MCP servers), azure-costs-analyzer, mdjira, and the Cult Wines $330M AUM platform rebuild.">
 <meta name="twitter:image" content="https://nakrosis.com/mindaugas.jpg">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<link rel="stylesheet" href="styles.css?v=20260824">
+<link rel="stylesheet" href="styles.css?v=20260926">
 </head>
 <body>
 
@@ -45,13 +45,127 @@
   <section class="hero">
     <p class="eyebrow">Four engagements</p>
     <h1>Case studies</h1>
-    <p class="lede">Two open-source <span class="sc">Claude Code</span> skills shipped in 2026, one VP-level architecture engagement in FinTech derivatives, and three and a half years rebuilding a front-office asset trading platform on <span class="sc">Azure</span>.</p>
+    <p class="lede">A production <span class="sc">AI</span> agent inside a regulated trading venue, two open-source agents shipped in 2026, and three and a half years rebuilding a $330M <span class="sc">AUM</span> platform on <span class="sc">Azure</span>.</p>
   </section>
 
-  <!-- ========== 01 mdjira ========== -->
+  <!-- ========== 01 Intick ========== -->
+
+  <section class="ornamented case-section" id="intick">
+    <p class="case-eyebrow">Case 01 · Oct 2024 – Apr 2026 · VP of Technology</p>
+    <h2 class="title">Intick · block trading venue</h2>
+    <p class="lede">VP of Technology at a FinTech startup electronifying off-market block trading of futures and options, including Eurex futures spreads, for buy-side institutions. Full technical authority over the platform, plus a Claude-powered incident-triage agent running in production.</p>
+
+    <dl class="project-meta">
+      <dt>Sector</dt>
+      <dd>FinTech · futures and options · buy-side</dd>
+      <dt>Role</dt>
+      <dd>VP of Technology</dd>
+      <dt>Tenure</dt>
+      <dd>Oct 2024 – Apr 2026</dd>
+      <dt>Stack</dt>
+      <dd>Python (asyncio, FastAPI) · Azure · Service Bus · FIX · Claude API · MCP · Slack</dd>
+      <dt>Client</dt>
+      <dd>Intick · London</dd>
+      <dt>Write-up</dt>
+      <dd><a href="/writing/fix-triage-agent">Building an AI agent to triage FIX trading incidents</a></dd>
+    </dl>
+
+    <h3 class="label" style="margin-top:2rem">The agent</h3>
+    <ol class="method">
+      <li><div>
+        <h3>Event-driven incident triage</h3>
+        <p>Incidents published to Azure Service Bus queues were consumed by an agent that ran a tool-using loop to investigate and identify the root cause, then alerted the right people in Slack.</p>
+      </div></li>
+      <li><div>
+        <h3>A model per task</h3>
+        <p>Claude Haiku for lightweight intent extraction, Claude Sonnet for the multi-step triage loop. Cheap where the work is simple, capable where it is not.</p>
+      </div></li>
+      <li><div>
+        <h3>Tools became company infrastructure</h3>
+        <p>The agent's tools were extracted into <span class="sc">MCP</span> servers used across the company (a customer's invoices for a period, a customer's orders), so colleagues could use the same capabilities in their own work.</p>
+      </div></li>
+    </ol>
+
+    <h3 class="label" style="margin-top:2.5rem">What I owned</h3>
+    <ul class="outcomes">
+      <li>Full technical authority: architecture decisions, technology budget, hiring and dismissals, and the technical liaison between <span class="sc">CEO</span>/<span class="sc">CPO</span> and engineering.</li>
+      <li>Architected the Python-first backend on Azure and wrote production code in it (asyncio, FastAPI), with microservices, containerisation and infrastructure-as-code patterns.</li>
+      <li>Architected <span class="sc">FIX</span> connectivity into counterparties' <span class="sc">EMS</span> and <span class="sc">OMS</span> systems via the message broker, integrating tier-1 investment banks and asset managers with trillions under management (counterparty names under <span class="sc">NDA</span>).</li>
+      <li>Delivered direct Eurex exchange connectivity over IPSec-over-GRE on dedicated Cisco routing.</li>
+      <li>Engineered for an unforgiving failure profile: a single block order in futures spreads could carry tens of thousands of pounds in commission alone. Reliability and correctness were the product.</li>
+      <li>Led the <span class="sc">ISO</span> 27001 compliance programme to financial-services requirements.</li>
+      <li>Built, mentored and led the cross-functional engineering team through go-live, where integration reliability was a sales asset for winning institutional counterparties onto a new venue.</li>
+    </ul>
+  </section>
+
+  <!-- ========== 02 azure-costs-analyzer ========== -->
+
+  <section class="ornamented case-section" id="azure-costs-analyzer">
+    <p class="case-eyebrow">Case 02 · 2026 · open source</p>
+    <h2 class="title">azure-costs-analyzer</h2>
+    <p class="lede">A read-only <span class="sc">Claude Code</span> skill that runs a 20-minute Azure cost review on any tenant — fifteen citation-grounded rules, eighteen collectors, an <span class="sc">HTML</span>+Markdown report. Built for portfolio operators who want one repeatable agent across every portco's tenant, not a £15k consultant deck per company.</p>
+
+    <dl class="project-meta">
+      <dt>Status</dt>
+      <dd>Shipped 2026-05-04</dd>
+      <dt>Source</dt>
+      <dd><a href="https://github.com/mindaugasnakrosis/azure-costs-analyzer" target="_blank" rel="noopener">github.com/mindaugasnakrosis/azure-costs-analyzer</a></dd>
+      <dt>Write-up</dt>
+      <dd><a href="https://mindaugasnakr.medium.com/i-built-a-claude-code-skill-that-does-a-20-minute-azure-cost-review-40efc3cf5b19" target="_blank" rel="noopener">Medium · 2026-05</a></dd>
+      <dt>Stack</dt>
+      <dd>Python · Azure CLI · Pydantic · Claude Code skill · MIT-licensed</dd>
+    </dl>
+
+    <h3 class="label" style="margin-top:2rem">Headline result</h3>
+    <blockquote class="pullquote">
+      £5,436 – £7,369 / month identified savings on a tenant doing roughly £30k/month in Azure spend — roughly 3× Azure Advisor's published recommendation ceiling for the same tenant.
+      <span class="attribution">Real run · UK-based Azure tenant · 2026-05</span>
+    </blockquote>
+
+    <dl class="metrics">
+      <dt>Cost rules</dt>
+      <dd>15, each citing a committed Microsoft / FinOps Foundation source.</dd>
+      <dt>Collectors</dt>
+      <dd>18, all routed through one read-only gate that rejects 33 forbidden write verbs before subprocess.</dd>
+      <dt>Knowledge corpus</dt>
+      <dd>14 documents, frontmatter-versioned with source <span class="sc">URL</span>, retrieval date, and <span class="sc">SHA</span>256.</dd>
+      <dt>Tests</dt>
+      <dd>227 passing (1 skipped — real-tenant smoke test gated on env var).</dd>
+      <dt>Output</dt>
+      <dd><code>report.md</code> + <code>report.html</code> (print-friendly <span class="sc">CSS</span>) + <code>findings.yaml</code>.</dd>
+      <dt>Wall-clock</dt>
+      <dd>~20 minutes for a tenant with a few dozen subscriptions.</dd>
+    </dl>
+
+    <h3 class="label" style="margin-top:2.5rem">Architectural bets</h3>
+    <ol class="method">
+      <li><div>
+        <h3>Read-only is a guarantee</h3>
+        <p>Single function (<code>azcli.run_json</code>) gates every Azure <span class="sc">CLI</span> call. Twenty-three unit tests verify it rejects every one of 33 forbidden write verbs before <code>subprocess</code> is reached. Adding new collectors does not loosen this.</p>
+      </div></li>
+      <li><div>
+        <h3>Citation-grounded knowledge</h3>
+        <p>Every rule declares <code>KNOWLEDGE_REFS</code> pointing at committed <span class="sc">.md</span> files. A rule that cites a missing document fails to load. The model computes; the rule cites. Refresh script tracks upstream <span class="sc">SHA</span>256 drift.</p>
+      </div></li>
+      <li><div>
+        <h3>Severity × Confidence as independent axes</h3>
+        <p>"We <em>think</em> this £4k reservation is wasted" gets handled differently from "this £4 <span class="sc">IP</span> is definitely orphaned". Single-axis lists hide that distinction; the report keeps it.</p>
+      </div></li>
+      <li><div>
+        <h3>Forecast over snapshot</h3>
+        <p>Underused-reservation findings combine spend, utilisation, and term-remaining (read from <code>expiryDateTime</code>) into one forward-looking £ figure — e.g. "<strong>£4,558 – £5,535 between now and expiry</strong>" on a 9-month-remaining reservation. Advisor doesn't combine those axes.</p>
+      </div></li>
+      <li><div>
+        <h3>Savings as ranges, not point estimates</h3>
+        <p>Every monetary recommendation comes with a non-empty <code>assumption</code> string explaining what's <em>not</em> netted out: negotiated discounts, reservation coverage, regional price drift. The range itself is the answer.</p>
+      </div></li>
+    </ol>
+  </section>
+
+  <!-- ========== 03 mdjira ========== -->
 
   <section class="ornamented case-section" id="mdjira">
-    <p class="case-eyebrow">Case 01 · 2026 · open source</p>
+    <p class="case-eyebrow">Case 03 · 2026 · open source</p>
     <h2 class="title">mdjira</h2>
     <p class="lede">An open-source <span class="sc">Claude Code</span> skill that turns rough markdown product briefs into properly-sized <span class="sc">Jira</span> backlogs — <span class="sc">INVEST</span>-compliant stories, modified-Fibonacci sizing, <span class="sc">BDD</span> acceptance criteria, full epic / story / subtask hierarchy.</p>
 
@@ -136,115 +250,28 @@
     </ol>
   </section>
 
-  <!-- ========== 02 azure-costs-analyzer ========== -->
-
-  <section class="ornamented case-section" id="azure-costs-analyzer">
-    <p class="case-eyebrow">Case 02 · 2026 · open source</p>
-    <h2 class="title">azure-costs-analyzer</h2>
-    <p class="lede">A read-only <span class="sc">Claude Code</span> skill that runs a 20-minute Azure cost review on any tenant — fifteen citation-grounded rules, eighteen collectors, an <span class="sc">HTML</span>+Markdown report. Built for portfolio operators who want one repeatable agent across every portco's tenant, not a £15k consultant deck per company.</p>
-
-    <dl class="project-meta">
-      <dt>Status</dt>
-      <dd>Shipped 2026-05-04</dd>
-      <dt>Source</dt>
-      <dd><a href="https://github.com/mindaugasnakrosis/azure-costs-analyzer" target="_blank" rel="noopener">github.com/mindaugasnakrosis/azure-costs-analyzer</a></dd>
-      <dt>Write-up</dt>
-      <dd><a href="https://mindaugasnakr.medium.com/i-built-a-claude-code-skill-that-does-a-20-minute-azure-cost-review-40efc3cf5b19" target="_blank" rel="noopener">Medium · 2026-05</a></dd>
-      <dt>Stack</dt>
-      <dd>Python · Azure CLI · Pydantic · Claude Code skill · MIT-licensed</dd>
-    </dl>
-
-    <h3 class="label" style="margin-top:2rem">Headline result</h3>
-    <blockquote class="pullquote">
-      £5,436 – £7,369 / month identified savings on a tenant doing roughly £30k/month in Azure spend — roughly 3× Azure Advisor's published recommendation ceiling for the same tenant.
-      <span class="attribution">Real run · UK-based Azure tenant · 2026-05</span>
-    </blockquote>
-
-    <dl class="metrics">
-      <dt>Cost rules</dt>
-      <dd>15, each citing a committed Microsoft / FinOps Foundation source.</dd>
-      <dt>Collectors</dt>
-      <dd>18, all routed through one read-only gate that rejects 33 forbidden write verbs before subprocess.</dd>
-      <dt>Knowledge corpus</dt>
-      <dd>14 documents, frontmatter-versioned with source <span class="sc">URL</span>, retrieval date, and <span class="sc">SHA</span>256.</dd>
-      <dt>Tests</dt>
-      <dd>227 passing (1 skipped — real-tenant smoke test gated on env var).</dd>
-      <dt>Output</dt>
-      <dd><code>report.md</code> + <code>report.html</code> (print-friendly <span class="sc">CSS</span>) + <code>findings.yaml</code>.</dd>
-      <dt>Wall-clock</dt>
-      <dd>~20 minutes for a tenant with a few dozen subscriptions.</dd>
-    </dl>
-
-    <h3 class="label" style="margin-top:2.5rem">Architectural bets</h3>
-    <ol class="method">
-      <li><div>
-        <h3>Read-only is a guarantee</h3>
-        <p>Single function (<code>azcli.run_json</code>) gates every Azure <span class="sc">CLI</span> call. Twenty-three unit tests verify it rejects every one of 33 forbidden write verbs before <code>subprocess</code> is reached. Adding new collectors does not loosen this.</p>
-      </div></li>
-      <li><div>
-        <h3>Citation-grounded knowledge</h3>
-        <p>Every rule declares <code>KNOWLEDGE_REFS</code> pointing at committed <span class="sc">.md</span> files. A rule that cites a missing document fails to load. The model computes; the rule cites. Refresh script tracks upstream <span class="sc">SHA</span>256 drift.</p>
-      </div></li>
-      <li><div>
-        <h3>Severity × Confidence as independent axes</h3>
-        <p>"We <em>think</em> this £4k reservation is wasted" gets handled differently from "this £4 <span class="sc">IP</span> is definitely orphaned". Single-axis lists hide that distinction; the report keeps it.</p>
-      </div></li>
-      <li><div>
-        <h3>Forecast over snapshot</h3>
-        <p>Underused-reservation findings combine spend, utilisation, and term-remaining (read from <code>expiryDateTime</code>) into one forward-looking £ figure — e.g. "<strong>£4,558 – £5,535 between now and expiry</strong>" on a 9-month-remaining reservation. Advisor doesn't combine those axes.</p>
-      </div></li>
-      <li><div>
-        <h3>Savings as ranges, not point estimates</h3>
-        <p>Every monetary recommendation comes with a non-empty <code>assumption</code> string explaining what's <em>not</em> netted out: negotiated discounts, reservation coverage, regional price drift. The range itself is the answer.</p>
-      </div></li>
-    </ol>
-  </section>
-
-  <!-- ========== 03 VP of Technology ========== -->
-
-  <section class="ornamented case-section" id="vp-of-technology">
-    <p class="case-eyebrow">Case 03 · Oct 2024 – Feb 2025 · VP of Technology</p>
-    <h2 class="title">Derivatives trading platform</h2>
-    <p class="lede">VP of Technology for a buy-side <span class="sc">FinTech</span> derivatives platform. Owned the architecture for real-time trade execution, the Java backend on <span class="sc">Azure</span>, and the integration of agentic <span class="sc">AI</span> into trading workflows.</p>
-
-    <dl class="project-meta">
-      <dt>Sector</dt>
-      <dd>FinTech · derivatives · buy-side</dd>
-      <dt>Role</dt>
-      <dd>VP of Technology</dd>
-      <dt>Tenure</dt>
-      <dd>Oct 2024 – Feb 2025</dd>
-      <dt>Stack</dt>
-      <dd>Java · Azure · FIX protocol · Kubernetes · IaC · agentic AI</dd>
-      <dt>Client</dt>
-      <dd>Confidential</dd>
-    </dl>
-
-    <h3 class="label" style="margin-top:2rem">What I owned</h3>
-    <ul class="outcomes">
-      <li>Architected and implemented <span class="sc">FIX</span> protocol messaging infrastructure for real-time trade execution and order management.</li>
-      <li>Designed and deployed Java-based backend systems on Azure cloud infrastructure for trading-grade scalability and reliability.</li>
-      <li>Pioneered integration of agentic <span class="sc">AI</span> into trading workflows and operational tooling — early production deployment, not pilot.</li>
-      <li>Established cloud-native architecture patterns on Azure: microservices, containerisation, infrastructure-as-code.</li>
-      <li>Implemented security and compliance frameworks aligned with financial-services regulatory requirements.</li>
-      <li>Built and managed a cross-functional engineering team; ran the technical liaison between <span class="sc">CEO</span>/<span class="sc">CPO</span> and engineering, translating business requirements into technical roadmaps.</li>
-      <li>Drove platform-evolution decisions in a live trading environment — balancing innovation against system stability.</li>
-    </ul>
-    <p class="confidential">Client name confidential — references on request</p>
-  </section>
-
   <!-- ========== 04 Cult Wines ========== -->
 
   <section class="ornamented case-section" id="cult-wines">
     <p class="case-eyebrow">Case 04 · May 2021 – Oct 2024 · 3 years 6 months</p>
     <h2 class="title">Cult Wines · asset trading platform</h2>
-    <p class="lede">Front-office architect on the green-field asset-trading platform for an alternative-investments firm. Drove the full-stack of the front office across <span class="sc">React</span>, Next.js, React Native, and an <span class="sc">Azure</span>-native event-driven backend.</p>
+    <p class="lede">Front-office architect, then principal architect and Azure DevOps lead, at an alternative-investments firm managing $330M <span class="sc">AUM</span> in fine wine, with offices in London, New York, Hong Kong, Singapore and Shanghai. Led the rebuild of the decade-old monolith that ran the whole business onto an event-driven <span class="sc">Azure</span> platform.</p>
+
+    <h3 class="label" style="margin-top:2rem">Headline results</h3>
+    <dl class="metrics">
+      <dt>Client onboarding</dt>
+      <dd>$10M of new AUM within its first three months.</dd>
+      <dt>CultX</dt>
+      <dd>B2C trading platform on web, iOS and Android: real-time pricing across 100k live markets, over $250M of wine listed, launched into China.</dd>
+      <dt>Vintrade rebuild</dt>
+      <dd>The monolith behind the entire $330M AUM operation, moved onto an event-driven Azure platform.</dd>
+    </dl>
 
     <dl class="project-meta">
       <dt>Sector</dt>
       <dd>Alternative investments · asset trading</dd>
       <dt>Role</dt>
-      <dd>Front-office Architect (full-stack)</dd>
+      <dd>Front-office Architect → Principal Architect &amp; Azure DevOps Lead</dd>
       <dt>Tenure</dt>
       <dd>May 2021 – Oct 2024</dd>
       <dt>Stack</dt>
@@ -274,7 +301,7 @@
 
   <section class="ornamented">
     <h2 class="label">Earlier engagements</h2>
-    <p>Senior front-end at <span class="sc">HomeToGo</span> in Berlin (Apr 2019 – 2021), Node.js / GraphQL contracts via Trustflux Ltd (Dec 2017 – 2021), .NET backend in logistics (2016 – 17), full-stack on a cryptocurrency brokerage (2015 – 16), and freelance work on 10+ web applications (2014 – 15). Full chronology on the <a href="/">home page</a>.</p>
+    <p>Co-founder and <span class="sc">CTO</span> of a warehouse management SaaS (2021 – 23, alongside Cult Wines): live in five warehouses, profitable, exited via sale. Lead <span class="sc">UI</span> developer at <span class="sc">HomeToGo</span> in Berlin (Apr 2019 – Apr 2021, 2 million daily users). Node.js / GraphQL contracts via Trustflux Ltd (Dec 2017 – Apr 2019). Before that, .NET backend in logistics, full-stack at a cryptocurrency brokerage, and 10+ freelance web applications (2014 – 17). Full chronology on the <a href="/">home page</a>.</p>
     <p class="note">More detail on any of the above on request.</p>
   </section>
 

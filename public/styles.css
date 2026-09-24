@@ -10,6 +10,10 @@
   --border: #d8d2c4;
   --border-strong: #b8b1a0;
   --rule: #1a1a17;
+  /* Reading measure: ~68 characters per line at the body size. */
+  --measure: 45rem;
+  /* Figures, tables and code break out wider than the text on large screens. */
+  --wide: 60rem;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -22,7 +26,7 @@ html {
 body {
   margin: 0;
   font-family: ui-serif, "Iowan Old Style", "Charter", "Source Serif Pro", Georgia, "Times New Roman", serif;
-  font-size: 18px;
+  font-size: 19px;
   line-height: 1.62;
   color: var(--text);
   background: var(--bg);
@@ -33,7 +37,7 @@ body {
 }
 
 .container {
-  max-width: 36rem;
+  max-width: var(--measure);
   margin: 0 auto;
   padding: 0 1.5rem;
 }
@@ -765,4 +769,92 @@ ol.method p { margin: 0; }
   .contact-list li { grid-template-columns: 1fr; gap: 0.05rem; }
 
   .pullquote { padding: 1.15rem 1.2rem; font-size: 1.1rem; }
+}
+
+/* ---------- Newsletter (Substack embed) ---------- */
+
+.subscribe { margin: 0; }
+aside.subscribe {
+  margin: 3rem 0 0;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border-strong);
+}
+.subscribe-pitch { color: var(--muted); margin-bottom: 1rem; }
+.subscribe-form {
+  display: flex;
+  gap: 0.5rem;
+  margin: 0 0 0.6rem;
+}
+.subscribe-form input[type="email"] {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 0.6rem 0.8rem;
+  font: inherit;
+  font-size: 1rem;
+  color: var(--ink);
+  background: #fff;
+  border: 1px solid var(--border-strong);
+  border-radius: 4px;
+}
+.subscribe-form input[type="email"]::placeholder { color: var(--dim); }
+.subscribe-form input[type="email"]:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+  border-color: var(--accent);
+}
+.subscribe-form button {
+  flex: 0 0 auto;
+  padding: 0.6rem 1.1rem;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #fff;
+  background: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 4px;
+  cursor: pointer;
+}
+.subscribe-form button:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+.subscribe-form button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.subscribe-note {
+  font-size: 0.85rem;
+  color: var(--dim);
+  margin: 0;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------- Reading layout: large screens ---------- */
+
+@media (min-width: 1200px) {
+  body { font-size: 20px; }
+}
+
+/* Breakout: wide content escapes the text column, centred on the page.
+   Only from 1024px, where the wide width always fits inside the viewport. */
+@media (min-width: 1024px) {
+  main .breakout,
+  main .article-body .diagram,
+  main .article-body .table-wrap,
+  main .article-body pre {
+    --bw: min(var(--wide), calc(100vw - 4rem));
+    width: var(--bw);
+    max-width: none;
+    margin-left: calc(50% - var(--bw) / 2);
+  }
+  main .article-body .diagram figcaption {
+    max-width: calc(var(--measure) - 3rem);
+    margin-left: auto;
+    margin-right: auto;
+  }
 }

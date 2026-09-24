@@ -23,7 +23,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<link rel="stylesheet" href="/styles.css?v=20260824">
+<link rel="stylesheet" href="/styles.css?v=20260926">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -59,10 +59,6 @@
   }
   .article-meta a:hover { color: var(--accent); }
   .article-meta .sep { margin: 0 0.4rem; color: var(--border-strong); }
-  .article-body {
-    max-width: 38rem;
-    margin: 0 auto;
-  }
   .article-body h2 { margin-top: 2.5rem; }
   .article-body h3 { margin-top: 1.8rem; }
   .article-body pre, .article-body code {
@@ -268,6 +264,18 @@ At the end, post a summary comment on the PR thread.</code></pre>
 
     <hr />
     <p><em>Written with Claude Code. The code is the artefact; the article is the receipt.</em></p>
+
+    <aside class="subscribe" aria-label="Newsletter">
+      <p class="label">Newsletter</p>
+      <p class="subscribe-pitch">Get new pieces on building AI agents, moving teams onto AI workflows and automating operations by email when they come out.</p>
+      <form class="subscribe-form" action="https://buttondown.com/api/emails/embed-subscribe/nakrosis" method="post" target="_blank">
+        <label class="sr-only" for="subscribe-email">Email address</label>
+        <input type="email" name="email" id="subscribe-email" placeholder="you@company.com" autocomplete="email" required>
+        <input type="hidden" name="embed" value="1">
+        <button type="submit">Subscribe</button>
+      </form>
+      <p class="subscribe-note">Free. Unsubscribe any time.</p>
+    </aside>
 
   </article>
 

@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The on-call engineer who never sleeps: building an AI agent to triage FIX trading incidents - Mindaugas Nakrošis</title>
+<meta name="description" content="How I replaced the first forty minutes of every FIX incident with an agent that investigates, cites its evidence and hands a human a diagnosis. Architecture, safety controls and the design decisions that matter in a regulated trading environment.">
+<link rel="canonical" href="https://nakrosis.com/writing/fix-triage-agent">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="The on-call engineer who never sleeps: building an AI agent to triage FIX trading incidents">
+<meta property="og:description" content="How I replaced the first forty minutes of every FIX incident with an agent that investigates, cites its evidence and hands a human a diagnosis. Architecture, safety controls and the design decisions that matter in a regulated trading environment.">
+<meta property="og:url" content="https://nakrosis.com/writing/fix-triage-agent">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Mindaugas Nakrošis">
+<meta property="og:locale" content="en_GB">
+<meta property="og:image" content="https://nakrosis.com/writing/fix-triage-agent/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="article:published_time" content="2026-09-24">
+<meta property="article:author" content="Mindaugas Nakrošis">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="The on-call engineer who never sleeps: building an AI agent to triage FIX trading incidents">
+<meta name="twitter:description" content="How I replaced the first forty minutes of every FIX incident with an agent that investigates, cites its evidence and hands a human a diagnosis. Architecture, safety controls and the design decisions that matter in a regulated trading environment.">
+<meta name="twitter:image" content="https://nakrosis.com/writing/fix-triage-agent/og.jpg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/styles.css?v=20260926">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "The on-call engineer who never sleeps: building an AI agent to triage FIX trading incidents",
+  "description": "How I replaced the first forty minutes of every FIX incident with an agent that investigates, cites its evidence and hands a human a diagnosis. Architecture, safety controls and the design decisions that matter in a regulated trading environment.",
+  "datePublished": "2026-09-24",
+  "author": {
+    "@type": "Person",
+    "name": "Mindaugas Nakrošis",
+    "url": "https://nakrosis.com/"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Mindaugas Nakrošis"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://nakrosis.com/writing/fix-triage-agent"
+  }
+}
+</script>
+<style>
+  .article-meta {
+    font-size: 0.95rem;
+    color: var(--muted);
+    margin-bottom: 1.25rem;
+  }
+  .article-meta a {
+    color: var(--muted);
+    text-decoration: underline;
+    text-decoration-color: var(--border-strong);
+  }
+  .article-meta a:hover { color: var(--accent); }
+  .article-meta .sep { margin: 0 0.4rem; color: var(--border-strong); }
+  .article-body h2 { margin-top: 2.5rem; }
+  .article-body h3 { margin-top: 1.8rem; }
+  .article-body pre, .article-body code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.92rem;
+  }
+  .article-body pre {
+    background: #f5f3ef;
+    padding: 1rem 1.25rem;
+    border-radius: 4px;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+  }
+  .article-body code {
+    background: #f5f3ef;
+    padding: 0.1rem 0.35rem;
+    border-radius: 3px;
+  }
+  .article-body pre code { background: transparent; padding: 0; }
+  .article-body blockquote {
+    border-left: 3px solid var(--border-strong);
+    padding: 0.3rem 0 0.3rem 1.2rem;
+    margin: 1.5rem 0;
+    color: var(--muted);
+    font-style: italic;
+  }
+  .article-body ul, .article-body ol {
+    padding-left: 1.4rem;
+    margin: 0 0 1.25rem;
+  }
+  .article-body li { margin-bottom: 0.45rem; }
+  .article-body img { max-width: 100%; height: auto; border-radius: 4px; }
+  .repo-card {
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 1rem 1.25rem;
+    margin: 2.5rem 0;
+    background: #faf8f4;
+  }
+  .repo-card .label { margin-bottom: 0.3rem; }
+  .repo-card a {
+    color: var(--ink);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .repo-card a:hover { color: var(--accent); text-decoration: underline; }
+  .back-link {
+    display: inline-block;
+    margin-bottom: 1.5rem;
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.95rem;
+  }
+  .back-link:hover { color: var(--accent); }
+  .diagram { margin: 2rem 0; }
+  .diagram img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: #fff;
+  }
+  .diagram figcaption {
+    margin-top: 0.6rem;
+    font-size: 0.92rem;
+    color: var(--muted);
+    font-style: italic;
+  }
+  .table-wrap { overflow-x: auto; margin: 1.5rem 0; }
+  .article-body table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 0.92rem;
+    line-height: 1.45;
+  }
+  .article-body th, .article-body td {
+    text-align: left;
+    vertical-align: top;
+    padding: 0.55rem 0.6rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .article-body th {
+    font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+    border-bottom: 1px solid var(--border-strong);
+  }
+  .article-body td:first-child { font-weight: 600; color: var(--ink); }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="container">
+    <a class="site-name" href="/">Mindaugas Nakrošis</a>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/case-studies">Case studies</a>
+      <a href="/writing" aria-current="page">Writing</a>
+      <a href="/contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+
+  <article class="article-body">
+    <a class="back-link" href="/writing">← All writing</a>
+
+    <p class="eyebrow">Agentic AI · FIX protocol · Incident response</p>
+    <h1>The on-call engineer who never sleeps: building an AI agent to triage FIX trading incidents</h1>
+    <p class="lede">How I replaced the first forty minutes of every FIX incident with an agent that investigates, cites its evidence and hands a human a diagnosis.</p>
+
+    <p class="article-meta">
+      <time datetime="2026-09-24">Sep 24, 2026</time>
+    </p>
+
+<p>It's 10:14 on a Tuesday and an alert fires: <em>reject rate high on session ACME_FIX44</em>. Anyone who has run a FIX-based trading platform knows what happens next, and knows that the hard part is not the fix. It's finding it.</p>
+<p>Someone on call drops what they're doing. They open the log search and filter by session. They scroll through rejects, copy a tag number, look it up in the FIX spec, and check whether the client reconnected recently. They query the orders database, check the message broker for consumer lag, ask in Slack whether anyone deployed something, and search the wiki for a runbook that may or may not be current. Forty minutes later they have the answer: the client started sending <code>PutOrCall</code> as <code>C</code> instead of <code>1</code> after restarting their engine. The fix takes five minutes. Finding it took the rest.</p>
+<p>As VP of Technology at Intick, a block trading venue for futures and options, I owned the FIX connectivity into our counterparties. Incidents like this weren't rare, and they weren't hard. They were <em>slow</em>, because the knowledge needed to solve them was spread across six systems and a few senior people's heads. So I designed and shipped an AI agent to do the first pass. Not a chatbot that summarises logs, but an agent that investigates the way a good engineer does: it forms a hypothesis, pulls the evidence it needs and stops when the evidence is conclusive.</p>
+<figure class="diagram">
+  <a href="/writing/fix-triage-agent/01-before-after.svg" target="_blank" rel="noopener"><img src="/writing/fix-triage-agent/01-before-after.svg" alt="Two swimlanes. Today: alert, then log search, FIX spec, orders DB, broker admin, deploy history, wiki runbook, then diagnosis at about 10:55. With an agent: alert, triage agent making 5 tool calls across the same systems, report in the Slack thread in under a minute, engineer verifies and acts." width="1230" height="531" loading="lazy" decoding="async"></a>
+  <figcaption>The engineer stops being the orchestrator. The agent does the running around; the human still makes the call.</figcaption>
+</figure>
+<h2>Why FIX incidents are slow to triage</h2>
+<p>No single step is difficult. The problem is that every incident could live in one of four layers, and you don't know which until you look:</p>
+<ul>
+<li><strong>Session layer:</strong> sequence gaps, resend storms, heartbeat timeouts, a certificate that expired overnight.</li>
+<li><strong>Message layer:</strong> a missing required tag, an enum value the counterparty doesn't accept, a repeating group with the wrong count.</li>
+<li><strong>Business layer:</strong> unknown instrument, limit breach, an order in the wrong state.</li>
+<li><strong>Infrastructure:</strong> broker lag, a dead consumer, messages piling up in a dead-letter queue.</li>
+</ul>
+<p>Each layer lives in a different system. FIX logs in one place, order state in PostgreSQL, broker health behind an admin API, runbooks in Confluence, deploy history in CI. The engineer's real job during triage is <em>orchestration</em>: knowing which system to check next based on what the last one said.</p>
+<p>That orchestration is exactly what agents are good at.</p>
+<h2>What an agent actually is</h2>
+<p>Strip away the marketing and an agent is three things:</p>
+<ol>
+<li><strong>A language model</strong> that reasons about what it's seeing.</li>
+<li><strong>Tools:</strong> ordinary functions you write, such as "get rejects for this session in this window" or "look up this FIX tag".</li>
+<li><strong>A loop:</strong> the model asks for a tool, your code runs it and returns the result, and the model decides what to do next. Repeat until it has an answer.</li>
+</ol>
+<figure class="diagram">
+  <a href="/writing/fix-triage-agent/02-agent-loop.svg" target="_blank" rel="noopener"><img src="/writing/fix-triage-agent/02-agent-loop.svg" alt="The model on the left, your code in the middle, your systems on the right. Your code sends the prompt, tool list and incident data to the model; the model replies with a tool_use request; your code executes it against read-only systems and returns a tool_result. This repeats until the model stops asking." width="1306" height="720" loading="lazy" decoding="async"></a>
+  <figcaption>The model never touches your database. It can only ask.</figcaption>
+</figure>
+<p>The model can't execute anything. It can only <em>request</em> a tool call, and your code decides whether and how to answer. That one fact shapes the whole design, and it's what makes this safe enough for a trading environment. The list of tools you send with each request is, quite literally, the agent's permission boundary: if a tool isn't offered, it can't be called.</p>
+<h2>The same incident, investigated by an agent</h2>
+<p>Here is how the agent handles that incident. The client name and details are changed, but the shape is typical.</p>
+<p>The alert arrives. Before the model is involved at all, plain code parses the alert payload and pre-fetches the obvious context: recent session events, a reject summary and broker health. The model's starting picture:</p>
+<ul>
+<li>The client logged out at 09:58 and back in at 10:01 with a sequence reset.</li>
+<li>37 session-level rejects since then, all on QuoteRequest, all pointing at tag 201 with reason code 5 ("value incorrect for this tag").</li>
+<li>The broker is healthy: no lag, empty dead-letter queue.</li>
+</ul>
+<p>Then it investigates.</p>
+<figure class="diagram">
+  <a href="/writing/fix-triage-agent/03-investigation.svg" target="_blank" rel="noopener"><img src="/writing/fix-triage-agent/03-investigation.svg" alt="Six rows, each with a question, the tool call the model requests and the result. Baseline shows a logon with sequence reset and 37 rejects on tag 201. lookup_fix_tag(201) returns PutOrCall 0 or 1. get_session_rejects shows 201=C. get_client_dictionary shows no override. recent_deploys shows nothing. search_runbooks returns the client enum override procedure. A final report states the root cause with evidence and next steps." width="1248" height="942" loading="lazy" decoding="async"></a>
+  <figcaption>Five tool calls, well under a minute, and every claim in the report points at a specific message.</figcaption>
+</figure>
+<p>The report it posts back to the Slack thread:</p>
+<blockquote>
+<p><strong>Root cause (high confidence):</strong> ACME began sending PutOrCall (201) as <code>C</code>/<code>P</code> instead of FIX 4.4 <code>0</code>/<code>1</code> after reconnecting at 10:01 with a sequence reset, most likely a client-side engine upgrade. No deploys or config changes on our side.</p>
+<p><strong>Evidence:</strong> seq 14 at 10:03:41 rejected with reason 5 on tag 201; 37 identical rejects since.</p>
+<p><strong>Next steps:</strong> contact ACME to confirm the engine change; short-term per-client enum override per runbook (requires four-eyes approval).</p>
+</blockquote>
+<p>Notice what the agent <em>didn't</em> do. It didn't dig into order state, business rules or the broker. The evidence pointed at the message layer, so it followed the evidence and stopped. That branching is the whole point. A hardcoded script would either check everything every time, or miss the case nobody anticipated.</p>
+<h2>The design decisions that matter</h2>
+<p>A demo like this takes an afternoon. Making it something you can trust in a regulated trading environment comes down to decisions. These are the six that mattered most.</p>
+<h3>1. Deterministic where it must be, agentic where it must branch</h3>
+<p>There's a spectrum between a rigid workflow (fixed steps, AI summarises at the end) and a fully autonomous agent (vague goal, the AI decides everything). Neither end works well, so we split it deliberately.</p>
+<figure class="diagram">
+  <a href="/writing/fix-triage-agent/04-code-vs-agent.svg" target="_blank" rel="noopener"><img src="/writing/fix-triage-agent/04-code-vs-agent.svg" alt="Three zones. Code on the left: parse alert, dedupe, pre-fetch baseline, mask sensitive data. Agent in the middle: investigate, picking the next tool based on what the last one showed. Code on the right: validate schema, render report, post to Slack, audit log." width="1253" height="569" loading="lazy" decoding="async"></a>
+  <figcaption>The model is used exactly where judgement is needed, and nowhere else.</figcaption>
+</figure>
+<p>Monitoring alerts are structured JSON, so parsing them is code, not AI. So are deduplication, validation, formatting and audit logging. The model's only job is the part that genuinely branches: deciding what to look at next.</p>
+<h3>2. Tools, never raw database access</h3>
+<p>It's tempting to hand the model a SQL connection and let it write its own queries. Don't.</p>
+<p>Every data source sits behind a narrow, named tool such as <code>get_session_rejects(session, start, end)</code>. Behind it are parameterised queries, a read-only database role on a replica, a five-second statement timeout and hard row limits. The model chooses <em>which</em> tool to call and with what arguments. It never writes the query, and its arguments are validated before anything runs, because those arguments may have been influenced by text the model read along the way, such as a free-text field in a client's FIX message.</p>
+<p>This makes the agent safer, and also <em>better</em>. A tool that returns "37 rejects, grouped by reason" is more useful to the model than 10,000 raw log lines, and far cheaper.</p>
+<h3>3. Mask sensitive data inside the tool, not in the prompt</h3>
+<p>In block trading, information leakage is the cardinal sin. Account IDs, legal entity identifiers, order sizes and prices must not leave your environment.</p>
+<figure class="diagram">
+  <a href="/writing/fix-triage-agent/05-masking.svg" target="_blank" rel="noopener"><img src="/writing/fix-triage-agent/05-masking.svg" alt="Inside your Azure environment, the log store feeds raw messages to a tool function that queries, summarises and masks. Only masked data crosses the boundary to the model. Before: account, LEI, price and quantity in clear. After: account and LEI become hashed tokens, price becomes a placeholder, quantity becomes a size band, and 201=C passes through untouched." width="1250" height="701" loading="lazy" decoding="async"></a>
+  <figcaption>"Please don't repeat account numbers" in a prompt is a wish. Masking in code is a control.</figcaption>
+</figure>
+<p>Two details make this work. Identifiers are replaced with <em>consistent</em> HMAC tokens, so the model can still tell that every reject came from one account without knowing which account. And sizes become bands rather than disappearing, so a zero quantity or an absurdly large order is still visible. The diagnosis survives; the sensitive data doesn't. The masker gets its own unit tests against real message shapes, because a missed tag is a data leak.</p>
+<h3>4. Right-size the model</h3>
+<p>The instinct is to reach for the biggest model available. For triage that's the wrong call. The task is bounded (a handful of tool calls, pattern-matching against known failure modes) and latency matters, because during an incident people are watching the Slack thread. An alert storm that triggers twenty runs in a minute also needs to stay affordable.</p>
+<p>The investigation loop runs on Claude Sonnet 5 at medium effort, and Claude Haiku 4.5 handles the trivial job of turning a human's Slack message ("ACME rejects since 10:14") into structured fields. When the evals show accuracy falling short, the first move is to raise the effort level, not to reach for a bigger model.</p>
+<h3>5. The agent doesn't learn. You do.</h3>
+<p>This is the most common misconception I hear about agents like this one. Clicking thumbs-up on the agent's report does not make it smarter. The model's weights never change from your usage, and every run starts fresh with the same instructions and tools.</p>
+<figure class="diagram">
+  <a href="/writing/fix-triage-agent/07-improvement-loop.svg" target="_blank" rel="noopener"><img src="/writing/fix-triage-agent/07-improvement-loop.svg" alt="A loop: agent run, report with thumbs up or down in Slack, thumbs down asks for the real cause, weekly review of the run's full trace, fix the prompt, tool description or masking, replay 30 to 50 historical incidents as evals, merge and deploy if the score goes up. Failed incidents join the eval set. Confirmed causes feed a past-incident index the agent can search." width="1241" height="700" loading="lazy" decoding="async"></a>
+  <figcaption>Improvement is an engineering loop, gated by evals.</figcaption>
+</figure>
+<p>Improvement comes from engineering discipline:</p>
+<ul>
+<li><strong>Evals.</strong> Take 30 to 50 historical incidents with known root causes, record what the tools returned at the time, and replay them against the agent. Every prompt change, tool change or model upgrade has to hold or improve the score before it merges. It's a test suite, just for judgement instead of logic.</li>
+<li><strong>Feedback as data.</strong> A thumbs-down opens a short form asking what the actual cause was. The run's full trace gets reviewed, the gap gets fixed (a missing tool, a confusing tool description, a masking rule that hid the key field), and the incident joins the eval set.</li>
+<li><strong>Memory through lookup.</strong> Confirmed diagnoses go into a searchable index of past incidents. Next time, the agent can find "we saw this exact enum issue in March". What it can <em>reach</em> grows, even though the model doesn't.</li>
+</ul>
+<h3>6. Humans stay in the loop</h3>
+<p>The agent is read-only by design. It has no tool that can send a FIX message, reset a sequence number or change a client's configuration. It diagnoses and recommends; a human decides and acts. Every claim must cite a specific message (session, sequence number, timestamp) so the engineer can verify in seconds rather than trust blindly, and when the evidence is thin it's instructed to say "inconclusive" rather than guess.</p>
+<h2>What it looks like in production</h2>
+<p>The architecture is less exotic than people expect.</p>
+<figure class="diagram">
+  <a href="/writing/fix-triage-agent/06-architecture.svg" target="_blank" rel="noopener"><img src="/writing/fix-triage-agent/06-architecture.svg" alt="Azure Monitor sends a webhook to an always-on listener container, which also holds an outbound Socket Mode connection to Slack. The listener puts jobs on a Service Bus queue. A worker job scales from zero, runs the agent loop, calls the Claude API, reaches systems only through a read-only masked tool layer, writes an audit log and posts the report back to the Slack thread." width="1250" height="670" loading="lazy" decoding="async"></a>
+  <figcaption>Plain Python and asyncio, the Slack Bolt SDK, the Anthropic SDK and the Azure SDKs. No heavyweight agent framework needed for one focused agent.</figcaption>
+</figure>
+<ul>
+<li><strong>A small always-on listener</strong> in Azure Container Apps. It receives monitoring alerts by webhook and Slack mentions over an outbound websocket (Socket Mode), so there's no public endpoint to defend.</li>
+<li><strong>A queue</strong> between listener and worker, because alerts arrive in bursts and agent runs take seconds to minutes. It also means a restart mid-run doesn't lose the job.</li>
+<li><strong>A worker</strong> that scales from zero when jobs arrive, runs the agent loop and posts the report back to the thread.</li>
+</ul>
+<p>Everything the agent touches is logged: every tool call and its arguments, which prompt version ran, tokens used. In a regulated environment, "the AI said so" is not an audit trail. "The AI called these five tools, saw these results and concluded this" is. I've written separately about <a href="https://nakrosis.com/writing/how-to-audit-ai-agents">how to audit AI agents</a>; this design was built to pass that audit from day one.</p>
+<h2>Traditional versus agentic triage</h2>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th></th>
+<th>Traditional triage</th>
+<th>Agent-assisted triage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Time to first diagnosis</td>
+<td>20 to 60 minutes</td>
+<td>Under a minute</td>
+</tr>
+<tr>
+<td>Who can do it</td>
+<td>Senior engineers who know every system</td>
+<td>Anyone on call, with the evidence laid out</td>
+</tr>
+<tr>
+<td>Where the knowledge lives</td>
+<td>People's heads and stale wiki pages</td>
+<td>Prompts, tools and a growing incident index</td>
+</tr>
+<tr>
+<td>Consistency</td>
+<td>Depends on who's on call and how tired they are</td>
+<td>Same investigation strategy every time</td>
+</tr>
+<tr>
+<td>Audit trail</td>
+<td>"I checked the logs"</td>
+<td>Every query, result and conclusion recorded</td>
+</tr>
+<tr>
+<td>How it improves</td>
+<td>Informally, and lost when people leave</td>
+<td>Measured against evals, versioned in git</td>
+</tr>
+</tbody>
+</table></div>
+<p>The agent doesn't replace the on-call engineer. It replaces the first forty minutes of their incident: the part that was always orchestration rather than engineering.</p>
+<h2>Where this goes next</h2>
+<p>Once the tools existed, they were reusable. We extracted them into MCP servers used across the company, so tools like <code>fix-dictionary</code> and <code>fix-logs</code> became available to developers in their IDE ("why is this client getting reason 5 on tag 201?") and to other agents. These are the agents I would build on top of them next:</p>
+<ul>
+<li><strong>An onboarding agent</strong> that reads a new client's FIX specification, diffs it against your dictionary and drafts the configuration, mapping and certification test plan. Onboarding is usually the real bottleneck in a B2B trading network.</li>
+<li><strong>A conformance agent</strong> that runs certification scenarios against UAT sessions and explains the failures.</li>
+<li><strong>A change-impact agent</strong> that answers "if we change this tag, which clients break?" from real traffic rather than stale documentation.</li>
+</ul>
+<p>Build the tools once and every agent benefits.</p>
+<h2>The real shift</h2>
+<p>The traditional view treats incident triage as a skill that lives in senior engineers. The agentic view treats it as a <em>process that can be encoded</em>: the investigation strategy in a prompt, the access in tools, the safety in code and the quality in an eval suite.</p>
+<p>That's the part of agents I think is most often missed. The AI isn't smarter than your best engineer. But your best engineer's approach can now run at 3 a.m., on every alert, in under a minute, and show its work.</p>
+
+<hr />
+
+<p><em>I build AI agents that run in production, move teams onto AI workflows and automate operations through <a href="https://trustflux.co.uk/#agentic-ai">Trustflux Ltd</a>. If you run a trading or payments platform and your incident response still depends on who happens to be on call, <a href="/contact">get in touch</a>.</em></p>
+
+    <aside class="subscribe" aria-label="Newsletter">
+      <p class="label">Newsletter</p>
+      <p class="subscribe-pitch">Get new pieces on building AI agents, moving teams onto AI workflows and automating operations by email when they come out.</p>
+      <form class="subscribe-form" action="https://buttondown.com/api/emails/embed-subscribe/nakrosis" method="post" target="_blank">
+        <label class="sr-only" for="subscribe-email">Email address</label>
+        <input type="email" name="email" id="subscribe-email" placeholder="you@company.com" autocomplete="email" required>
+        <input type="hidden" name="embed" value="1">
+        <button type="submit">Subscribe</button>
+      </form>
+      <p class="subscribe-note">Free. Unsubscribe any time.</p>
+    </aside>
+
+  </article>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <span>London</span><span class="sep">·</span>
+    <a href="mailto:mnakrosis@trustflux.co.uk">mnakrosis@trustflux.co.uk</a><span class="sep">·</span>
+    <a href="https://github.com/mindaugasnakrosis" target="_blank" rel="noopener">GitHub</a><span class="sep">·</span>
+    <a href="https://www.linkedin.com/in/mindaugas-nakro%C5%A1is-142a4a108/" target="_blank" rel="noopener">LinkedIn</a><span class="sep">·</span>
+    <a href="https://mindaugasnakr.medium.com/" target="_blank" rel="noopener">Medium</a>
+  </div>
+</footer>
+
+</body>
+</html>

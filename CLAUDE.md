@@ -25,6 +25,7 @@ public/
    - Set the eyebrow (`<p class="eyebrow">`), `<h1>`, `<p class="lede">`, and `<p class="article-meta">` (date + Medium link if applicable).
    - Convert the article body from markdown to HTML inside `<article class="article-body">`.
    - Keep the same `<header>`, `<footer>`, and inline `<style>` block as the other articles.
+   - Keep the `<aside class="subscribe">` newsletter block as the last child of `<article>` (copy it verbatim from any existing article).
 
 2. Add a `<li>` entry to `public/writing.html` at the **top** of the 2026 `<ul class="archive-list">`:
    ```html
@@ -43,9 +44,22 @@ public/
    </li>
    ```
 
+## Newsletter
+
+Signup is a plain HTML form posting to Buttondown (`https://buttondown.com/api/emails/embed-subscribe/nakrosis`, free plan up to 100 subscribers), styled in `styles.css` under "Newsletter" (`.subscribe-form`). It appears as a section on `writing.html` (`#subscribe`) and as an `<aside class="subscribe">` at the end of every article. If the Buttondown username changes, update it everywhere:
+`grep -rl 'embed-subscribe/nakrosis' public | xargs sed -i '' 's|embed-subscribe/nakrosis|embed-subscribe/<new>|g'`
+
+## Positioning
+
+Source of truth for career facts is the CV "Mindaugas Nakrosis CV - Anthropic.docx" (Sep 2026): VP of Technology at Intick Oct 2024 - Apr 2026 (Python-first, Claude incident-triage agent, company-wide MCP servers), Cult Wines May 2021 - Oct 2024 (front-office then principal architect), co-founder/CTO warehouse SaaS 2021-23 (exited). Headline positioning: builds AI agents, moves companies onto AI workflows, automates operations.
+
 ## Canonical URL pattern
 
 `https://nakrosis.com/writing/<slug>` — slug matches the HTML filename without extension.
+
+## Reading layout
+
+One column width for the whole site: `--measure` (45rem, about 68 characters per line) in `styles.css`. Body text is 19px, 20px from 1200px, 17px on phones. From 1024px, figures (`.diagram`), tables (`.table-wrap`) and code blocks (`pre`) inside `.article-body` break out to `--wide` (60rem), centred on the column. Add `class="breakout"` to anything else that should do the same. Don't set a `max-width` on `.article-body` in an article's inline styles.
 
 ## Style notes
 
@@ -70,7 +84,7 @@ Draft articles and LinkedIn posts live in `/Users/mindaugasnakrosis/Darbas/claud
 
 - **Stylesheet** — every page links it as `styles.css?v=<yyyymmdd>`. After
   editing `public/styles.css`, bump the version in all pages at once:
-  `grep -rl 'styles.css?v=' public | xargs sed -i '' 's|styles.css?v=[0-9]*|styles.css?v=<new>|'`
+  `grep -rl --include='*.html' 'styles.css?v=' public | xargs sed -i '' 's|styles.css?v=[0-9][0-9]*|styles.css?v=<new>|'`
 - **Images** — never overwrite an image in place; ship a new filename.
 
 ## Hero portrait
